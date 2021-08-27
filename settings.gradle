@@ -1,0 +1,21 @@
+pluginManagement {
+    plugins {
+        id "com.github.sherter.google-java-format" version "${googleJavaFormatPluginVersion}"
+        id "io.spring.dependency-management" version "${dependencyManagementPluginVersion}"
+        id "com.google.protobuf" version "${protobufPluginVersion}"
+        id "com.palantir.git-version" version "${gitPluginVersion}"
+        id "com.google.osdetector" version "${osDetectorPluginVersion}"
+        id "com.github.ben-manes.versions" version "${versionsPluginVersion}"
+    }
+}
+
+rootProject.name = "jaunt-trisocket-parent"
+
+include "jaunt-rsocket-runtime"
+
+include "jaunt-rsocket-service-idl"
+include "jaunt-rsocket-reactor-service"
+include "jaunt-rsocket-helidon-service"
+include "jaunt-rsocket-rxjava-service"
+include "grpc-client"
+

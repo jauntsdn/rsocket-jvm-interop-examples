@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "trisocket";
+option java_outer_classname = "ServiceProto";
+
+package trisocket;
+
+service Chef {
+
+  rpc roast (Pan) returns (Dish) {}
+}
+
+service Farmer {
+
+  rpc meat (Order) returns (stream Meat) {}
+
+  rpc veggies (Order) returns (stream Veggie) {}
+}
+
+service Kitchen {
+
+  rpc serve (stream Order) returns (stream Dish) {}
+}
+
+message Veggie {
+  string name = 1;
+  float size = 2;
+}
+
+message Meat {
+  string name = 1;
+  float stiffness = 2;
+}
+
+message Pan {
+  Veggie veggie = 1;
+  Meat meat = 2;
+}
+
+message Dish {
+  Veggie veggie = 1;
+  Meat meat = 2;
+  string doneness = 3; //welldone
+}
+
+message Order {
+   int32 count = 1;
+}

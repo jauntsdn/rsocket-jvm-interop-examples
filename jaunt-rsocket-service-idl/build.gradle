@@ -1,0 +1,32 @@
+/*
+ * Copyright 2021 - present Maksym Ostroverkhov.
+ */
+
+plugins {
+    id "com.google.protobuf"
+    id "idea"
+}
+
+description = "jauntsdn-trisocket: service definitions"
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc"
+    }
+    generateProtoTasks {
+        all()*.enabled = false
+    }
+}
+
+sourceSets {
+    main {
+        proto { srcDir "src/main/proto" }
+    }
+}
+
+idea {
+    module {
+        sourceDirs += file("src/main/proto")
+    }
+}
+

@@ -1,0 +1,112 @@
+package trisocket;
+
+@javax.annotation.Generated(
+    value = "jauntsdn.com rsocket-rpc compiler (version 1.0.0)",
+    comments = "source: service.proto")
+@com.jauntsdn.rsocket.Rpc.Generated(
+    role = com.jauntsdn.rsocket.Rpc.Role.CLIENT,
+    service = Kitchen.class)
+public final class KitchenClient implements Kitchen {
+  private final com.jauntsdn.rsocket.RSocket rSocket;
+  private final io.netty.buffer.ByteBufAllocator allocator;
+  private final io.reactivex.rxjava3.core.FlowableTransformer<trisocket.Dish, trisocket.Dish> serveInstrumentation;
+  private final com.jauntsdn.rsocket.Rpc.Codec rpcCodec;
+
+  private KitchenClient(com.jauntsdn.rsocket.RSocket rSocket, java.util.Optional<com.jauntsdn.rsocket.RSocketRpcInstrumentation> instrumentation) {
+    this.rSocket = rSocket;
+    this.allocator = rSocket.allocator().orElse(io.netty.buffer.ByteBufAllocator.DEFAULT);
+    if (!instrumentation.isPresent()) {
+      this.serveInstrumentation = null;
+    } else {
+      com.jauntsdn.rsocket.RSocketRpcInstrumentation i = instrumentation.get();
+      this.serveInstrumentation = i.instrumentFlowable("client", Kitchen.SERVICE, Kitchen.METHOD_SERVE, true);
+    }
+    com.jauntsdn.rsocket.Rpc.Codec codec = rSocket.attributes().attr(com.jauntsdn.rsocket.Attributes.RPC_CODEC);
+    if (codec != null) {
+      rpcCodec = codec;
+      if (codec.isDisposable()) {
+        rSocket.onClose().subscribe(() -> codec.dispose());
+      }
+      return;
+    }
+    throw new IllegalArgumentException("RSocket " + rSocket.getClass() + " does not provide RSocket-RPC codec");
+  }
+
+  public static KitchenClient create(com.jauntsdn.rsocket.RSocket rSocket, java.util.Optional<com.jauntsdn.rsocket.RSocketRpcInstrumentation> instrumentation) {
+    java.util.Objects.requireNonNull(rSocket, "rSocket");
+    java.util.Objects.requireNonNull(instrumentation, "instrumentation");
+    return new KitchenClient(rSocket, instrumentation);
+  }
+
+  @Override
+  @com.jauntsdn.rsocket.Rpc.GeneratedMethod(returnType = trisocket.Dish.class)
+  public io.reactivex.rxjava3.core.Flowable<trisocket.Dish> serve(org.reactivestreams.Publisher<trisocket.Order> messages, io.netty.buffer.ByteBuf metadata) {
+    io.reactivex.rxjava3.core.Flowable<trisocket.Dish> serve = 
+      io.reactivex.rxjava3.core.Flowable.defer(new io.reactivex.rxjava3.functions.Supplier<org.reactivestreams.Publisher<com.jauntsdn.rsocket.Message>>() {
+
+        @Override
+        public org.reactivestreams.Publisher<com.jauntsdn.rsocket.Message> get() {
+          return rSocket.requestChannel(io.reactivex.rxjava3.core.Flowable.fromPublisher(messages).map(
+            new io.reactivex.rxjava3.functions.Function<com.google.protobuf.MessageLite, com.jauntsdn.rsocket.Message>() {
+              private boolean started;
+
+              @Override
+              public com.jauntsdn.rsocket.Message apply(com.google.protobuf.MessageLite message) {
+                int dataSize = message.getSerializedSize();
+                com.jauntsdn.rsocket.Rpc.Codec codec = rpcCodec;
+                if (!started) {
+                  started = true;
+                  int externalMetadataSize = rSocket.attributes().intAttr(com.jauntsdn.rsocket.Attributes.EXTERNAL_METADATA_SIZE);
+                  int localHeader = com.jauntsdn.rsocket.MessageMetadata.header(metadata);
+                  boolean isDefaultService = com.jauntsdn.rsocket.MessageMetadata.defaultService(localHeader);
+                  String service = isDefaultService ? com.jauntsdn.rsocket.Rpc.RpcMetadata.defaultService() : Kitchen.SERVICE;
+                  io.netty.buffer.ByteBuf content = codec.encodeContent(allocator, metadata, localHeader, service, Kitchen.METHOD_SERVE, true, Kitchen.METHOD_SERVE_IDEMPOTENT, dataSize, externalMetadataSize);
+                  encode(content, message);
+                  return codec.encodeMessage(content, Kitchen.METHOD_SERVE_RANK);
+                } else {
+                  io.netty.buffer.ByteBuf content = codec.encodeContent(allocator, dataSize);
+                  encode(content, message);
+                  return codec.encodeMessage(content);
+                }
+              }
+             }));
+           }
+          }).map(decode(trisocket.Dish.parser()));
+          if (serveInstrumentation != null) {
+            return serve.compose(serveInstrumentation);
+          }
+          return serve;
+      }
+
+      private io.netty.buffer.ByteBuf encode(io.netty.buffer.ByteBuf content, final com.google.protobuf.MessageLite message) {
+        int length = message.getSerializedSize();
+        try {
+          int writerIndex = content.writerIndex();
+          message.writeTo(com.google.protobuf.CodedOutputStream.newInstance(content.internalNioBuffer(writerIndex, length)));
+          content.writerIndex(writerIndex + length);
+          return content;
+        } catch (Throwable t) {
+          content.release();
+          com.jauntsdn.rsocket.exceptions.Exceptions.throwIfJvmFatal(t);
+          throw new com.jauntsdn.rsocket.exceptions.SerializationException("KitchenClient: message serialization error", t);
+        }
+      }
+
+      private static <T> io.reactivex.rxjava3.functions.Function<com.jauntsdn.rsocket.Message, T> decode(final com.google.protobuf.Parser<T> parser) {
+        return new io.reactivex.rxjava3.functions.Function<com.jauntsdn.rsocket.Message, T>() {
+          @Override
+          public T apply(com.jauntsdn.rsocket.Message message) {
+            try {
+              io.netty.buffer.ByteBuf messageData = message.data();
+              com.google.protobuf.CodedInputStream is = com.google.protobuf.CodedInputStream.newInstance(messageData.internalNioBuffer(0, messageData.readableBytes()));
+              return parser.parseFrom(is);
+            } catch (Throwable t) {
+              com.jauntsdn.rsocket.exceptions.Exceptions.throwIfJvmFatal(t);
+              throw new com.jauntsdn.rsocket.exceptions.SerializationException("KitchenClient: message deserialization error", t);
+            } finally {
+              message.release();
+            }
+          }
+        };
+      }
+    }

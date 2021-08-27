@@ -1,0 +1,21 @@
+# This is a Gradle generated file for dependency locking.
+# Manual edits can break the build and are not advised.
+# This file is expected to be part of source control.
+com.google.api.grpc:proto-google-common-protos:2.0.1
+com.google.code.findbugs:jsr305:3.0.2
+com.google.errorprone:error_prone_annotations:2.3.4
+com.google.guava:failureaccess:1.0.1
+com.google.guava:guava:30.1-android
+com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava
+com.google.j2objc:j2objc-annotations:1.3
+com.google.protobuf:protobuf-java:3.19.0
+io.grpc:grpc-api:1.41.0
+io.grpc:grpc-context:1.41.0
+io.grpc:grpc-core:1.41.0
+io.grpc:grpc-netty-shaded:1.41.0
+io.grpc:grpc-protobuf-lite:1.41.0
+io.grpc:grpc-protobuf:1.41.0
+io.grpc:grpc-stub:1.41.0
+javax.annotation:javax.annotation-api:1.3.2
+org.checkerframework:checker-compat-qual:2.5.5
+org.slf4j:slf4j-api:1.7.32

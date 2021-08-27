@@ -1,0 +1,21 @@
+subprojects {
+    apply plugin: "io.spring.dependency-management"
+
+    dependencyManagement {
+
+        imports {
+            mavenBom "com.jauntsdn.rsocket:rsocket-bom:${rsocketVersion}"
+        }
+
+        dependencies {
+            dependency "org.slf4j:slf4j-api:${slf4jVersion}"
+            dependency "ch.qos.logback:logback-classic:${logbackVersion}"
+
+            /*grpc client*/
+            dependency "io.grpc:protoc-gen-grpc-java:${grpcVersion}"
+            dependency "io.grpc:grpc-protobuf:${grpcVersion}"
+            dependency "io.grpc:grpc-stub:${grpcVersion}"
+            dependency "io.grpc:grpc-netty-shaded:${grpcVersion}"
+        }
+    }
+}
