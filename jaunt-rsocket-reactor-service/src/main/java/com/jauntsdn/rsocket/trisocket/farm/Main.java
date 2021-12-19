@@ -24,7 +24,8 @@ public class Main {
 
     Mono<Disposable> server =
         rSocketFactory
-            .<Function<ServerAcceptor, Mono<Disposable>>>server("FARM", farmTransport, farmAddress)
+            .<Function<ServerStreamsAcceptor, Mono<Disposable>>>server(
+                "FARM", farmTransport, farmAddress)
             .apply(
                 (setupMessage, rSocket) -> {
                   logger.info(

@@ -1,7 +1,7 @@
 package com.jauntsdn.rsocket.trisocket.chef;
 
 import com.jauntsdn.rsocket.Disposable;
-import com.jauntsdn.rsocket.ServerAcceptor;
+import com.jauntsdn.rsocket.ServerStreamsAcceptor;
 import com.jauntsdn.rsocket.trisocket.RSocketFactory;
 import io.helidon.common.reactive.Single;
 import io.netty.buffer.ByteBuf;
@@ -29,7 +29,7 @@ public class Main {
 
     Single<Disposable> server =
         rSocketFactory
-            .<Function<ServerAcceptor, Single<Disposable>>>server(
+            .<Function<ServerStreamsAcceptor, Single<Disposable>>>server(
                 "CHEF", chefTransport, chefAddress)
             .apply(
                 (setupMessage, rSocket) -> {

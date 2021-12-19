@@ -66,7 +66,7 @@ public class Main {
             .flatMap(
                 kitchen ->
                     rSocketFactory
-                        .<Function<ServerAcceptor, Single<Disposable>>>server(
+                        .<Function<ServerStreamsAcceptor, Single<Disposable>>>server(
                             "KITCHEN", kitchenTransport, kitchenAddress)
                         .apply(
                             (setupMessage, rSocket) -> {

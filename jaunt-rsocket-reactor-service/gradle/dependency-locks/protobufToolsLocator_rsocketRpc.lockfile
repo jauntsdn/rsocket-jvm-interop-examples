@@ -1,4 +1,4 @@
 # This is a Gradle generated file for dependency locking.
 # Manual edits can break the build and are not advised.
 # This file is expected to be part of source control.
-com.jauntsdn.rsocket:rsocket-rpc-reactor-compiler:1.0.0
+com.jauntsdn.rsocket:rsocket-rpc-reactor-compiler:1.1.0

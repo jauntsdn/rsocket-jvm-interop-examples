@@ -1,44 +1,51 @@
 package trisocket;
 
 @javax.annotation.Generated(
-    value = "jauntsdn.com rsocket-rpc compiler (version 1.0.0)",
+    value = "jauntsdn.com rpc compiler (version 1.1.0)",
     comments = "source: service.proto")
 @com.jauntsdn.rsocket.Rpc.Generated(
     role = com.jauntsdn.rsocket.Rpc.Role.CLIENT,
     service = Farmer.class)
 public final class FarmerClient implements Farmer {
-  private final com.jauntsdn.rsocket.RSocket rSocket;
+  private final com.jauntsdn.rsocket.MessageStreams streams;
   private final io.netty.buffer.ByteBufAllocator allocator;
   private final java.util.function.Function<? super java.util.concurrent.Flow.Publisher<trisocket.Meat>, ? extends java.util.concurrent.Flow.Publisher<trisocket.Meat>> meatInstrumentation;
   private final java.util.function.Function<? super java.util.concurrent.Flow.Publisher<trisocket.Veggie>, ? extends java.util.concurrent.Flow.Publisher<trisocket.Veggie>> veggiesInstrumentation;
   private final com.jauntsdn.rsocket.Rpc.Codec rpcCodec;
 
-  private FarmerClient(com.jauntsdn.rsocket.RSocket rSocket, java.util.Optional<com.jauntsdn.rsocket.RSocketRpcInstrumentation> instrumentation) {
-    this.rSocket = rSocket;
-    this.allocator = rSocket.allocator().orElse(io.netty.buffer.ByteBufAllocator.DEFAULT);
-    if (!instrumentation.isPresent()) {
+  private FarmerClient(com.jauntsdn.rsocket.MessageStreams streams, java.util.Optional<com.jauntsdn.rsocket.RpcInstrumentation> instrumentation) {
+    this.streams = streams;
+    this.allocator = streams.allocator().orElse(io.netty.buffer.ByteBufAllocator.DEFAULT);
+    com.jauntsdn.rsocket.RpcInstrumentation i = instrumentation == null
+      ? streams.attributes().attr(com.jauntsdn.rsocket.Attributes.RPC_INSTRUMENTATION)
+      : instrumentation.orElse(null);
+    if (i == null) {
       this.meatInstrumentation = null;
       this.veggiesInstrumentation = null;
     } else {
-      com.jauntsdn.rsocket.RSocketRpcInstrumentation i = instrumentation.get();
       this.meatInstrumentation = i.instrumentMulti("client", Farmer.SERVICE, Farmer.METHOD_MEAT, true);
       this.veggiesInstrumentation = i.instrumentMulti("client", Farmer.SERVICE, Farmer.METHOD_VEGGIES, true);
     }
-    com.jauntsdn.rsocket.Rpc.Codec codec = rSocket.attributes().attr(com.jauntsdn.rsocket.Attributes.RPC_CODEC);
+    com.jauntsdn.rsocket.Rpc.Codec codec = streams.attributes().attr(com.jauntsdn.rsocket.Attributes.RPC_CODEC);
     if (codec != null) {
       rpcCodec = codec;
       if (codec.isDisposable()) {
-        rSocket.onClose().subscribe(ignored -> {}, err -> {}, () -> codec.dispose());
+        streams.onClose().subscribe(ignored -> {}, err -> {}, () -> codec.dispose());
       }
       return;
     }
-    throw new IllegalArgumentException("RSocket " + rSocket.getClass() + " does not provide RSocket-RPC codec");
+    throw new IllegalArgumentException("MessageStreams " + streams.getClass() + " does not provide RPC codec");
   }
 
-  public static FarmerClient create(com.jauntsdn.rsocket.RSocket rSocket, java.util.Optional<com.jauntsdn.rsocket.RSocketRpcInstrumentation> instrumentation) {
-    java.util.Objects.requireNonNull(rSocket, "rSocket");
+  public static FarmerClient create(com.jauntsdn.rsocket.MessageStreams streams, java.util.Optional<com.jauntsdn.rsocket.RpcInstrumentation> instrumentation) {
+    java.util.Objects.requireNonNull(streams, "streams");
     java.util.Objects.requireNonNull(instrumentation, "instrumentation");
-    return new FarmerClient(rSocket, instrumentation);
+    return new FarmerClient(streams, instrumentation);
+  }
+
+  public static FarmerClient create(com.jauntsdn.rsocket.MessageStreams streams) {
+    java.util.Objects.requireNonNull(streams, "streams");
+    return new FarmerClient(streams, null);
   }
 
   @Override
@@ -47,7 +54,7 @@ public final class FarmerClient implements Farmer {
     io.helidon.common.reactive.Multi<trisocket.Meat> meat = io.helidon.common.reactive.Multi.defer(new java.util.function.Supplier<io.helidon.common.reactive.Multi<com.jauntsdn.rsocket.Message>>() {
       @Override
       public io.helidon.common.reactive.Multi<com.jauntsdn.rsocket.Message> get() {
-        int externalMetadataSize = rSocket.attributes().intAttr(com.jauntsdn.rsocket.Attributes.EXTERNAL_METADATA_SIZE);
+        int externalMetadataSize = streams.attributes().intAttr(com.jauntsdn.rsocket.Attributes.EXTERNAL_METADATA_SIZE);
         int dataSize = message.getSerializedSize();
         int localHeader = com.jauntsdn.rsocket.MessageMetadata.header(metadata);
         boolean isDefaultService = com.jauntsdn.rsocket.MessageMetadata.defaultService(localHeader);
@@ -56,7 +63,7 @@ public final class FarmerClient implements Farmer {
         io.netty.buffer.ByteBuf content = codec.encodeContent(allocator, metadata, localHeader, service, Farmer.METHOD_MEAT, true, Farmer.METHOD_MEAT_IDEMPOTENT, dataSize, externalMetadataSize);
         encode(content, message);
         com.jauntsdn.rsocket.Message message = codec.encodeMessage(content, Farmer.METHOD_MEAT_RANK);
-        return rSocket.requestStream(message);
+        return streams.requestStream(message);
       }
     }).map(decode(trisocket.Meat.parser()));
     if (meatInstrumentation != null) {
@@ -71,7 +78,7 @@ public final class FarmerClient implements Farmer {
     io.helidon.common.reactive.Multi<trisocket.Veggie> veggies = io.helidon.common.reactive.Multi.defer(new java.util.function.Supplier<io.helidon.common.reactive.Multi<com.jauntsdn.rsocket.Message>>() {
       @Override
       public io.helidon.common.reactive.Multi<com.jauntsdn.rsocket.Message> get() {
-        int externalMetadataSize = rSocket.attributes().intAttr(com.jauntsdn.rsocket.Attributes.EXTERNAL_METADATA_SIZE);
+        int externalMetadataSize = streams.attributes().intAttr(com.jauntsdn.rsocket.Attributes.EXTERNAL_METADATA_SIZE);
         int dataSize = message.getSerializedSize();
         int localHeader = com.jauntsdn.rsocket.MessageMetadata.header(metadata);
         boolean isDefaultService = com.jauntsdn.rsocket.MessageMetadata.defaultService(localHeader);
@@ -80,7 +87,7 @@ public final class FarmerClient implements Farmer {
         io.netty.buffer.ByteBuf content = codec.encodeContent(allocator, metadata, localHeader, service, Farmer.METHOD_VEGGIES, true, Farmer.METHOD_VEGGIES_IDEMPOTENT, dataSize, externalMetadataSize);
         encode(content, message);
         com.jauntsdn.rsocket.Message message = codec.encodeMessage(content, Farmer.METHOD_VEGGIES_RANK);
-        return rSocket.requestStream(message);
+        return streams.requestStream(message);
       }
     }).map(decode(trisocket.Veggie.parser()));
     if (veggiesInstrumentation != null) {

@@ -1,41 +1,48 @@
 package trisocket;
 
 @javax.annotation.Generated(
-    value = "jauntsdn.com rsocket-rpc compiler (version 1.0.0)",
+    value = "jauntsdn.com rpc compiler (version 1.1.0)",
     comments = "source: service.proto")
 @com.jauntsdn.rsocket.Rpc.Generated(
     role = com.jauntsdn.rsocket.Rpc.Role.CLIENT,
     service = Kitchen.class)
 public final class KitchenClient implements Kitchen {
-  private final com.jauntsdn.rsocket.RSocket rSocket;
+  private final com.jauntsdn.rsocket.MessageStreams streams;
   private final io.netty.buffer.ByteBufAllocator allocator;
   private final io.reactivex.rxjava3.core.FlowableTransformer<trisocket.Dish, trisocket.Dish> serveInstrumentation;
   private final com.jauntsdn.rsocket.Rpc.Codec rpcCodec;
 
-  private KitchenClient(com.jauntsdn.rsocket.RSocket rSocket, java.util.Optional<com.jauntsdn.rsocket.RSocketRpcInstrumentation> instrumentation) {
-    this.rSocket = rSocket;
-    this.allocator = rSocket.allocator().orElse(io.netty.buffer.ByteBufAllocator.DEFAULT);
-    if (!instrumentation.isPresent()) {
+  private KitchenClient(com.jauntsdn.rsocket.MessageStreams streams, java.util.Optional<com.jauntsdn.rsocket.RpcInstrumentation> instrumentation) {
+    this.streams = streams;
+    this.allocator = streams.allocator().orElse(io.netty.buffer.ByteBufAllocator.DEFAULT);
+    com.jauntsdn.rsocket.RpcInstrumentation i = instrumentation == null
+      ? streams.attributes().attr(com.jauntsdn.rsocket.Attributes.RPC_INSTRUMENTATION)
+      : instrumentation.orElse(null);
+    if (i == null) {
       this.serveInstrumentation = null;
     } else {
-      com.jauntsdn.rsocket.RSocketRpcInstrumentation i = instrumentation.get();
       this.serveInstrumentation = i.instrumentFlowable("client", Kitchen.SERVICE, Kitchen.METHOD_SERVE, true);
     }
-    com.jauntsdn.rsocket.Rpc.Codec codec = rSocket.attributes().attr(com.jauntsdn.rsocket.Attributes.RPC_CODEC);
+    com.jauntsdn.rsocket.Rpc.Codec codec = streams.attributes().attr(com.jauntsdn.rsocket.Attributes.RPC_CODEC);
     if (codec != null) {
       rpcCodec = codec;
       if (codec.isDisposable()) {
-        rSocket.onClose().subscribe(() -> codec.dispose());
+        streams.onClose().subscribe(() -> codec.dispose());
       }
       return;
     }
-    throw new IllegalArgumentException("RSocket " + rSocket.getClass() + " does not provide RSocket-RPC codec");
+    throw new IllegalArgumentException("MessageStreams " + streams.getClass() + " does not provide RPC codec");
   }
 
-  public static KitchenClient create(com.jauntsdn.rsocket.RSocket rSocket, java.util.Optional<com.jauntsdn.rsocket.RSocketRpcInstrumentation> instrumentation) {
-    java.util.Objects.requireNonNull(rSocket, "rSocket");
+  public static KitchenClient create(com.jauntsdn.rsocket.MessageStreams streams, java.util.Optional<com.jauntsdn.rsocket.RpcInstrumentation> instrumentation) {
+    java.util.Objects.requireNonNull(streams, "streams");
     java.util.Objects.requireNonNull(instrumentation, "instrumentation");
-    return new KitchenClient(rSocket, instrumentation);
+    return new KitchenClient(streams, instrumentation);
+  }
+
+  public static KitchenClient create(com.jauntsdn.rsocket.MessageStreams streams) {
+    java.util.Objects.requireNonNull(streams, "streams");
+    return new KitchenClient(streams, null);
   }
 
   @Override
@@ -46,7 +53,7 @@ public final class KitchenClient implements Kitchen {
 
         @Override
         public org.reactivestreams.Publisher<com.jauntsdn.rsocket.Message> get() {
-          return rSocket.requestChannel(io.reactivex.rxjava3.core.Flowable.fromPublisher(messages).map(
+          return streams.requestChannel(io.reactivex.rxjava3.core.Flowable.fromPublisher(messages).map(
             new io.reactivex.rxjava3.functions.Function<com.google.protobuf.MessageLite, com.jauntsdn.rsocket.Message>() {
               private boolean started;
 
@@ -56,7 +63,7 @@ public final class KitchenClient implements Kitchen {
                 com.jauntsdn.rsocket.Rpc.Codec codec = rpcCodec;
                 if (!started) {
                   started = true;
-                  int externalMetadataSize = rSocket.attributes().intAttr(com.jauntsdn.rsocket.Attributes.EXTERNAL_METADATA_SIZE);
+                  int externalMetadataSize = streams.attributes().intAttr(com.jauntsdn.rsocket.Attributes.EXTERNAL_METADATA_SIZE);
                   int localHeader = com.jauntsdn.rsocket.MessageMetadata.header(metadata);
                   boolean isDefaultService = com.jauntsdn.rsocket.MessageMetadata.defaultService(localHeader);
                   String service = isDefaultService ? com.jauntsdn.rsocket.Rpc.RpcMetadata.defaultService() : Kitchen.SERVICE;

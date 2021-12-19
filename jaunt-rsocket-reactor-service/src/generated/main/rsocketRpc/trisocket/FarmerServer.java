@@ -1,34 +1,37 @@
 package trisocket;
 
 @javax.annotation.Generated(
-    value = "jauntsdn.com rsocket-rpc compiler (version 1.0.0)",
+    value = "jauntsdn.com rpc compiler (version 1.1.0)",
     comments = "source: service.proto")
 @com.jauntsdn.rsocket.Rpc.Generated(
     role = com.jauntsdn.rsocket.Rpc.Role.SERVICE,
     service = Farmer.class)
-public final class FarmerServer implements com.jauntsdn.rsocket.RSocketRpcService {
+public final class FarmerServer implements com.jauntsdn.rsocket.RpcService {
   private final Farmer service;
   private final io.netty.buffer.ByteBufAllocator allocator;
   private final java.util.function.Function<? super org.reactivestreams.Publisher<com.jauntsdn.rsocket.Message>, ? extends org.reactivestreams.Publisher<com.jauntsdn.rsocket.Message>> meatInstrumentation;
   private final java.util.function.Function<? super org.reactivestreams.Publisher<com.jauntsdn.rsocket.Message>, ? extends org.reactivestreams.Publisher<com.jauntsdn.rsocket.Message>> veggiesInstrumentation;
   private final com.jauntsdn.rsocket.Rpc.Codec rpcCodec;
 
-  private FarmerServer(Farmer service, java.util.Optional<com.jauntsdn.rsocket.RSocketRpcInstrumentation> instrumentation, io.netty.buffer.ByteBufAllocator allocator, com.jauntsdn.rsocket.Rpc.Codec rpcCodec) {
+  private FarmerServer(Farmer service, com.jauntsdn.rsocket.RpcInstrumentation instrumentation, io.netty.buffer.ByteBufAllocator allocator, com.jauntsdn.rsocket.Rpc.Codec rpcCodec) {
     this.service = service;
     this.rpcCodec = rpcCodec;
     this.allocator = allocator;
-    if (!instrumentation.isPresent()) {
+    if (instrumentation == null) {
       this.meatInstrumentation = null;
       this.veggiesInstrumentation = null;
     } else {
-      com.jauntsdn.rsocket.RSocketRpcInstrumentation i = instrumentation.get();
-      this.meatInstrumentation = i.instrument("service", Farmer.SERVICE, Farmer.METHOD_MEAT, true);
-      this.veggiesInstrumentation = i.instrument("service", Farmer.SERVICE, Farmer.METHOD_VEGGIES, true);
+      this.meatInstrumentation = instrumentation.instrument("service", Farmer.SERVICE, Farmer.METHOD_MEAT, true);
+      this.veggiesInstrumentation = instrumentation.instrument("service", Farmer.SERVICE, Farmer.METHOD_VEGGIES, true);
     }
   }
 
-  public static FarmerServer.Factory create(Farmer service, java.util.Optional<com.jauntsdn.rsocket.RSocketRpcInstrumentation> instrumentation) {
+  public static FarmerServer.Factory create(Farmer service, java.util.Optional<com.jauntsdn.rsocket.RpcInstrumentation> instrumentation) {
     return new FarmerServer.Factory(service, instrumentation);
+  }
+
+  public static FarmerServer.Factory create(Farmer service) {
+    return new FarmerServer.Factory(service);
   }
 
   @Override
@@ -182,28 +185,38 @@ public final class FarmerServer implements com.jauntsdn.rsocket.RSocketRpcServic
 
   @javax.inject.Named(
       value ="FarmerServer")
-  public static final class Factory implements com.jauntsdn.rsocket.RSocketRpcService.Factory<FarmerServer> {
+  public static final class Factory implements com.jauntsdn.rsocket.RpcService.Factory<FarmerServer> {
     private final Farmer service;
-    private final java.util.Optional<com.jauntsdn.rsocket.RSocketRpcInstrumentation> instrumentation;
+    private final java.util.Optional<com.jauntsdn.rsocket.RpcInstrumentation> instrumentation;
 
     @javax.inject.Inject
-    public Factory(Farmer service, java.util.Optional<com.jauntsdn.rsocket.RSocketRpcInstrumentation> instrumentation) {
+    public Factory(Farmer service, java.util.Optional<com.jauntsdn.rsocket.RpcInstrumentation> instrumentation) {
       this.service = java.util.Objects.requireNonNull(service, "service");
       this.instrumentation = java.util.Objects.requireNonNull(instrumentation, "instrumentation");
     }
 
+    public Factory(Farmer service) {
+      this.service = java.util.Objects.requireNonNull(service, "service");
+      this.instrumentation = null;
+    }
+
     @Override
-    public FarmerServer withLifecycle(com.jauntsdn.rsocket.RSocket rSocket) {
-      java.util.Objects.requireNonNull(rSocket, "rSocket");
-      com.jauntsdn.rsocket.Rpc.Codec codec = rSocket.attributes().attr(com.jauntsdn.rsocket.Attributes.RPC_CODEC);
+    public FarmerServer withLifecycle(com.jauntsdn.rsocket.Closeable requester) {
+      java.util.Objects.requireNonNull(requester, "requester");
+      com.jauntsdn.rsocket.Rpc.Codec codec = requester.attributes().attr(com.jauntsdn.rsocket.Attributes.RPC_CODEC);
       if (codec != null) {
         if (codec.isDisposable()) {
-          rSocket.onClose().subscribe(ignored -> {}, err -> {}, () -> codec.dispose());
+          requester.onClose().subscribe(ignored -> {}, err -> {}, () -> codec.dispose());
         }
-        io.netty.buffer.ByteBufAllocator allocator = rSocket.allocator().orElse(io.netty.buffer.ByteBufAllocator.DEFAULT);
-        return new FarmerServer(service, instrumentation, allocator, codec);
+        io.netty.buffer.ByteBufAllocator alloc = requester.attributes().attr(com.jauntsdn.rsocket.Attributes.ALLOCATOR);
+        io.netty.buffer.ByteBufAllocator allocator = alloc != null ? alloc : io.netty.buffer.ByteBufAllocator.DEFAULT;
+        java.util.Optional<com.jauntsdn.rsocket.RpcInstrumentation> instr = instrumentation;
+        com.jauntsdn.rsocket.RpcInstrumentation rpcInstrumentation = instr == null
+          ? requester.attributes().attr(com.jauntsdn.rsocket.Attributes.RPC_INSTRUMENTATION)
+          : instr.orElse(null);
+        return new FarmerServer(service, rpcInstrumentation, allocator, codec);
       }
-      throw new IllegalArgumentException("RSocket " + rSocket.getClass() + " does not provide RSocket-RPC codec");
+      throw new IllegalArgumentException("Requester " + requester.getClass() + " does not provide RPC codec");
     }
   }
 }

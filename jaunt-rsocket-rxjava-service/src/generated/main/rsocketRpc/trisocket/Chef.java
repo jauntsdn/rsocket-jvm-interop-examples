@@ -1,7 +1,7 @@
 package trisocket;
 
 @javax.annotation.Generated(
-    value = "jauntsdn.com rsocket-rpc compiler (version 1.0.0)",
+    value = "jauntsdn.com rsocket-rpc compiler (version 1.1.0)",
     comments = "source: service.proto")
 public interface Chef {
   String SERVICE = "trisocket.Chef";

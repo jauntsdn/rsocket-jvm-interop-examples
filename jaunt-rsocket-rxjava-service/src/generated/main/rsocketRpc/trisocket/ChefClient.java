@@ -1,41 +1,48 @@
 package trisocket;
 
 @javax.annotation.Generated(
-    value = "jauntsdn.com rsocket-rpc compiler (version 1.0.0)",
+    value = "jauntsdn.com rpc compiler (version 1.1.0)",
     comments = "source: service.proto")
 @com.jauntsdn.rsocket.Rpc.Generated(
     role = com.jauntsdn.rsocket.Rpc.Role.CLIENT,
     service = Chef.class)
 public final class ChefClient implements Chef {
-  private final com.jauntsdn.rsocket.RSocket rSocket;
+  private final com.jauntsdn.rsocket.MessageStreams streams;
   private final io.netty.buffer.ByteBufAllocator allocator;
   private final io.reactivex.rxjava3.core.SingleTransformer<trisocket.Dish, trisocket.Dish> roastInstrumentation;
   private final com.jauntsdn.rsocket.Rpc.Codec rpcCodec;
 
-  private ChefClient(com.jauntsdn.rsocket.RSocket rSocket, java.util.Optional<com.jauntsdn.rsocket.RSocketRpcInstrumentation> instrumentation) {
-    this.rSocket = rSocket;
-    this.allocator = rSocket.allocator().orElse(io.netty.buffer.ByteBufAllocator.DEFAULT);
-    if (!instrumentation.isPresent()) {
+  private ChefClient(com.jauntsdn.rsocket.MessageStreams streams, java.util.Optional<com.jauntsdn.rsocket.RpcInstrumentation> instrumentation) {
+    this.streams = streams;
+    this.allocator = streams.allocator().orElse(io.netty.buffer.ByteBufAllocator.DEFAULT);
+    com.jauntsdn.rsocket.RpcInstrumentation i = instrumentation == null
+      ? streams.attributes().attr(com.jauntsdn.rsocket.Attributes.RPC_INSTRUMENTATION)
+      : instrumentation.orElse(null);
+    if (i == null) {
       this.roastInstrumentation = null;
     } else {
-      com.jauntsdn.rsocket.RSocketRpcInstrumentation i = instrumentation.get();
       this.roastInstrumentation = i.instrumentSingle("client", Chef.SERVICE, Chef.METHOD_ROAST);
     }
-    com.jauntsdn.rsocket.Rpc.Codec codec = rSocket.attributes().attr(com.jauntsdn.rsocket.Attributes.RPC_CODEC);
+    com.jauntsdn.rsocket.Rpc.Codec codec = streams.attributes().attr(com.jauntsdn.rsocket.Attributes.RPC_CODEC);
     if (codec != null) {
       rpcCodec = codec;
       if (codec.isDisposable()) {
-        rSocket.onClose().subscribe(() -> codec.dispose());
+        streams.onClose().subscribe(() -> codec.dispose());
       }
       return;
     }
-    throw new IllegalArgumentException("RSocket " + rSocket.getClass() + " does not provide RSocket-RPC codec");
+    throw new IllegalArgumentException("MessageStreams " + streams.getClass() + " does not provide RPC codec");
   }
 
-  public static ChefClient create(com.jauntsdn.rsocket.RSocket rSocket, java.util.Optional<com.jauntsdn.rsocket.RSocketRpcInstrumentation> instrumentation) {
-    java.util.Objects.requireNonNull(rSocket, "rSocket");
+  public static ChefClient create(com.jauntsdn.rsocket.MessageStreams streams, java.util.Optional<com.jauntsdn.rsocket.RpcInstrumentation> instrumentation) {
+    java.util.Objects.requireNonNull(streams, "streams");
     java.util.Objects.requireNonNull(instrumentation, "instrumentation");
-    return new ChefClient(rSocket, instrumentation);
+    return new ChefClient(streams, instrumentation);
+  }
+
+  public static ChefClient create(com.jauntsdn.rsocket.MessageStreams streams) {
+    java.util.Objects.requireNonNull(streams, "streams");
+    return new ChefClient(streams, null);
   }
 
   @Override
@@ -44,7 +51,7 @@ public final class ChefClient implements Chef {
     io.reactivex.rxjava3.core.Single<trisocket.Dish> roast = io.reactivex.rxjava3.core.Single.defer(new io.reactivex.rxjava3.functions.Supplier<io.reactivex.rxjava3.core.Single<com.jauntsdn.rsocket.Message>>() {
       @Override
       public io.reactivex.rxjava3.core.Single<com.jauntsdn.rsocket.Message> get() {
-        int externalMetadataSize = rSocket.attributes().intAttr(com.jauntsdn.rsocket.Attributes.EXTERNAL_METADATA_SIZE);
+        int externalMetadataSize = streams.attributes().intAttr(com.jauntsdn.rsocket.Attributes.EXTERNAL_METADATA_SIZE);
         int dataSize = message.getSerializedSize();
         int localHeader = com.jauntsdn.rsocket.MessageMetadata.header(metadata);
         boolean isDefaultService = com.jauntsdn.rsocket.MessageMetadata.defaultService(localHeader);
@@ -53,7 +60,7 @@ public final class ChefClient implements Chef {
         io.netty.buffer.ByteBuf content = codec.encodeContent(allocator, metadata, localHeader, service, Chef.METHOD_ROAST, false, Chef.METHOD_ROAST_IDEMPOTENT, dataSize, externalMetadataSize);
         encode(content, message);
         com.jauntsdn.rsocket.Message message = codec.encodeMessage(content, Chef.METHOD_ROAST_RANK);
-        return rSocket.requestResponse(message);
+        return streams.requestResponse(message);
       }
     }).map(decode(trisocket.Dish.parser()));
     if (roastInstrumentation != null) {

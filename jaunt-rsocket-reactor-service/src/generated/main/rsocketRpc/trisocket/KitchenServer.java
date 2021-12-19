@@ -1,31 +1,34 @@
 package trisocket;
 
 @javax.annotation.Generated(
-    value = "jauntsdn.com rsocket-rpc compiler (version 1.0.0)",
+    value = "jauntsdn.com rpc compiler (version 1.1.0)",
     comments = "source: service.proto")
 @com.jauntsdn.rsocket.Rpc.Generated(
     role = com.jauntsdn.rsocket.Rpc.Role.SERVICE,
     service = Kitchen.class)
-public final class KitchenServer implements com.jauntsdn.rsocket.RSocketRpcService {
+public final class KitchenServer implements com.jauntsdn.rsocket.RpcService {
   private final Kitchen service;
   private final io.netty.buffer.ByteBufAllocator allocator;
   private final java.util.function.Function<? super org.reactivestreams.Publisher<com.jauntsdn.rsocket.Message>, ? extends org.reactivestreams.Publisher<com.jauntsdn.rsocket.Message>> serveInstrumentation;
   private final com.jauntsdn.rsocket.Rpc.Codec rpcCodec;
 
-  private KitchenServer(Kitchen service, java.util.Optional<com.jauntsdn.rsocket.RSocketRpcInstrumentation> instrumentation, io.netty.buffer.ByteBufAllocator allocator, com.jauntsdn.rsocket.Rpc.Codec rpcCodec) {
+  private KitchenServer(Kitchen service, com.jauntsdn.rsocket.RpcInstrumentation instrumentation, io.netty.buffer.ByteBufAllocator allocator, com.jauntsdn.rsocket.Rpc.Codec rpcCodec) {
     this.service = service;
     this.rpcCodec = rpcCodec;
     this.allocator = allocator;
-    if (!instrumentation.isPresent()) {
+    if (instrumentation == null) {
       this.serveInstrumentation = null;
     } else {
-      com.jauntsdn.rsocket.RSocketRpcInstrumentation i = instrumentation.get();
-      this.serveInstrumentation = i.instrument("service", Kitchen.SERVICE, Kitchen.METHOD_SERVE, true);
+      this.serveInstrumentation = instrumentation.instrument("service", Kitchen.SERVICE, Kitchen.METHOD_SERVE, true);
     }
   }
 
-  public static KitchenServer.Factory create(Kitchen service, java.util.Optional<com.jauntsdn.rsocket.RSocketRpcInstrumentation> instrumentation) {
+  public static KitchenServer.Factory create(Kitchen service, java.util.Optional<com.jauntsdn.rsocket.RpcInstrumentation> instrumentation) {
     return new KitchenServer.Factory(service, instrumentation);
+  }
+
+  public static KitchenServer.Factory create(Kitchen service) {
+    return new KitchenServer.Factory(service);
   }
 
   @Override
@@ -180,28 +183,38 @@ public final class KitchenServer implements com.jauntsdn.rsocket.RSocketRpcServi
 
   @javax.inject.Named(
       value ="KitchenServer")
-  public static final class Factory implements com.jauntsdn.rsocket.RSocketRpcService.Factory<KitchenServer> {
+  public static final class Factory implements com.jauntsdn.rsocket.RpcService.Factory<KitchenServer> {
     private final Kitchen service;
-    private final java.util.Optional<com.jauntsdn.rsocket.RSocketRpcInstrumentation> instrumentation;
+    private final java.util.Optional<com.jauntsdn.rsocket.RpcInstrumentation> instrumentation;
 
     @javax.inject.Inject
-    public Factory(Kitchen service, java.util.Optional<com.jauntsdn.rsocket.RSocketRpcInstrumentation> instrumentation) {
+    public Factory(Kitchen service, java.util.Optional<com.jauntsdn.rsocket.RpcInstrumentation> instrumentation) {
       this.service = java.util.Objects.requireNonNull(service, "service");
       this.instrumentation = java.util.Objects.requireNonNull(instrumentation, "instrumentation");
     }
 
+    public Factory(Kitchen service) {
+      this.service = java.util.Objects.requireNonNull(service, "service");
+      this.instrumentation = null;
+    }
+
     @Override
-    public KitchenServer withLifecycle(com.jauntsdn.rsocket.RSocket rSocket) {
-      java.util.Objects.requireNonNull(rSocket, "rSocket");
-      com.jauntsdn.rsocket.Rpc.Codec codec = rSocket.attributes().attr(com.jauntsdn.rsocket.Attributes.RPC_CODEC);
+    public KitchenServer withLifecycle(com.jauntsdn.rsocket.Closeable requester) {
+      java.util.Objects.requireNonNull(requester, "requester");
+      com.jauntsdn.rsocket.Rpc.Codec codec = requester.attributes().attr(com.jauntsdn.rsocket.Attributes.RPC_CODEC);
       if (codec != null) {
         if (codec.isDisposable()) {
-          rSocket.onClose().subscribe(ignored -> {}, err -> {}, () -> codec.dispose());
+          requester.onClose().subscribe(ignored -> {}, err -> {}, () -> codec.dispose());
         }
-        io.netty.buffer.ByteBufAllocator allocator = rSocket.allocator().orElse(io.netty.buffer.ByteBufAllocator.DEFAULT);
-        return new KitchenServer(service, instrumentation, allocator, codec);
+        io.netty.buffer.ByteBufAllocator alloc = requester.attributes().attr(com.jauntsdn.rsocket.Attributes.ALLOCATOR);
+        io.netty.buffer.ByteBufAllocator allocator = alloc != null ? alloc : io.netty.buffer.ByteBufAllocator.DEFAULT;
+        java.util.Optional<com.jauntsdn.rsocket.RpcInstrumentation> instr = instrumentation;
+        com.jauntsdn.rsocket.RpcInstrumentation rpcInstrumentation = instr == null
+          ? requester.attributes().attr(com.jauntsdn.rsocket.Attributes.RPC_INSTRUMENTATION)
+          : instr.orElse(null);
+        return new KitchenServer(service, rpcInstrumentation, allocator, codec);
       }
-      throw new IllegalArgumentException("RSocket " + rSocket.getClass() + " does not provide RSocket-RPC codec");
+      throw new IllegalArgumentException("Requester " + requester.getClass() + " does not provide RPC codec");
     }
   }
 }
