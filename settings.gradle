@@ -17,5 +17,6 @@ include "jaunt-rsocket-service-idl"
 include "jaunt-rsocket-reactor-service"
 include "jaunt-rsocket-helidon-service"
 include "jaunt-rsocket-rxjava-service"
+include "jaunt-rsocket-mutiny-service"
 include "grpc-client"
 

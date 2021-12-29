@@ -1,12 +1,13 @@
 package trisocket;
 
 @javax.annotation.Generated(
-    value = "jauntsdn.com rpc compiler (version 1.1.0)",
+    value = "jauntsdn.com rpc compiler (version 1.1.1)",
     comments = "source: service.proto")
 @com.jauntsdn.rsocket.Rpc.Generated(
     role = com.jauntsdn.rsocket.Rpc.Role.SERVICE,
     service = Kitchen.class)
 public final class KitchenServer implements com.jauntsdn.rsocket.RpcService {
+  private final java.util.concurrent.CompletableFuture onClose = new java.util.concurrent.CompletableFuture();
   private final Kitchen service;
   private final io.netty.buffer.ByteBufAllocator allocator;
   private final java.util.function.Function<? super org.reactivestreams.Publisher<com.jauntsdn.rsocket.Message>, ? extends org.reactivestreams.Publisher<com.jauntsdn.rsocket.Message>> serveInstrumentation;
@@ -115,28 +116,17 @@ public final class KitchenServer implements com.jauntsdn.rsocket.RpcService {
 
   @Override
   public void dispose() {
-    Kitchen svc = service;
-    if (svc instanceof com.jauntsdn.rsocket.Closeable) {
-      ((com.jauntsdn.rsocket.Closeable) svc).dispose();
-    }
+    onClose.complete(null);
   }
 
   @Override
   public boolean isDisposed() {
-    Kitchen svc = service;
-    if (svc instanceof com.jauntsdn.rsocket.Closeable) {
-      return ((com.jauntsdn.rsocket.Closeable) svc).isDisposed();
-    }
-    return false;
+    return onClose.isDone();
   }
 
   @Override
   public reactor.core.publisher.Mono<Void> onClose() {
-    Kitchen svc = service;
-    if (svc instanceof com.jauntsdn.rsocket.Closeable) {
-      return ((com.jauntsdn.rsocket.Closeable) svc).onClose();
-    }
-    return reactor.core.publisher.Mono.never();
+    return reactor.core.publisher.Mono.fromFuture(onClose);
   }
 
   private reactor.core.publisher.Mono<com.jauntsdn.rsocket.Message> requestResponseHandler(int flags, String method, io.netty.buffer.ByteBuf data, io.netty.buffer.ByteBuf metadata) throws java.io.IOException {

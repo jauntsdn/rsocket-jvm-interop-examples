@@ -2,9 +2,9 @@
 # Manual edits can break the build and are not advised.
 # This file is expected to be part of source control.
 com.google.protobuf:protobuf-java:3.19.1
-com.jauntsdn.rsocket:rsocket-helidon:1.1.0
-com.jauntsdn.rsocket:rsocket-messages:1.1.0
-com.jauntsdn.rsocket:rsocket-rpc-helidon:1.1.0
+com.jauntsdn.rsocket:rsocket-helidon:1.1.1
+com.jauntsdn.rsocket:rsocket-messages:1.1.1
+com.jauntsdn.rsocket:rsocket-rpc-helidon:1.1.1
 io.helidon.common:helidon-common-mapper:2.3.4
 io.helidon.common:helidon-common-reactive:2.3.4
 io.helidon.common:helidon-common-service-loader:2.3.4

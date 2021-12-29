@@ -56,12 +56,15 @@ public final class ServiceProto {
       "(\0132\021.trisocket.Veggie\022\035\n\004meat\030\002 \001(\0132\017.tr" +
       "isocket.Meat\022\020\n\010doneness\030\003 \001(\t\"\026\n\005Order\022" +
       "\r\n\005count\030\001 \001(\00522\n\004Chef\022*\n\005roast\022\016.trisoc" +
-      "ket.Pan\032\017.trisocket.Dish\"\0002k\n\006Farmer\022-\n\004" +
-      "meat\022\020.trisocket.Order\032\017.trisocket.Meat\"" +
-      "\0000\001\0222\n\007veggies\022\020.trisocket.Order\032\021.triso" +
-      "cket.Veggie\"\0000\0012;\n\007Kitchen\0220\n\005serve\022\020.tr" +
-      "isocket.Order\032\017.trisocket.Dish\"\000(\0010\001B\033\n\t" +
-      "trisocketB\014ServiceProtoP\001b\006proto3"
+      "ket.Pan\032\017.trisocket.Dish\"\0002k\n\tRoundsman\022" +
+      ".\n\004chop\022\021.trisocket.Veggie\032\021.trisocket.V" +
+      "eggie\"\000\022.\n\010marinade\022\017.trisocket.Meat\032\017.t" +
+      "risocket.Meat\"\0002k\n\006Farmer\022-\n\004meat\022\020.tris" +
+      "ocket.Order\032\017.trisocket.Meat\"\0000\001\0222\n\007vegg" +
+      "ies\022\020.trisocket.Order\032\021.trisocket.Veggie" +
+      "\"\0000\0012;\n\007Kitchen\0220\n\005serve\022\020.trisocket.Ord" +
+      "er\032\017.trisocket.Dish\"\000(\0010\001B\033\n\ttrisocketB\014" +
+      "ServiceProtoP\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,

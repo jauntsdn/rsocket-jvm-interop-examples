@@ -11,6 +11,13 @@ service Chef {
   rpc roast (Pan) returns (Dish) {}
 }
 
+service Roundsman {
+
+  rpc chop (Veggie) returns (Veggie) {}
+
+  rpc marinade (Meat) returns (Meat) {}
+}
+
 service Farmer {
 
   rpc meat (Order) returns (stream Meat) {}
