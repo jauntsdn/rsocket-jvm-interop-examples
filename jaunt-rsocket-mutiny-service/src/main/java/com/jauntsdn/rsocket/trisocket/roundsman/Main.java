@@ -1,7 +1,6 @@
 package com.jauntsdn.rsocket.trisocket.roundsman;
 
 import com.jauntsdn.rsocket.Disposable;
-import com.jauntsdn.rsocket.RSocket;
 import com.jauntsdn.rsocket.ServerStreamsAcceptor;
 import com.jauntsdn.rsocket.trisocket.RSocketFactory;
 import io.netty.buffer.ByteBuf;
@@ -23,22 +22,6 @@ public class Main {
     String roundsmanAddress = System.getProperty("ROUNDSMAN_ADDRESS", "localhost:7779");
 
     logger.info("==> GOOD ROUNDSMAN SERVICE: {}, {}", roundsmanTransport, roundsmanAddress);
-
-    Uni<Roundsman> singleFarmer =
-        rSocketFactory
-            .<Uni<RSocket>>client("KITCHEN", roundsmanTransport, roundsmanAddress)
-            .onFailure()
-            .invoke(
-                err ->
-                    logger.info(
-                        "==> FARM SERVICE CONNECTION ERROR: {}:{}",
-                        err.getClass(),
-                        err.getMessage()))
-            .map(
-                rSocket -> {
-                  logger.info("==> FARM SERVICE CONNECTED SUCCESSFULLY");
-                  return RoundsmanClient.create(rSocket, Optional.empty());
-                });
 
     Roundsman roundsman = new GoodRoundsman();
 
