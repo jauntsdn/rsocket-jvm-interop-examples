@@ -1,13 +1,13 @@
 package com.jauntsdn.rsocket.trisocket.kitchen;
 
-import com.jauntsdn.rsocket.*;
+import com.jauntsdn.rsocket.Disposable;
+import com.jauntsdn.rsocket.RSocket;
+import com.jauntsdn.rsocket.ServerStreamsAcceptor;
 import com.jauntsdn.rsocket.trisocket.RSocketFactory;
 import io.netty.buffer.ByteBuf;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Single;
 import java.util.Optional;
-import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import org.reactivestreams.Publisher;
 import org.slf4j.Logger;
@@ -24,9 +24,12 @@ public class Main {
     String farmAddress = System.getProperty("FARM_ADDRESS", "localhost:7778");
     String chefTransport = "UNIX";
     String chefAddress = System.getProperty("CHEF_ADDRESS", "/tmp/trisocket_chef_service.sock");
+    String roundsmanTransport = "WEBSOCKET-HTTP2";
+    String roundsmanAddress = System.getProperty("ROUNDSMAN_ADDRESS", "localhost:7779");
 
     logger.info("==> GOOD KITCHEN SERVICE: {}, {}", kitchenTransport, kitchenAddress);
     logger.info("==> CHEF SERVICE: {}, {}", chefTransport, chefAddress);
+    logger.info("==> ROUNDSMAN SERVICE: {}, {}", roundsmanTransport, roundsmanAddress);
     logger.info("==> FARM SERVICE: {}, {}", farmTransport, farmAddress);
 
     Single<Farmer> singleFarmer =
@@ -59,7 +62,23 @@ public class Main {
                   return ChefClient.create(rSocket, Optional.empty());
                 });
 
-    Single<GoodKitchen> goodKitchen = singleChef.zipWith(singleFarmer, GoodKitchen::new);
+    Single<Roundsman> singleRoundsman =
+        rSocketFactory
+            .<Single<RSocket>>client("KITCHEN", roundsmanTransport, roundsmanAddress)
+            .doOnError(
+                err ->
+                    logger.info(
+                        "==> ROUNDSMAN SERVICE CONNECTION ERROR: {}:{}",
+                        err.getClass(),
+                        err.getMessage()))
+            .map(
+                rSocket -> {
+                  logger.info("==> ROUNDSMAN SERVICE CONNECTED SUCCESSFULLY");
+                  return RoundsmanClient.create(rSocket, Optional.empty());
+                });
+
+    Single<GoodKitchen> goodKitchen =
+        Single.zip(singleChef, singleRoundsman, singleFarmer, GoodKitchen::new);
 
     Single<Disposable> server =
         goodKitchen
@@ -93,10 +112,12 @@ public class Main {
   @SuppressWarnings("UnnecessaryLocalVariable")
   static class GoodKitchen implements Kitchen {
     final Chef chef;
+    final Roundsman roundsman;
     final Farmer farmer;
 
-    GoodKitchen(Chef chef, Farmer farmer) {
+    GoodKitchen(Chef chef, Roundsman roundsman, Farmer farmer) {
       this.chef = chef;
+      this.roundsman = roundsman;
       this.farmer = farmer;
     }
 
@@ -107,12 +128,10 @@ public class Main {
               order -> {
                 Flowable<Meat> meats = farmer.meat(order);
                 /*first marinade the meat*/
-                Flowable<Meat> marinadedMeats =
-                    meats.flatMapSingle(GoodKitchen::marinade, false, 64);
+                Flowable<Meat> marinadedMeats = meats.flatMapSingle(roundsman::marinade, false, 64);
                 Flowable<Veggie> veggies = farmer.veggies(order);
                 /*then chop the veggies*/
-                Flowable<Veggie> choppedVeggies =
-                    veggies.flatMapSingle(GoodKitchen::chop, false, 64);
+                Flowable<Veggie> choppedVeggies = veggies.flatMapSingle(roundsman::chop, false, 64);
                 Flowable<Pan> pans =
                     marinadedMeats.zipWith(
                         choppedVeggies,
@@ -124,26 +143,6 @@ public class Main {
                 Flowable<Dish> dishes = pans.flatMapSingle(chef::roast);
                 return dishes;
               });
-    }
-
-    private static Single<Meat> marinade(Meat meat) {
-      return Single.defer(
-          (() -> {
-            int durationMillis = ThreadLocalRandom.current().nextInt(50);
-            float stiffness = Math.max(0.1f, meat.getStiffness() / 2);
-            return Single.just(meat.toBuilder().setStiffness(stiffness).build())
-                .delaySubscription(durationMillis, TimeUnit.MILLISECONDS);
-          }));
-    }
-
-    private static Single<Veggie> chop(Veggie veggie) {
-      return Single.defer(
-          () -> {
-            int durationMillis = ThreadLocalRandom.current().nextInt(50);
-            float size = Math.max(0.05f, veggie.getSize() / 5);
-            return Single.just(veggie.toBuilder().setSize(size).build())
-                .delaySubscription(durationMillis, TimeUnit.MILLISECONDS);
-          });
     }
   }
 }

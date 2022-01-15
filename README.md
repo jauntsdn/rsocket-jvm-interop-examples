@@ -5,7 +5,7 @@ and one GRPC client:
 
 * [Farmer](https://github.com/jauntsdn/rsocket-jvm-interop-examples/blob/feature/oss/jaunt-rsocket-reactor-service/src/main/java/com/jauntsdn/rsocket/trisocket/farm/Main.java) service (RSocket-reactor + TCP transport)
 
-* [Roundsman](https://github.com/jauntsdn/rsocket-jvm-interop-examples/blob/feature/oss/jaunt-rsocket-mutiny-service/src/main/java/com/jauntsdn/rsocket/trisocket/roundsman/Main.java) service (RSocket-mutiny + TCP transport)
+* [Roundsman](https://github.com/jauntsdn/rsocket-jvm-interop-examples/blob/feature/oss/jaunt-rsocket-mutiny-service/src/main/java/com/jauntsdn/rsocket/trisocket/roundsman/Main.java) service (RSocket-mutiny + WEBSOCKET-HTTP2 transport)
 
 * [Chef](https://github.com/jauntsdn/rsocket-jvm-interop-examples/blob/feature/oss/jaunt-rsocket-helidon-service/src/main/java/com/jauntsdn/rsocket/trisocket/chef/Main.java) service (RSocket-helidon + UNIX transport)
  

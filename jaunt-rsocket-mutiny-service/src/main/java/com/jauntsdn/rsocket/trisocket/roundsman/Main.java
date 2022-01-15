@@ -18,7 +18,7 @@ public class Main {
   private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
   public static void main(RSocketFactory rSocketFactory) {
-    String roundsmanTransport = "TCP";
+    String roundsmanTransport = "WEBSOCKET-HTTP2";
     String roundsmanAddress = System.getProperty("ROUNDSMAN_ADDRESS", "localhost:7779");
 
     logger.info("==> GOOD ROUNDSMAN SERVICE: {}, {}", roundsmanTransport, roundsmanAddress);
