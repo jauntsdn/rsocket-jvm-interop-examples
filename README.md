@@ -17,7 +17,7 @@ and one GRPC client:
 
 `./gradlew`
 
-Regenerate RPC client/service stubs (linux only)
+Regenerate RPC client/service stubs (linux, windows(x86) only)
 
 `./gradlew clean build -PgenerateProto=true`
 
