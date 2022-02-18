@@ -1,0 +1,12 @@
+# This is a Gradle generated file for dependency locking.
+# Manual edits can break the build and are not advised.
+# This file is expected to be part of source control.
+com.google.protobuf:protobuf-java:3.19.2
+com.jauntsdn.rsocket:rsocket-futures:1.1.3
+com.jauntsdn.rsocket:rsocket-messages:1.1.3
+com.jauntsdn.rsocket:rsocket-rpc-futures:1.1.3
+io.netty:netty-buffer:4.1.73.Final
+io.netty:netty-common:4.1.73.Final
+javax.annotation:javax.annotation-api:1.3.2
+javax.inject:javax.inject:1
+org.slf4j:slf4j-api:1.7.32

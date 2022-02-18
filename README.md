@@ -1,9 +1,11 @@
 # RSocket-JVM libraries / GRPC interop demonstration
 
-[Example](https://vimeo.com/619613045) application is comprised of 4 RSocket-RPC services (RSocket-JVM runtimes are stripped),
+[Example](https://vimeo.com/619613045) application is comprised of 5 RSocket-RPC services (RSocket-JVM runtimes are stripped),
 and one GRPC client:    
 
 * [Farmer](https://github.com/jauntsdn/rsocket-jvm-interop-examples/blob/feature/oss/jaunt-rsocket-reactor-service/src/main/java/com/jauntsdn/rsocket/trisocket/farm/Main.java) service (RSocket-reactor + TCP transport)
+
+* [Recipes](https://github.com/jauntsdn/rsocket-jvm-interop-examples/blob/feature/oss/jaunt-rsocket-futures-service/src/main/java/com/jauntsdn/rsocket/trisocket/recipes/Main.java) service (RSocket-reactor + TCP transport)
 
 * [Roundsman](https://github.com/jauntsdn/rsocket-jvm-interop-examples/blob/feature/oss/jaunt-rsocket-mutiny-service/src/main/java/com/jauntsdn/rsocket/trisocket/roundsman/Main.java) service (RSocket-mutiny + WEBSOCKET-HTTP2 transport)
 

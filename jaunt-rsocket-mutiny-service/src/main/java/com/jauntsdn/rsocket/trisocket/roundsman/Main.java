@@ -1,6 +1,7 @@
 package com.jauntsdn.rsocket.trisocket.roundsman;
 
 import com.jauntsdn.rsocket.Disposable;
+import com.jauntsdn.rsocket.RSocket;
 import com.jauntsdn.rsocket.ServerStreamsAcceptor;
 import com.jauntsdn.rsocket.trisocket.RSocketFactory;
 import io.netty.buffer.ByteBuf;
@@ -20,39 +21,52 @@ public class Main {
   public static void main(RSocketFactory rSocketFactory) {
     String roundsmanTransport = "WEBSOCKET-HTTP2";
     String roundsmanAddress = System.getProperty("ROUNDSMAN_ADDRESS", "localhost:7779");
+    String recipesTransport = "TCP";
+    String recipesAddress = System.getProperty("RECIPES_ADDRESS", "localhost:7780");
 
     logger.info("==> GOOD ROUNDSMAN SERVICE: {}, {}", roundsmanTransport, roundsmanAddress);
 
-    Roundsman roundsman = new GoodRoundsman();
+    Uni<RSocket> singleRecipes =
+        rSocketFactory.client("ROUNDSMAN", recipesTransport, recipesAddress);
 
     Uni<Disposable> server =
-        rSocketFactory
-            .<Function<ServerStreamsAcceptor, Uni<Disposable>>>server(
-                "ROUNDSMAN", roundsmanTransport, roundsmanAddress)
-            .apply(
-                (setupMessage, rSocket) -> {
-                  logger.info(
-                      "==> {} CLIENT ACCEPTED SUCCESSFULLY",
-                      setupMessage.message().data().toString(StandardCharsets.UTF_8));
-                  return Uni.createFrom()
-                      .item(
-                          RoundsmanServer.create(roundsman, Optional.empty())
-                              .withLifecycle(rSocket));
-                })
-            .onItem()
-            .invoke(() -> logger.info("==> ROUNDSMAN SERVER BOUND SUCCESSFULLY"))
-            .onFailure()
-            .invoke(
-                err ->
-                    logger.info(
-                        "==> CHEF SERVER BOUND WITH ERROR: {}:{}",
-                        err.getClass(),
-                        err.getMessage()));
-
+        singleRecipes
+            .map(RecipesClient::create)
+            .flatMap(
+                recipes -> {
+                  Roundsman roundsman = new GoodRoundsman(recipes);
+                  return rSocketFactory
+                      .<Function<ServerStreamsAcceptor, Uni<Disposable>>>server(
+                          "ROUNDSMAN", roundsmanTransport, roundsmanAddress)
+                      .apply(
+                          (setupMessage, rSocket) -> {
+                            logger.info(
+                                "==> {} CLIENT ACCEPTED SUCCESSFULLY",
+                                setupMessage.message().data().toString(StandardCharsets.UTF_8));
+                            return Uni.createFrom()
+                                .item(
+                                    RoundsmanServer.create(roundsman, Optional.empty())
+                                        .withLifecycle(rSocket));
+                          })
+                      .onItem()
+                      .invoke(() -> logger.info("==> ROUNDSMAN SERVER BOUND SUCCESSFULLY"))
+                      .onFailure()
+                      .invoke(
+                          err ->
+                              logger.info(
+                                  "==> CHEF SERVER BOUND WITH ERROR: {}:{}",
+                                  err.getClass(),
+                                  err.getMessage()));
+                });
     server.await().atMost(Duration.ofSeconds(5)).onClose().awaitUninterruptibly();
   }
 
   private static class GoodRoundsman implements Roundsman {
+    private final Recipes recipes;
+
+    GoodRoundsman(Recipes recipes) {
+      this.recipes = recipes;
+    }
 
     @Override
     public Uni<Veggie> chop(Veggie veggie, ByteBuf metadata) {
@@ -73,15 +87,17 @@ public class Main {
     public Uni<Meat> marinade(Meat meat, ByteBuf metadata) {
       return Uni.createFrom()
           .deferred(
-              (() -> {
-                int durationMillis = 1 + ThreadLocalRandom.current().nextInt(50);
-                float stiffness = Math.max(0.1f, meat.getStiffness() / 2);
-                return Uni.createFrom()
-                    .item(meat.toBuilder().setStiffness(stiffness).build())
-                    .onItem()
-                    .delayIt()
-                    .by(Duration.ofMillis(durationMillis));
-              }));
+              () ->
+                  recipes
+                      .marinade(meat)
+                      .flatMap(
+                          recipe ->
+                              Uni.createFrom()
+                                  .item(
+                                      meat.toBuilder().setStiffness(recipe.getStiffness()).build())
+                                  .onItem()
+                                  .delayIt()
+                                  .by(Duration.ofMillis(recipe.getDuration()))));
     }
   }
 }

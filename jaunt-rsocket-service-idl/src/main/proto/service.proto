@@ -11,6 +11,11 @@ service Chef {
   rpc roast (Pan) returns (Dish) {}
 }
 
+service Recipes {
+
+  rpc marinade (Meat) returns (Recipe) {}
+}
+
 service Roundsman {
 
   rpc chop (Veggie) returns (Veggie) {}
@@ -38,6 +43,12 @@ message Veggie {
 message Meat {
   string name = 1;
   float stiffness = 2;
+}
+
+message Recipe {
+  string name = 1;
+  float stiffness = 2;
+  int32 duration = 3;
 }
 
 message Pan {
