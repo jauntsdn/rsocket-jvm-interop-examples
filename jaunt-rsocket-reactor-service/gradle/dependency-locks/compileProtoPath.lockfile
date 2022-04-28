@@ -11,4 +11,4 @@ io.projectreactor:reactor-core:3.3.19.RELEASE
 javax.annotation:javax.annotation-api:1.3.2
 javax.inject:javax.inject:1
 org.reactivestreams:reactive-streams:1.0.3
-org.slf4j:slf4j-api:1.7.32
+org.slf4j:slf4j-api:1.7.36
