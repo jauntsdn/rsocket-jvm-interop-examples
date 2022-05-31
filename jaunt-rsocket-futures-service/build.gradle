@@ -42,7 +42,7 @@ sourceSets {
     }
 }
 
-if (findProperty("generateProto") == "true") {
+if (findProperty("generateProto") == "true" && osdetector.os == "linux") {
     println "Generating services from IDL"
 
     sourceSets {
