@@ -1,14 +1,16 @@
 package com.jauntsdn.rsocket.trisocket.chef;
 
 import com.jauntsdn.rsocket.Disposable;
+import com.jauntsdn.rsocket.MessageStreams;
 import com.jauntsdn.rsocket.ServerStreamsAcceptor;
+import com.jauntsdn.rsocket.SetupMessage;
 import com.jauntsdn.rsocket.trisocket.RSocketFactory;
+import com.jauntsdn.rsocket.trisocket.RSocketFactory.Server;
 import io.helidon.common.reactive.Single;
 import io.netty.buffer.ByteBuf;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 import java.util.concurrent.*;
-import java.util.function.Function;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import trisocket.Chef;
@@ -29,15 +31,15 @@ public class Main {
 
     Single<Disposable> server =
         rSocketFactory
-            .<Function<ServerStreamsAcceptor, Single<Disposable>>>server(
+            .<Server<ServerStreamsAcceptor, Single<Disposable>>>server(
                 "CHEF", chefTransport, chefAddress)
-            .apply(
-                (setupMessage, rSocket) -> {
+            .start(
+                (SetupMessage setup, MessageStreams messageStreams) -> {
                   logger.info(
                       "==> {} CLIENT ACCEPTED SUCCESSFULLY",
-                      setupMessage.message().data().toString(StandardCharsets.UTF_8));
+                      setup.message().data().toString(StandardCharsets.UTF_8));
                   return Single.just(
-                      ChefServer.create(chef, Optional.empty()).withLifecycle(rSocket));
+                      ChefServer.create(chef, Optional.empty()).withLifecycle(messageStreams));
                 })
             .onComplete(() -> logger.info("==> CHEF SERVER BOUND SUCCESSFULLY"))
             .onError(

@@ -1,14 +1,12 @@
 package com.jauntsdn.rsocket.trisocket.kitchen;
 
-import com.jauntsdn.rsocket.Disposable;
-import com.jauntsdn.rsocket.RSocket;
-import com.jauntsdn.rsocket.ServerStreamsAcceptor;
+import com.jauntsdn.rsocket.*;
 import com.jauntsdn.rsocket.trisocket.RSocketFactory;
+import com.jauntsdn.rsocket.trisocket.RSocketFactory.Server;
 import io.netty.buffer.ByteBuf;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Single;
 import java.util.Optional;
-import java.util.function.Function;
 import org.reactivestreams.Publisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +32,7 @@ public class Main {
 
     Single<Farmer> singleFarmer =
         rSocketFactory
-            .<Single<RSocket>>client("KITCHEN", farmTransport, farmAddress)
+            .<Single<MessageStreams>>client("KITCHEN", farmTransport, farmAddress)
             .doOnError(
                 err ->
                     logger.info(
@@ -42,14 +40,14 @@ public class Main {
                         err.getClass(),
                         err.getMessage()))
             .map(
-                rSocket -> {
+                (MessageStreams messageStreams) -> {
                   logger.info("==> FARM SERVICE CONNECTED SUCCESSFULLY");
-                  return FarmerClient.create(rSocket, Optional.empty());
+                  return FarmerClient.create(messageStreams, Optional.empty());
                 });
 
     Single<Chef> singleChef =
         rSocketFactory
-            .<Single<RSocket>>client("KITCHEN", chefTransport, chefAddress)
+            .<Single<MessageStreams>>client("KITCHEN", chefTransport, chefAddress)
             .doOnError(
                 err ->
                     logger.info(
@@ -57,14 +55,14 @@ public class Main {
                         err.getClass(),
                         err.getMessage()))
             .map(
-                rSocket -> {
+                (MessageStreams messageStreams) -> {
                   logger.info("==> CHEF SERVICE CONNECTED SUCCESSFULLY");
-                  return ChefClient.create(rSocket, Optional.empty());
+                  return ChefClient.create(messageStreams, Optional.empty());
                 });
 
     Single<Roundsman> singleRoundsman =
         rSocketFactory
-            .<Single<RSocket>>client("KITCHEN", roundsmanTransport, roundsmanAddress)
+            .<Single<MessageStreams>>client("KITCHEN", roundsmanTransport, roundsmanAddress)
             .doOnError(
                 err ->
                     logger.info(
@@ -72,27 +70,27 @@ public class Main {
                         err.getClass(),
                         err.getMessage()))
             .map(
-                rSocket -> {
+                (MessageStreams messageStreams) -> {
                   logger.info("==> ROUNDSMAN SERVICE CONNECTED SUCCESSFULLY");
-                  return RoundsmanClient.create(rSocket, Optional.empty());
+                  return RoundsmanClient.create(messageStreams, Optional.empty());
                 });
 
-    Single<GoodKitchen> goodKitchen =
+    Single<Kitchen> goodKitchen =
         Single.zip(singleChef, singleRoundsman, singleFarmer, GoodKitchen::new);
 
     Single<Disposable> server =
         goodKitchen
             .flatMap(
-                kitchen ->
+                (Kitchen kitchen) ->
                     rSocketFactory
-                        .<Function<ServerStreamsAcceptor, Single<Disposable>>>server(
+                        .<Server<ServerStreamsAcceptor, Single<Disposable>>>server(
                             "KITCHEN", kitchenTransport, kitchenAddress)
-                        .apply(
-                            (setupMessage, rSocket) -> {
+                        .start(
+                            (SetupMessage setup, MessageStreams messageStreams) -> {
                               logger.info("==> GOURMET CLIENT ACCEPTED SUCCESSFULLY");
                               return Single.just(
                                   KitchenServer.create(kitchen, Optional.empty())
-                                      .withLifecycle(rSocket));
+                                      .withLifecycle(messageStreams));
                             }))
             .doOnEvent(
                 (grpcRSocketServer, err) -> {

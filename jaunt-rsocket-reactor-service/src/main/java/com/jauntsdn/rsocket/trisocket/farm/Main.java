@@ -2,12 +2,12 @@ package com.jauntsdn.rsocket.trisocket.farm;
 
 import com.jauntsdn.rsocket.*;
 import com.jauntsdn.rsocket.trisocket.RSocketFactory;
+import com.jauntsdn.rsocket.trisocket.RSocketFactory.Server;
 import io.netty.buffer.ByteBuf;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.function.Function;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -24,16 +24,16 @@ public class Main {
 
     Mono<Disposable> server =
         rSocketFactory
-            .<Function<ServerStreamsAcceptor, Mono<Disposable>>>server(
+            .<Server<ServerStreamsAcceptor, Mono<Disposable>>>server(
                 "FARM", farmTransport, farmAddress)
-            .apply(
-                (setupMessage, rSocket) -> {
+            .start(
+                (SetupMessage setup, MessageStreams messageStreams) -> {
                   logger.info(
                       "==> {} CLIENT ACCEPTED SUCCESSFULLY",
-                      setupMessage.message().data().toString(StandardCharsets.UTF_8));
+                      setup.message().data().toString(StandardCharsets.UTF_8));
                   return Mono.just(
                       FarmerServer.create(new GoodFarmer(), Optional.empty())
-                          .withLifecycle(rSocket));
+                          .withLifecycle(messageStreams));
                 })
             .doOnSuccess((tcpServer) -> logger.info("==> FARM SERVER BOUND SUCCESSFULLY"))
             .doOnError(

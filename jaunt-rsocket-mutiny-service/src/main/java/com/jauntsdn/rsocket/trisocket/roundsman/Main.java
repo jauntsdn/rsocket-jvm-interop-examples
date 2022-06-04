@@ -1,16 +1,14 @@
 package com.jauntsdn.rsocket.trisocket.roundsman;
 
-import com.jauntsdn.rsocket.Disposable;
-import com.jauntsdn.rsocket.RSocket;
-import com.jauntsdn.rsocket.ServerStreamsAcceptor;
+import com.jauntsdn.rsocket.*;
 import com.jauntsdn.rsocket.trisocket.RSocketFactory;
+import com.jauntsdn.rsocket.trisocket.RSocketFactory.Server;
 import io.netty.buffer.ByteBuf;
 import io.smallrye.mutiny.Uni;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.function.Function;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import trisocket.*;
@@ -26,27 +24,27 @@ public class Main {
 
     logger.info("==> GOOD ROUNDSMAN SERVICE: {}, {}", roundsmanTransport, roundsmanAddress);
 
-    Uni<RSocket> singleRecipes =
+    Uni<MessageStreams> singleRecipes =
         rSocketFactory.client("ROUNDSMAN", recipesTransport, recipesAddress);
 
     Uni<Disposable> server =
         singleRecipes
             .map(RecipesClient::create)
             .flatMap(
-                recipes -> {
+                (Recipes recipes) -> {
                   Roundsman roundsman = new GoodRoundsman(recipes);
                   return rSocketFactory
-                      .<Function<ServerStreamsAcceptor, Uni<Disposable>>>server(
+                      .<Server<ServerStreamsAcceptor, Uni<Disposable>>>server(
                           "ROUNDSMAN", roundsmanTransport, roundsmanAddress)
-                      .apply(
-                          (setupMessage, rSocket) -> {
+                      .start(
+                          (SetupMessage setup, MessageStreams messageStreams) -> {
                             logger.info(
                                 "==> {} CLIENT ACCEPTED SUCCESSFULLY",
-                                setupMessage.message().data().toString(StandardCharsets.UTF_8));
+                                setup.message().data().toString(StandardCharsets.UTF_8));
                             return Uni.createFrom()
                                 .item(
                                     RoundsmanServer.create(roundsman, Optional.empty())
-                                        .withLifecycle(rSocket));
+                                        .withLifecycle(messageStreams));
                           })
                       .onItem()
                       .invoke(() -> logger.info("==> ROUNDSMAN SERVER BOUND SUCCESSFULLY"))
@@ -54,7 +52,7 @@ public class Main {
                       .invoke(
                           err ->
                               logger.info(
-                                  "==> CHEF SERVER BOUND WITH ERROR: {}:{}",
+                                  "==> ROUNDSMAN SERVER BOUND WITH ERROR: {}:{}",
                                   err.getClass(),
                                   err.getMessage()));
                 });

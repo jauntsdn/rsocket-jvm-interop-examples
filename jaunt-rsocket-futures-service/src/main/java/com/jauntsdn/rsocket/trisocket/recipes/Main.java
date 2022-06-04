@@ -2,11 +2,11 @@ package com.jauntsdn.rsocket.trisocket.recipes;
 
 import com.jauntsdn.rsocket.*;
 import com.jauntsdn.rsocket.trisocket.RSocketFactory;
+import com.jauntsdn.rsocket.trisocket.RSocketFactory.Server;
 import io.netty.buffer.ByteBuf;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 import java.util.concurrent.*;
-import java.util.function.Function;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import trisocket.*;
@@ -21,15 +21,16 @@ public class Main {
     Recipes recipes = new GoodRecipes();
     CompletionStage<Disposable> server =
         rSocketFactory
-            .<Function<ServerStreamsAcceptor, CompletionStage<Disposable>>>server(
+            .<Server<ServerStreamsAcceptor, CompletionStage<Disposable>>>server(
                 "RECIPES", recipesTransport, farmAddress)
-            .apply(
-                (setupMessage, rSocket) -> {
+            .start(
+                (SetupMessage setup, MessageStreams messageStreams) -> {
                   logger.info(
                       "==> {} CLIENT ACCEPTED SUCCESSFULLY",
-                      setupMessage.message().data().toString(StandardCharsets.UTF_8));
+                      setup.message().data().toString(StandardCharsets.UTF_8));
                   return CompletableFuture.completedFuture(
-                      RecipesServer.create(recipes, Optional.empty()).withLifecycle(rSocket));
+                      RecipesServer.create(recipes, Optional.empty())
+                          .withLifecycle(messageStreams));
                 })
             .whenComplete(
                 (disposable, err) -> {
