@@ -15,6 +15,8 @@ and one GRPC client:
 
 * [Gourmet](https://github.com/jauntsdn/rsocket-jvm-interop-examples/blob/feature/oss/grpc-client/src/main/java/com/jauntsdn/rsocket/trisocket/gourmet/Main.java) client (GRPC-java)
 
+![services](readme/mstreams-interop-svcs.png "services")
+
 ### Build
 
 `./gradlew`
