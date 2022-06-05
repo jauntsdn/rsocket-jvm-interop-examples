@@ -17,8 +17,8 @@ public class Main {
 
   public static void main(RSocketFactory rSocketFactory) {
     String recipesTransport = "TCP";
-    String farmAddress = System.getProperty("RECIPES_ADDRESS", "localhost:7780");
-    logger.info("==> RECIPES SERVICE: {}, {}", recipesTransport, farmAddress);
+    String recipesAddress = System.getProperty("RECIPES_ADDRESS", "localhost:7780");
+    logger.info("==> RECIPES SERVICE: {}, {}", recipesTransport, recipesAddress);
 
     Recipes recipes = new GoodRecipes();
 
@@ -31,7 +31,7 @@ public class Main {
     CompletionStage<Disposable> server =
         rSocketFactory
             .<Server<ServerStreamsAcceptor, CompletionStage<Disposable>>>server(
-                "RECIPES", recipesTransport, farmAddress)
+                "RECIPES", recipesTransport, recipesAddress)
             .start(serverAcceptor)
             .whenComplete(logServerStarted());
 
