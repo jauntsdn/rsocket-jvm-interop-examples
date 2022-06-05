@@ -18,12 +18,6 @@ protobuf {
     }
 }
 
-sourceSets {
-    main {
-        proto { srcDir "src/main/proto" }
-    }
-}
-
 idea {
     module {
         sourceDirs += file("src/main/proto")
