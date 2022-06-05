@@ -11,6 +11,7 @@ import io.netty.buffer.ByteBuf;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 import java.util.concurrent.*;
+import java.util.function.Consumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import trisocket.Chef;
@@ -29,25 +30,21 @@ public class Main {
 
     Chef chef = new GoodChef(Executors.newSingleThreadScheduledExecutor());
 
+    ServerStreamsAcceptor serverAcceptor =
+        (SetupMessage setup, MessageStreams messageStreams) -> {
+          logClientAccepted(setup);
+
+          return Single.just(
+              ChefServer.create(chef, Optional.empty()).withLifecycle(messageStreams));
+        };
+
     Single<Disposable> server =
         rSocketFactory
             .<Server<ServerStreamsAcceptor, Single<Disposable>>>server(
                 "CHEF", chefTransport, chefAddress)
-            .start(
-                (SetupMessage setup, MessageStreams messageStreams) -> {
-                  logger.info(
-                      "==> {} CLIENT ACCEPTED SUCCESSFULLY",
-                      setup.message().data().toString(StandardCharsets.UTF_8));
-                  return Single.just(
-                      ChefServer.create(chef, Optional.empty()).withLifecycle(messageStreams));
-                })
-            .onComplete(() -> logger.info("==> CHEF SERVER BOUND SUCCESSFULLY"))
-            .onError(
-                err ->
-                    logger.info(
-                        "==> CHEF SERVER BOUND WITH ERROR: {}:{}",
-                        err.getClass(),
-                        err.getMessage()));
+            .start(serverAcceptor)
+            .onComplete(logServerStarted())
+            .onError(logServerStartFailed());
 
     server.get(5, TimeUnit.SECONDS).onClose().awaitUninterruptibly();
   }
@@ -71,5 +68,20 @@ public class Main {
                       .setDoneness("welldone")
                       .build());
     }
+  }
+
+  private static void logClientAccepted(SetupMessage setup) {
+    logger.info(
+        "==> {} CLIENT ACCEPTED SUCCESSFULLY",
+        setup.message().data().toString(StandardCharsets.UTF_8));
+  }
+
+  private static Consumer<Throwable> logServerStartFailed() {
+    return err ->
+        logger.info("==> CHEF SERVER BOUND WITH ERROR: {}:{}", err.getClass(), err.getMessage());
+  }
+
+  private static Runnable logServerStarted() {
+    return () -> logger.info("==> CHEF SERVER BOUND SUCCESSFULLY");
   }
 }

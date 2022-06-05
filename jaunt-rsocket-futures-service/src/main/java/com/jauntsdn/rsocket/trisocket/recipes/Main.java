@@ -7,6 +7,7 @@ import io.netty.buffer.ByteBuf;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 import java.util.concurrent.*;
+import java.util.function.BiConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import trisocket.*;
@@ -18,31 +19,22 @@ public class Main {
     String recipesTransport = "TCP";
     String farmAddress = System.getProperty("RECIPES_ADDRESS", "localhost:7780");
     logger.info("==> RECIPES SERVICE: {}, {}", recipesTransport, farmAddress);
+
     Recipes recipes = new GoodRecipes();
+
+    ServerStreamsAcceptor serverAcceptor =
+        (SetupMessage setup, MessageStreams messageStreams) -> {
+          logClientAccepted(setup);
+          return CompletableFuture.completedFuture(
+              RecipesServer.create(recipes, Optional.empty()).withLifecycle(messageStreams));
+        };
     CompletionStage<Disposable> server =
         rSocketFactory
             .<Server<ServerStreamsAcceptor, CompletionStage<Disposable>>>server(
                 "RECIPES", recipesTransport, farmAddress)
-            .start(
-                (SetupMessage setup, MessageStreams messageStreams) -> {
-                  logger.info(
-                      "==> {} CLIENT ACCEPTED SUCCESSFULLY",
-                      setup.message().data().toString(StandardCharsets.UTF_8));
-                  return CompletableFuture.completedFuture(
-                      RecipesServer.create(recipes, Optional.empty())
-                          .withLifecycle(messageStreams));
-                })
-            .whenComplete(
-                (disposable, err) -> {
-                  if (err != null) {
-                    logger.info("==> RECIPES SERVER BOUND SUCCESSFULLY");
-                  } else {
-                    logger.info(
-                        "==> RECIPES SERVER BOUND WITH ERROR: {}:{}",
-                        err.getClass(),
-                        err.getMessage());
-                  }
-                });
+            .start(serverAcceptor)
+            .whenComplete(logServerStarted());
+
     server.toCompletableFuture().join().onClose().awaitUninterruptibly();
   }
 
@@ -59,5 +51,21 @@ public class Main {
               .setName(meat.getName())
               .build());
     }
+  }
+
+  private static BiConsumer<Disposable, Throwable> logServerStarted() {
+    return (disposable, err) -> {
+      if (err != null) {
+        logger.info("==> RECIPES SERVER BOUND SUCCESSFULLY");
+      } else {
+        logger.info("==> RECIPES SERVER BOUND WITH ERROR: {}:{}", err.getClass(), err.getMessage());
+      }
+    };
+  }
+
+  private static void logClientAccepted(SetupMessage setup) {
+    logger.info(
+        "==> {} CLIENT ACCEPTED SUCCESSFULLY",
+        setup.message().data().toString(StandardCharsets.UTF_8));
   }
 }

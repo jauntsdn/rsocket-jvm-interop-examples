@@ -6,6 +6,8 @@ import com.jauntsdn.rsocket.trisocket.RSocketFactory.Server;
 import io.netty.buffer.ByteBuf;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Single;
+import io.reactivex.rxjava3.functions.BiConsumer;
+import io.reactivex.rxjava3.functions.Consumer;
 import java.util.Optional;
 import org.reactivestreams.Publisher;
 import org.slf4j.Logger;
@@ -33,45 +35,33 @@ public class Main {
     Single<Farmer> singleFarmer =
         rSocketFactory
             .<Single<MessageStreams>>client("KITCHEN", farmTransport, farmAddress)
-            .doOnError(
-                err ->
-                    logger.info(
-                        "==> FARM SERVICE CONNECTION ERROR: {}:{}",
-                        err.getClass(),
-                        err.getMessage()))
+            .doOnError(logClientStartFailed("FARM"))
             .map(
                 (MessageStreams messageStreams) -> {
-                  logger.info("==> FARM SERVICE CONNECTED SUCCESSFULLY");
+                  logClientStarted("FARM");
+
                   return FarmerClient.create(messageStreams, Optional.empty());
                 });
 
     Single<Chef> singleChef =
         rSocketFactory
             .<Single<MessageStreams>>client("KITCHEN", chefTransport, chefAddress)
-            .doOnError(
-                err ->
-                    logger.info(
-                        "==> CHEF SERVICE CONNECTION ERROR: {}:{}",
-                        err.getClass(),
-                        err.getMessage()))
+            .doOnError(logClientStartFailed("CHEF"))
             .map(
                 (MessageStreams messageStreams) -> {
-                  logger.info("==> CHEF SERVICE CONNECTED SUCCESSFULLY");
+                  logClientStarted("CHEF");
+
                   return ChefClient.create(messageStreams, Optional.empty());
                 });
 
     Single<Roundsman> singleRoundsman =
         rSocketFactory
             .<Single<MessageStreams>>client("KITCHEN", roundsmanTransport, roundsmanAddress)
-            .doOnError(
-                err ->
-                    logger.info(
-                        "==> ROUNDSMAN SERVICE CONNECTION ERROR: {}:{}",
-                        err.getClass(),
-                        err.getMessage()))
+            .doOnError(logClientStartFailed("ROUNDSMAN"))
             .map(
                 (MessageStreams messageStreams) -> {
-                  logger.info("==> ROUNDSMAN SERVICE CONNECTED SUCCESSFULLY");
+                  logClientStarted("ROUNDSMAN");
+
                   return RoundsmanClient.create(messageStreams, Optional.empty());
                 });
 
@@ -79,30 +69,22 @@ public class Main {
         Single.zip(singleChef, singleRoundsman, singleFarmer, GoodKitchen::new);
 
     Single<Disposable> server =
-        goodKitchen
-            .flatMap(
-                (Kitchen kitchen) ->
-                    rSocketFactory
-                        .<Server<ServerStreamsAcceptor, Single<Disposable>>>server(
-                            "KITCHEN", kitchenTransport, kitchenAddress)
-                        .start(
-                            (SetupMessage setup, MessageStreams messageStreams) -> {
-                              logger.info("==> GOURMET CLIENT ACCEPTED SUCCESSFULLY");
-                              return Single.just(
-                                  KitchenServer.create(kitchen, Optional.empty())
-                                      .withLifecycle(messageStreams));
-                            }))
-            .doOnEvent(
-                (grpcRSocketServer, err) -> {
-                  if (err != null) {
-                    logger.info(
-                        "==> KITCHEN SERVER BOUND WITH ERROR: {}:{}",
-                        err.getClass(),
-                        err.getMessage());
-                  } else {
-                    logger.info("==> KITCHEN SERVER BOUND SUCCESSFULLY");
-                  }
-                });
+        goodKitchen.flatMap(
+            (Kitchen kitchen) -> {
+              ServerStreamsAcceptor serverAcceptor =
+                  (SetupMessage setup, MessageStreams messageStreams) -> {
+                    logClientAccepted();
+
+                    return Single.just(
+                        KitchenServer.create(kitchen, Optional.empty())
+                            .withLifecycle(messageStreams));
+                  };
+              return rSocketFactory
+                  .<Server<ServerStreamsAcceptor, Single<Disposable>>>server(
+                      "KITCHEN", kitchenTransport, kitchenAddress)
+                  .start(serverAcceptor)
+                  .doOnEvent(logServerStarted());
+            });
 
     server.blockingGet().onClose().awaitUninterruptibly();
   }
@@ -142,5 +124,29 @@ public class Main {
                 return dishes;
               });
     }
+  }
+
+  private static BiConsumer<Disposable, Throwable> logServerStarted() {
+    return (grpcRSocketServer, err) -> {
+      if (err != null) {
+        logger.info("==> KITCHEN SERVER BOUND WITH ERROR: {}:{}", err.getClass(), err.getMessage());
+      } else {
+        logger.info("==> KITCHEN SERVER BOUND SUCCESSFULLY");
+      }
+    };
+  }
+
+  private static void logClientAccepted() {
+    logger.info("==> GOURMET CLIENT ACCEPTED SUCCESSFULLY");
+  }
+
+  private static void logClientStarted(String service) {
+    logger.info("==> {} SERVICE CONNECTED SUCCESSFULLY", service);
+  }
+
+  private static Consumer<Throwable> logClientStartFailed(String service) {
+    return err ->
+        logger.info(
+            "==> {} SERVICE CONNECTION ERROR: {}:{}", service, err.getClass(), err.getMessage());
   }
 }

@@ -9,6 +9,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.function.Consumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import trisocket.*;
@@ -33,28 +34,24 @@ public class Main {
             .flatMap(
                 (Recipes recipes) -> {
                   Roundsman roundsman = new GoodRoundsman(recipes);
+
+                  ServerStreamsAcceptor serverAcceptor =
+                      (SetupMessage setup, MessageStreams messageStreams) -> {
+                        logClientAccepted(setup);
+
+                        return Uni.createFrom()
+                            .item(
+                                RoundsmanServer.create(roundsman, Optional.empty())
+                                    .withLifecycle(messageStreams));
+                      };
                   return rSocketFactory
                       .<Server<ServerStreamsAcceptor, Uni<Disposable>>>server(
                           "ROUNDSMAN", roundsmanTransport, roundsmanAddress)
-                      .start(
-                          (SetupMessage setup, MessageStreams messageStreams) -> {
-                            logger.info(
-                                "==> {} CLIENT ACCEPTED SUCCESSFULLY",
-                                setup.message().data().toString(StandardCharsets.UTF_8));
-                            return Uni.createFrom()
-                                .item(
-                                    RoundsmanServer.create(roundsman, Optional.empty())
-                                        .withLifecycle(messageStreams));
-                          })
+                      .start(serverAcceptor)
                       .onItem()
-                      .invoke(() -> logger.info("==> ROUNDSMAN SERVER BOUND SUCCESSFULLY"))
+                      .invoke(logServerStarted())
                       .onFailure()
-                      .invoke(
-                          err ->
-                              logger.info(
-                                  "==> ROUNDSMAN SERVER BOUND WITH ERROR: {}:{}",
-                                  err.getClass(),
-                                  err.getMessage()));
+                      .invoke(logServerStartFailed());
                 });
     server.await().atMost(Duration.ofSeconds(5)).onClose().awaitUninterruptibly();
   }
@@ -97,5 +94,21 @@ public class Main {
                                   .delayIt()
                                   .by(Duration.ofMillis(recipe.getDuration()))));
     }
+  }
+
+  private static void logClientAccepted(SetupMessage setup) {
+    logger.info(
+        "==> {} CLIENT ACCEPTED SUCCESSFULLY",
+        setup.message().data().toString(StandardCharsets.UTF_8));
+  }
+
+  private static Runnable logServerStarted() {
+    return () -> logger.info("==> ROUNDSMAN SERVER BOUND SUCCESSFULLY");
+  }
+
+  private static Consumer<Throwable> logServerStartFailed() {
+    return err ->
+        logger.info(
+            "==> ROUNDSMAN SERVER BOUND WITH ERROR: {}:{}", err.getClass(), err.getMessage());
   }
 }

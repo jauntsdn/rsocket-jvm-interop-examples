@@ -8,6 +8,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.function.Consumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -22,26 +23,22 @@ public class Main {
     String farmAddress = System.getProperty("FARM_ADDRESS", "localhost:7778");
     logger.info("==> FARM SERVICE: {}, {}", farmTransport, farmAddress);
 
+    ServerStreamsAcceptor serverAcceptor =
+        (SetupMessage setup, MessageStreams messageStreams) -> {
+          logClientAccepted(setup);
+
+          Farmer farmer = new GoodFarmer();
+
+          return Mono.just(
+              FarmerServer.create(farmer, Optional.empty()).withLifecycle(messageStreams));
+        };
     Mono<Disposable> server =
         rSocketFactory
             .<Server<ServerStreamsAcceptor, Mono<Disposable>>>server(
                 "FARM", farmTransport, farmAddress)
-            .start(
-                (SetupMessage setup, MessageStreams messageStreams) -> {
-                  logger.info(
-                      "==> {} CLIENT ACCEPTED SUCCESSFULLY",
-                      setup.message().data().toString(StandardCharsets.UTF_8));
-                  return Mono.just(
-                      FarmerServer.create(new GoodFarmer(), Optional.empty())
-                          .withLifecycle(messageStreams));
-                })
-            .doOnSuccess((tcpServer) -> logger.info("==> FARM SERVER BOUND SUCCESSFULLY"))
-            .doOnError(
-                err ->
-                    logger.info(
-                        "==> FARM SERVER BOUND WITH ERROR: {}:{}",
-                        err.getClass(),
-                        err.getMessage()));
+            .start(serverAcceptor)
+            .doOnSuccess(logServerStarted())
+            .doOnError(logServerStartFailed());
 
     server.block(Duration.ofSeconds(5)).onClose().awaitUninterruptibly();
   }
@@ -84,5 +81,20 @@ public class Main {
               })
           .delaySubscription(Duration.ofMillis(durationMillis));
     }
+  }
+
+  private static void logClientAccepted(SetupMessage setup) {
+    logger.info(
+        "==> {} CLIENT ACCEPTED SUCCESSFULLY",
+        setup.message().data().toString(StandardCharsets.UTF_8));
+  }
+
+  private static Consumer<Throwable> logServerStartFailed() {
+    return err ->
+        logger.info("==> FARM SERVER BOUND WITH ERROR: {}:{}", err.getClass(), err.getMessage());
+  }
+
+  private static Consumer<Disposable> logServerStarted() {
+    return (tcpServer) -> logger.info("==> FARM SERVER BOUND SUCCESSFULLY");
   }
 }
