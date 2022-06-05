@@ -56,9 +56,9 @@ public class Main {
   private static BiConsumer<Disposable, Throwable> logServerStarted() {
     return (disposable, err) -> {
       if (err != null) {
-        logger.info("==> RECIPES SERVER BOUND SUCCESSFULLY");
-      } else {
         logger.info("==> RECIPES SERVER BOUND WITH ERROR: {}:{}", err.getClass(), err.getMessage());
+      } else {
+        logger.info("==> RECIPES SERVER BOUND SUCCESSFULLY");
       }
     };
   }
