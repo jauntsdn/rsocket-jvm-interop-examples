@@ -1,3 +1,4 @@
+[![Build](https://github.com/jauntsdn/rsocket-jvm-interop-examples/actions/workflows/ci.yml/badge.svg)](https://github.com/jauntsdn/rsocket-jvm-interop-examples/actions/workflows/ci.yml)
 # RSocket-JVM libraries / GRPC interop demonstration
 
 [Example](https://vimeo.com/619613045) application is comprised of 5 RSocket-RPC services (RSocket-JVM runtimes are stripped),
