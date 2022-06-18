@@ -57,12 +57,12 @@ if (findProperty("generateProto") == "true") {
             artifact = "com.google.protobuf:protoc"
         }
         plugins {
-            rsocketRpc {
+            messageStreamsRpc {
                 artifact = "com.jauntsdn.rsocket:rsocket-rpc-mutiny-compiler"
             }
             generateProtoTasks {
                 ofSourceSet("main")*.plugins {
-                    rsocketRpc {
+                    messageStreamsRpc {
                         option "metadataless-method-definitions"
                     }
                 }
@@ -86,9 +86,9 @@ idea {
     module {
         sourceDirs += file("src/main/proto")
         sourceDirs += file("src/generated/main/java")
-        sourceDirs += file("src/generated/main/rsocketRpc")
+        sourceDirs += file("src/generated/main/messageStreamsRpc")
 
         generatedSourceDirs += file("src/generated/main/java")
-        generatedSourceDirs += file("src/generated/main/rsocketRpc")
+        generatedSourceDirs += file("src/generated/main/messageStreamsRpc")
     }
 }
