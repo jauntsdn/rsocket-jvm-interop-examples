@@ -1,6 +1,6 @@
 package trisocket;
 
-@javax.annotation.Generated(
+@jakarta.annotation.Generated(
     value = "jauntsdn.com rpc compiler (version 1.1.4)",
     comments = "source: service.proto")
 @com.jauntsdn.rsocket.Rpc.Generated(
@@ -188,13 +188,13 @@ public final class RoundsmanServer implements com.jauntsdn.rsocket.RpcService {
     };
   }
 
-  @javax.inject.Named(
+  @jakarta.inject.Named(
       value ="RoundsmanServer")
   public static final class Factory implements com.jauntsdn.rsocket.RpcService.Factory<RoundsmanServer> {
     private final Roundsman service;
     private final java.util.Optional<com.jauntsdn.rsocket.RpcInstrumentation> instrumentation;
 
-    @javax.inject.Inject
+    @jakarta.inject.Inject
     public Factory(Roundsman service, java.util.Optional<com.jauntsdn.rsocket.RpcInstrumentation> instrumentation) {
       this.service = java.util.Objects.requireNonNull(service, "service");
       this.instrumentation = java.util.Objects.requireNonNull(instrumentation, "instrumentation");

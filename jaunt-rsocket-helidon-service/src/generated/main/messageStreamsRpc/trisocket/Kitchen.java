@@ -1,6 +1,6 @@
 package trisocket;
 
-@javax.annotation.Generated(
+@jakarta.annotation.Generated(
     value = "jauntsdn.com rpc compiler (version 1.1.4)",
     comments = "source: service.proto")
 public interface Kitchen {

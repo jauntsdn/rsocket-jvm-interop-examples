@@ -64,6 +64,7 @@ if (findProperty("generateProto") == "true") {
                 ofSourceSet("main")*.plugins {
                     messageStreamsRpc {
                         option "metadataless-method-definitions"
+                        option "annotations-javax"
                     }
                 }
             }

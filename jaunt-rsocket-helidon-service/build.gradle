@@ -31,7 +31,12 @@ dependencies {
     protobuf project(":jaunt-rsocket-service-idl")
 
     implementation project(":jaunt-rsocket-runtime")
-    implementation "com.jauntsdn.rsocket:rsocket-rpc-helidon"
+    implementation ("com.jauntsdn.rsocket:rsocket-rpc-helidon") {
+        exclude group: "javax.inject", module: "javax.inject"
+        exclude group: "javax.annotation", module: "javax.annotation-api"
+    }
+    implementation "jakarta.inject:jakarta.inject-api"
+    implementation "jakarta.annotation:jakarta.annotation-api"
     implementation "com.google.protobuf:protobuf-java"
     implementation "org.slf4j:slf4j-api"
 }
@@ -64,6 +69,7 @@ if (findProperty("generateProto") == "true") {
                 ofSourceSet("main")*.plugins {
                     messageStreamsRpc {
                         option "metadataless-method-definitions"
+                        option "annotations-jakarta"
                     }
                 }
             }
