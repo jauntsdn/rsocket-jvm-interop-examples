@@ -1,11 +1,11 @@
 package trisocket;
 
 @javax.annotation.Generated(
-    value = "jauntsdn.com rsocket-rpc compiler (version 1.1.3)",
+    value = "jauntsdn.com rsocket-rpc compiler (version 1.1.4)",
     comments = "source: service.proto")
 public interface Kitchen {
   String SERVICE = "trisocket.Kitchen";
   Class<?> SERVICE_TYPE = trisocket.Kitchen.class;
 
-
+  // source service definition declared no supported interactions
 }

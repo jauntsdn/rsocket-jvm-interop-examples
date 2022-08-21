@@ -1,11 +1,12 @@
 package trisocket;
 
 @javax.annotation.Generated(
-    value = "jauntsdn.com rpc compiler (version 1.1.3)",
+    value = "jauntsdn.com rpc compiler (version 1.1.4)",
     comments = "source: service.proto")
 @com.jauntsdn.rsocket.Rpc.Generated(
     role = com.jauntsdn.rsocket.Rpc.Role.CLIENT,
     service = Roundsman.class)
+@SuppressWarnings("all")
 public final class RoundsmanClient implements Roundsman {
   private final com.jauntsdn.rsocket.MessageStreams streams;
   private final io.netty.buffer.ByteBufAllocator allocator;

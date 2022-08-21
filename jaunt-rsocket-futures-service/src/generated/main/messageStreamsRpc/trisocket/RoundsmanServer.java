@@ -1,18 +1,19 @@
 package trisocket;
 
 @javax.annotation.Generated(
-    value = "jauntsdn.com rpc compiler (version 1.1.3)",
+    value = "jauntsdn.com rpc compiler (version 1.1.4)",
     comments = "source: service.proto")
 @com.jauntsdn.rsocket.Rpc.Generated(
     role = com.jauntsdn.rsocket.Rpc.Role.SERVICE,
     service = Roundsman.class)
+@SuppressWarnings("all")
 public final class RoundsmanServer implements com.jauntsdn.rsocket.RpcService {
-  private final java.util.concurrent.CompletableFuture onClose = new java.util.concurrent.CompletableFuture();
+  private final java.util.concurrent.CompletableFuture<Void> onClose = new java.util.concurrent.CompletableFuture<>();
   private final Roundsman service;
   private final io.netty.buffer.ByteBufAllocator allocator;
+  private final com.jauntsdn.rsocket.Rpc.Codec rpcCodec;
   private final com.jauntsdn.rsocket.RpcInstrumentation.Factory<com.jauntsdn.rsocket.Message> chopInstrumentation;
   private final com.jauntsdn.rsocket.RpcInstrumentation.Factory<com.jauntsdn.rsocket.Message> marinadeInstrumentation;
-  private final com.jauntsdn.rsocket.Rpc.Codec rpcCodec;
 
   private RoundsmanServer(Roundsman service, com.jauntsdn.rsocket.RpcInstrumentation instrumentation, io.netty.buffer.ByteBufAllocator allocator, com.jauntsdn.rsocket.Rpc.Codec rpcCodec) {
     this.service = service;

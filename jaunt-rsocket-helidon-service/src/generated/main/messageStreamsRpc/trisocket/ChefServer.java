@@ -1,13 +1,14 @@
 package trisocket;
 
 @javax.annotation.Generated(
-    value = "jauntsdn.com rpc compiler (version 1.1.3)",
+    value = "jauntsdn.com rpc compiler (version 1.1.4)",
     comments = "source: service.proto")
 @com.jauntsdn.rsocket.Rpc.Generated(
     role = com.jauntsdn.rsocket.Rpc.Role.SERVICE,
     service = Chef.class)
+@SuppressWarnings("all")
 public final class ChefServer implements com.jauntsdn.rsocket.RpcService {
-  private final java.util.concurrent.CompletableFuture onClose = new java.util.concurrent.CompletableFuture();
+  private final java.util.concurrent.CompletableFuture<Void> onClose = new java.util.concurrent.CompletableFuture<>();
   private final Chef service;
   private final io.netty.buffer.ByteBufAllocator allocator;
   private final java.util.function.Function<? super io.helidon.common.reactive.Single<com.jauntsdn.rsocket.Message>, ? extends io.helidon.common.reactive.Single<com.jauntsdn.rsocket.Message>> roastInstrumentation;

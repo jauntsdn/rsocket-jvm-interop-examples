@@ -1,16 +1,17 @@
 package trisocket;
 
 @javax.annotation.Generated(
-    value = "jauntsdn.com rpc compiler (version 1.1.3)",
+    value = "jauntsdn.com rpc compiler (version 1.1.4)",
     comments = "source: service.proto")
 @com.jauntsdn.rsocket.Rpc.Generated(
     role = com.jauntsdn.rsocket.Rpc.Role.CLIENT,
     service = Chef.class)
+@SuppressWarnings("all")
 public final class ChefClient implements Chef {
   private final com.jauntsdn.rsocket.MessageStreams streams;
   private final io.netty.buffer.ByteBufAllocator allocator;
-  private final com.jauntsdn.rsocket.RpcInstrumentation.Factory<trisocket.Dish> roastInstrumentation;
   private final com.jauntsdn.rsocket.Rpc.Codec rpcCodec;
+  private final com.jauntsdn.rsocket.RpcInstrumentation.Factory<trisocket.Dish> roastInstrumentation;
 
   private ChefClient(com.jauntsdn.rsocket.MessageStreams streams, java.util.Optional<com.jauntsdn.rsocket.RpcInstrumentation> instrumentation) {
     this.streams = streams;
