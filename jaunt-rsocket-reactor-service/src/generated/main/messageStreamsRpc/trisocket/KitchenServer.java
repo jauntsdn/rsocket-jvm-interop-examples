@@ -1,7 +1,7 @@
 package trisocket;
 
 @javax.annotation.Generated(
-    value = "jauntsdn.com rpc compiler (version 1.1.4)",
+    value = "jauntsdn.com rpc compiler (version 1.2.0)",
     comments = "source: service.proto")
 @com.jauntsdn.rsocket.Rpc.Generated(
     role = com.jauntsdn.rsocket.Rpc.Role.SERVICE,
@@ -57,24 +57,8 @@ public final class KitchenServer implements com.jauntsdn.rsocket.RpcService {
 
   @Override
   public reactor.core.publisher.Flux<com.jauntsdn.rsocket.Message> requestStream(com.jauntsdn.rsocket.Message message) {
-    try {
-      io.netty.buffer.ByteBuf metadata = message.metadata();
-      long header = com.jauntsdn.rsocket.Rpc.RpcMetadata.header(metadata);
-      int flags = com.jauntsdn.rsocket.Rpc.RpcMetadata.flags(header);
-      String method = rpcCodec.decodeMessageMethod(metadata, header, flags);
-
-      if (com.jauntsdn.rsocket.Rpc.RpcMetadata.flagForeignCall(flags)) {
-        reactor.core.publisher.Mono<com.jauntsdn.rsocket.Message> handler = requestResponseHandler(flags, method, message.data(), metadata);
-        if (handler != null) {
-          return handler.flux();
-        }
-      }
-      return reactor.core.publisher.Flux.error(new com.jauntsdn.rsocket.exceptions.RpcException("KitchenServer: requestStream unknown method: " + method));
-    } catch (Throwable t) {
-      return reactor.core.publisher.Flux.error(t);
-    } finally {
-      message.release();
-    }
+    message.release();
+    return reactor.core.publisher.Flux.error(new com.jauntsdn.rsocket.exceptions.RpcException("KitchenServer: requestStream not implemented"));
   }
 
   @Override
@@ -99,11 +83,21 @@ public final class KitchenServer implements com.jauntsdn.rsocket.RpcService {
           }
           return serve;
         }
-        default: {
+      }
+      if (com.jauntsdn.rsocket.Rpc.RpcMetadata.flagForeignCall(flags)) {
+        reactor.core.publisher.Flux<com.jauntsdn.rsocket.Message> streamHandler = requestStreamHandler(flags, method, message.data(), metadata);
+        if (streamHandler != null) {
           message.release();
-          return reactor.core.publisher.Flux.error(new com.jauntsdn.rsocket.exceptions.RpcException("KitchenServer: requestChannel unknown method: " + method));
+          return streamHandler;
+        }
+        reactor.core.publisher.Mono<com.jauntsdn.rsocket.Message> responseHandler = requestResponseHandler(flags, method, message.data(), metadata);
+        if (responseHandler != null) {
+          message.release();
+          return responseHandler.flux();
         }
       }
+      message.release();
+      return reactor.core.publisher.Flux.error(new com.jauntsdn.rsocket.exceptions.RpcException("KitchenServer: requestChannel unknown method: " + method));
     } catch (Throwable t) {
       io.netty.util.ReferenceCountUtil.safeRelease(message);
       return reactor.core.publisher.Flux.error(t);
@@ -131,6 +125,10 @@ public final class KitchenServer implements com.jauntsdn.rsocket.RpcService {
   }
 
   private reactor.core.publisher.Mono<com.jauntsdn.rsocket.Message> requestResponseHandler(int flags, String method, io.netty.buffer.ByteBuf data, io.netty.buffer.ByteBuf metadata) throws java.io.IOException {
+    return null;
+  }
+
+  private reactor.core.publisher.Flux<com.jauntsdn.rsocket.Message> requestStreamHandler(int flags, String method, io.netty.buffer.ByteBuf data, io.netty.buffer.ByteBuf metadata) throws java.io.IOException {
     return null;
   }
 

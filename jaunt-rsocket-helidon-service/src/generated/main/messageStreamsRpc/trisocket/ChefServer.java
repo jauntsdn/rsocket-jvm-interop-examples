@@ -1,7 +1,7 @@
 package trisocket;
 
 @jakarta.annotation.Generated(
-    value = "jauntsdn.com rpc compiler (version 1.1.4)",
+    value = "jauntsdn.com rpc compiler (version 1.2.0)",
     comments = "source: service.proto")
 @com.jauntsdn.rsocket.Rpc.Generated(
     role = com.jauntsdn.rsocket.Rpc.Role.SERVICE,
@@ -71,6 +71,12 @@ public final class ChefServer implements com.jauntsdn.rsocket.RpcService {
 
   @Override
   public io.helidon.common.reactive.Multi<com.jauntsdn.rsocket.Message> requestStream(com.jauntsdn.rsocket.Message message) {
+    message.release();
+    return io.helidon.common.reactive.Multi.error(new com.jauntsdn.rsocket.exceptions.RpcException("ChefServer: requestStream not implemented"));
+  }
+
+  @Override
+  public io.helidon.common.reactive.Multi<com.jauntsdn.rsocket.Message> requestChannel(com.jauntsdn.rsocket.Message message, java.util.concurrent.Flow.Publisher<com.jauntsdn.rsocket.Message> publisher) {
     try {
       io.netty.buffer.ByteBuf metadata = message.metadata();
       long header = com.jauntsdn.rsocket.Rpc.RpcMetadata.header(metadata);
@@ -78,23 +84,23 @@ public final class ChefServer implements com.jauntsdn.rsocket.RpcService {
       String method = rpcCodec.decodeMessageMethod(metadata, header, flags);
 
       if (com.jauntsdn.rsocket.Rpc.RpcMetadata.flagForeignCall(flags)) {
-        io.helidon.common.reactive.Single<com.jauntsdn.rsocket.Message> handler = requestResponseHandler(flags, method, message.data(), metadata);
-        if (handler != null) {
-          return io.helidon.common.reactive.Multi.create(handler);
+        io.helidon.common.reactive.Multi<com.jauntsdn.rsocket.Message> streamHandler = requestStreamHandler(flags, method, message.data(), metadata);
+        if (streamHandler != null) {
+          message.release();
+          return streamHandler;
+        }
+        io.helidon.common.reactive.Single<com.jauntsdn.rsocket.Message> responseHandler = requestResponseHandler(flags, method, message.data(), metadata);
+        if (responseHandler != null) {
+          message.release();
+          return io.helidon.common.reactive.Multi.create(responseHandler);
         }
       }
-      return io.helidon.common.reactive.Multi.error(new com.jauntsdn.rsocket.exceptions.RpcException("ChefServer: requestStream unknown method: " + method));
-    } catch (Throwable t) {
-      return io.helidon.common.reactive.Multi.error(t);
-    } finally {
       message.release();
+      return io.helidon.common.reactive.Multi.error(new com.jauntsdn.rsocket.exceptions.RpcException("ChefServer: requestChannel unknown method: " + method));
+    } catch (Throwable t) {
+      io.netty.util.ReferenceCountUtil.safeRelease(message);
+      return io.helidon.common.reactive.Multi.error(t);
     }
-  }
-
-  @Override
-  public io.helidon.common.reactive.Multi<com.jauntsdn.rsocket.Message> requestChannel(com.jauntsdn.rsocket.Message message, java.util.concurrent.Flow.Publisher<com.jauntsdn.rsocket.Message> publisher) {
-    message.release();
-    return io.helidon.common.reactive.Multi.error(new com.jauntsdn.rsocket.exceptions.RpcException("ChefServer: requestChannel not implemented"));
   }
 
   @Override
@@ -134,6 +140,10 @@ public final class ChefServer implements com.jauntsdn.rsocket.RpcService {
         return null;
       }
     }
+  }
+
+  private io.helidon.common.reactive.Multi<com.jauntsdn.rsocket.Message> requestStreamHandler(int flags, String method, io.netty.buffer.ByteBuf data, io.netty.buffer.ByteBuf metadata) throws java.io.IOException {
+    return null;
   }
 
   private final java.util.function.Function<com.google.protobuf.MessageLite, com.jauntsdn.rsocket.Message> encode =

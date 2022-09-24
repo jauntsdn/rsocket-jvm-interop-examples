@@ -1,7 +1,7 @@
 package trisocket;
 
 @jakarta.annotation.Generated(
-    value = "jauntsdn.com rpc compiler (version 1.1.4)",
+    value = "jauntsdn.com rpc compiler (version 1.2.0)",
     comments = "source: service.proto")
 @com.jauntsdn.rsocket.Rpc.Generated(
     role = com.jauntsdn.rsocket.Rpc.Role.SERVICE,
@@ -66,37 +66,9 @@ public final class FarmerServer implements com.jauntsdn.rsocket.RpcService {
       int flags = com.jauntsdn.rsocket.Rpc.RpcMetadata.flags(header);
       String method = rpcCodec.decodeMessageMethod(metadata, header, flags);
 
-      switch (method) {
-        case Farmer.METHOD_MEAT: {
-          if (!Farmer.METHOD_MEAT_IDEMPOTENT && com.jauntsdn.rsocket.Rpc.RpcMetadata.flagIdempotentCall(flags)) {
-            return io.helidon.common.reactive.Multi.error(new com.jauntsdn.rsocket.exceptions.RpcException("FarmerServer: idempotent call to non-idempotent method: " + method));
-          }
-          io.netty.buffer.ByteBuf messageData = message.data();
-          com.google.protobuf.CodedInputStream is = com.google.protobuf.CodedInputStream.newInstance(messageData.internalNioBuffer(0, messageData.readableBytes()));
-          io.helidon.common.reactive.Multi<com.jauntsdn.rsocket.Message> meat = service.meat(trisocket.Order.parseFrom(is), metadata).map(encode);
-          if (meatInstrumentation != null) {
-            return meat.compose(meatInstrumentation);
-          }
-          return meat;
-        }
-        case Farmer.METHOD_VEGGIES: {
-          if (!Farmer.METHOD_VEGGIES_IDEMPOTENT && com.jauntsdn.rsocket.Rpc.RpcMetadata.flagIdempotentCall(flags)) {
-            return io.helidon.common.reactive.Multi.error(new com.jauntsdn.rsocket.exceptions.RpcException("FarmerServer: idempotent call to non-idempotent method: " + method));
-          }
-          io.netty.buffer.ByteBuf messageData = message.data();
-          com.google.protobuf.CodedInputStream is = com.google.protobuf.CodedInputStream.newInstance(messageData.internalNioBuffer(0, messageData.readableBytes()));
-          io.helidon.common.reactive.Multi<com.jauntsdn.rsocket.Message> veggies = service.veggies(trisocket.Order.parseFrom(is), metadata).map(encode);
-          if (veggiesInstrumentation != null) {
-            return veggies.compose(veggiesInstrumentation);
-          }
-          return veggies;
-        }
-      }
-      if (com.jauntsdn.rsocket.Rpc.RpcMetadata.flagForeignCall(flags)) {
-        io.helidon.common.reactive.Single<com.jauntsdn.rsocket.Message> handler = requestResponseHandler(flags, method, message.data(), metadata);
-        if (handler != null) {
-          return io.helidon.common.reactive.Multi.create(handler);
-        }
+      io.helidon.common.reactive.Multi<com.jauntsdn.rsocket.Message> handler = requestStreamHandler(flags, method, message.data(), metadata);
+      if (handler != null) {
+        return handler;
       }
       return io.helidon.common.reactive.Multi.error(new com.jauntsdn.rsocket.exceptions.RpcException("FarmerServer: requestStream unknown method: " + method));
     } catch (Throwable t) {
@@ -108,8 +80,30 @@ public final class FarmerServer implements com.jauntsdn.rsocket.RpcService {
 
   @Override
   public io.helidon.common.reactive.Multi<com.jauntsdn.rsocket.Message> requestChannel(com.jauntsdn.rsocket.Message message, java.util.concurrent.Flow.Publisher<com.jauntsdn.rsocket.Message> publisher) {
-    message.release();
-    return io.helidon.common.reactive.Multi.error(new com.jauntsdn.rsocket.exceptions.RpcException("FarmerServer: requestChannel not implemented"));
+    try {
+      io.netty.buffer.ByteBuf metadata = message.metadata();
+      long header = com.jauntsdn.rsocket.Rpc.RpcMetadata.header(metadata);
+      int flags = com.jauntsdn.rsocket.Rpc.RpcMetadata.flags(header);
+      String method = rpcCodec.decodeMessageMethod(metadata, header, flags);
+
+      if (com.jauntsdn.rsocket.Rpc.RpcMetadata.flagForeignCall(flags)) {
+        io.helidon.common.reactive.Multi<com.jauntsdn.rsocket.Message> streamHandler = requestStreamHandler(flags, method, message.data(), metadata);
+        if (streamHandler != null) {
+          message.release();
+          return streamHandler;
+        }
+        io.helidon.common.reactive.Single<com.jauntsdn.rsocket.Message> responseHandler = requestResponseHandler(flags, method, message.data(), metadata);
+        if (responseHandler != null) {
+          message.release();
+          return io.helidon.common.reactive.Multi.create(responseHandler);
+        }
+      }
+      message.release();
+      return io.helidon.common.reactive.Multi.error(new com.jauntsdn.rsocket.exceptions.RpcException("FarmerServer: requestChannel unknown method: " + method));
+    } catch (Throwable t) {
+      io.netty.util.ReferenceCountUtil.safeRelease(message);
+      return io.helidon.common.reactive.Multi.error(t);
+    }
   }
 
   @Override
@@ -134,6 +128,36 @@ public final class FarmerServer implements com.jauntsdn.rsocket.RpcService {
 
   private io.helidon.common.reactive.Single<com.jauntsdn.rsocket.Message> requestResponseHandler(int flags, String method, io.netty.buffer.ByteBuf data, io.netty.buffer.ByteBuf metadata) throws java.io.IOException {
     return null;
+  }
+
+  private io.helidon.common.reactive.Multi<com.jauntsdn.rsocket.Message> requestStreamHandler(int flags, String method, io.netty.buffer.ByteBuf data, io.netty.buffer.ByteBuf metadata) throws java.io.IOException {
+    switch (method) {
+      case Farmer.METHOD_MEAT: {
+        if (!Farmer.METHOD_MEAT_IDEMPOTENT && com.jauntsdn.rsocket.Rpc.RpcMetadata.flagIdempotentCall(flags)) {
+          return io.helidon.common.reactive.Multi.error(new com.jauntsdn.rsocket.exceptions.RpcException("FarmerServer: idempotent call to non-idempotent method: " + method));
+        }
+        com.google.protobuf.CodedInputStream is = com.google.protobuf.CodedInputStream.newInstance(data.internalNioBuffer(0, data.readableBytes()));
+        io.helidon.common.reactive.Multi<com.jauntsdn.rsocket.Message> meat = service.meat(trisocket.Order.parseFrom(is), metadata).map(encode);
+        if (meatInstrumentation != null) {
+          return meat.compose(meatInstrumentation);
+        }
+        return meat;
+      }
+      case Farmer.METHOD_VEGGIES: {
+        if (!Farmer.METHOD_VEGGIES_IDEMPOTENT && com.jauntsdn.rsocket.Rpc.RpcMetadata.flagIdempotentCall(flags)) {
+          return io.helidon.common.reactive.Multi.error(new com.jauntsdn.rsocket.exceptions.RpcException("FarmerServer: idempotent call to non-idempotent method: " + method));
+        }
+        com.google.protobuf.CodedInputStream is = com.google.protobuf.CodedInputStream.newInstance(data.internalNioBuffer(0, data.readableBytes()));
+        io.helidon.common.reactive.Multi<com.jauntsdn.rsocket.Message> veggies = service.veggies(trisocket.Order.parseFrom(is), metadata).map(encode);
+        if (veggiesInstrumentation != null) {
+          return veggies.compose(veggiesInstrumentation);
+        }
+        return veggies;
+      }
+      default: {
+        return null;
+      }
+    }
   }
 
   private final java.util.function.Function<com.google.protobuf.MessageLite, com.jauntsdn.rsocket.Message> encode =

@@ -1,7 +1,7 @@
 package trisocket;
 
 @javax.annotation.Generated(
-    value = "jauntsdn.com rpc compiler (version 1.1.4)",
+    value = "jauntsdn.com rpc compiler (version 1.2.0)",
     comments = "source: service.proto")
 @com.jauntsdn.rsocket.Rpc.Generated(
     role = com.jauntsdn.rsocket.Rpc.Role.SERVICE,
@@ -66,37 +66,9 @@ public final class FarmerServer implements com.jauntsdn.rsocket.RpcService {
       int flags = com.jauntsdn.rsocket.Rpc.RpcMetadata.flags(header);
       String method = rpcCodec.decodeMessageMethod(metadata, header, flags);
 
-      switch (method) {
-        case Farmer.METHOD_MEAT: {
-          if (!Farmer.METHOD_MEAT_IDEMPOTENT && com.jauntsdn.rsocket.Rpc.RpcMetadata.flagIdempotentCall(flags)) {
-            return reactor.core.publisher.Flux.error(new com.jauntsdn.rsocket.exceptions.RpcException("FarmerServer: idempotent call to non-idempotent method: " + method));
-          }
-          io.netty.buffer.ByteBuf messageData = message.data();
-          com.google.protobuf.CodedInputStream is = com.google.protobuf.CodedInputStream.newInstance(messageData.internalNioBuffer(0, messageData.readableBytes()));
-          reactor.core.publisher.Flux<com.jauntsdn.rsocket.Message> meat = service.meat(trisocket.Order.parseFrom(is), metadata).map(encode);
-          if (meatInstrumentation != null) {
-            return meat.transform(meatInstrumentation);
-          }
-          return meat;
-        }
-        case Farmer.METHOD_VEGGIES: {
-          if (!Farmer.METHOD_VEGGIES_IDEMPOTENT && com.jauntsdn.rsocket.Rpc.RpcMetadata.flagIdempotentCall(flags)) {
-            return reactor.core.publisher.Flux.error(new com.jauntsdn.rsocket.exceptions.RpcException("FarmerServer: idempotent call to non-idempotent method: " + method));
-          }
-          io.netty.buffer.ByteBuf messageData = message.data();
-          com.google.protobuf.CodedInputStream is = com.google.protobuf.CodedInputStream.newInstance(messageData.internalNioBuffer(0, messageData.readableBytes()));
-          reactor.core.publisher.Flux<com.jauntsdn.rsocket.Message> veggies = service.veggies(trisocket.Order.parseFrom(is), metadata).map(encode);
-          if (veggiesInstrumentation != null) {
-            return veggies.transform(veggiesInstrumentation);
-          }
-          return veggies;
-        }
-      }
-      if (com.jauntsdn.rsocket.Rpc.RpcMetadata.flagForeignCall(flags)) {
-        reactor.core.publisher.Mono<com.jauntsdn.rsocket.Message> handler = requestResponseHandler(flags, method, message.data(), metadata);
-        if (handler != null) {
-          return handler.flux();
-        }
+      reactor.core.publisher.Flux<com.jauntsdn.rsocket.Message> handler = requestStreamHandler(flags, method, message.data(), metadata);
+      if (handler != null) {
+        return handler;
       }
       return reactor.core.publisher.Flux.error(new com.jauntsdn.rsocket.exceptions.RpcException("FarmerServer: requestStream unknown method: " + method));
     } catch (Throwable t) {
@@ -108,8 +80,30 @@ public final class FarmerServer implements com.jauntsdn.rsocket.RpcService {
 
   @Override
   public reactor.core.publisher.Flux<com.jauntsdn.rsocket.Message> requestChannel(com.jauntsdn.rsocket.Message message, org.reactivestreams.Publisher<com.jauntsdn.rsocket.Message> publisher) {
-    message.release();
-    return reactor.core.publisher.Flux.error(new com.jauntsdn.rsocket.exceptions.RpcException("FarmerServer: requestChannel not implemented"));
+    try {
+      io.netty.buffer.ByteBuf metadata = message.metadata();
+      long header = com.jauntsdn.rsocket.Rpc.RpcMetadata.header(metadata);
+      int flags = com.jauntsdn.rsocket.Rpc.RpcMetadata.flags(header);
+      String method = rpcCodec.decodeMessageMethod(metadata, header, flags);
+
+      if (com.jauntsdn.rsocket.Rpc.RpcMetadata.flagForeignCall(flags)) {
+        reactor.core.publisher.Flux<com.jauntsdn.rsocket.Message> streamHandler = requestStreamHandler(flags, method, message.data(), metadata);
+        if (streamHandler != null) {
+          message.release();
+          return streamHandler;
+        }
+        reactor.core.publisher.Mono<com.jauntsdn.rsocket.Message> responseHandler = requestResponseHandler(flags, method, message.data(), metadata);
+        if (responseHandler != null) {
+          message.release();
+          return responseHandler.flux();
+        }
+      }
+      message.release();
+      return reactor.core.publisher.Flux.error(new com.jauntsdn.rsocket.exceptions.RpcException("FarmerServer: requestChannel unknown method: " + method));
+    } catch (Throwable t) {
+      io.netty.util.ReferenceCountUtil.safeRelease(message);
+      return reactor.core.publisher.Flux.error(t);
+    }
   }
 
   @Override
@@ -134,6 +128,36 @@ public final class FarmerServer implements com.jauntsdn.rsocket.RpcService {
 
   private reactor.core.publisher.Mono<com.jauntsdn.rsocket.Message> requestResponseHandler(int flags, String method, io.netty.buffer.ByteBuf data, io.netty.buffer.ByteBuf metadata) throws java.io.IOException {
     return null;
+  }
+
+  private reactor.core.publisher.Flux<com.jauntsdn.rsocket.Message> requestStreamHandler(int flags, String method, io.netty.buffer.ByteBuf data, io.netty.buffer.ByteBuf metadata) throws java.io.IOException {
+    switch (method) {
+      case Farmer.METHOD_MEAT: {
+        if (!Farmer.METHOD_MEAT_IDEMPOTENT && com.jauntsdn.rsocket.Rpc.RpcMetadata.flagIdempotentCall(flags)) {
+          return reactor.core.publisher.Flux.error(new com.jauntsdn.rsocket.exceptions.RpcException("FarmerServer: idempotent call to non-idempotent method: " + method));
+        }
+        com.google.protobuf.CodedInputStream is = com.google.protobuf.CodedInputStream.newInstance(data.internalNioBuffer(0, data.readableBytes()));
+        reactor.core.publisher.Flux<com.jauntsdn.rsocket.Message> meat = service.meat(trisocket.Order.parseFrom(is), metadata).map(encode);
+        if (meatInstrumentation != null) {
+          return meat.transform(meatInstrumentation);
+        }
+        return meat;
+      }
+      case Farmer.METHOD_VEGGIES: {
+        if (!Farmer.METHOD_VEGGIES_IDEMPOTENT && com.jauntsdn.rsocket.Rpc.RpcMetadata.flagIdempotentCall(flags)) {
+          return reactor.core.publisher.Flux.error(new com.jauntsdn.rsocket.exceptions.RpcException("FarmerServer: idempotent call to non-idempotent method: " + method));
+        }
+        com.google.protobuf.CodedInputStream is = com.google.protobuf.CodedInputStream.newInstance(data.internalNioBuffer(0, data.readableBytes()));
+        reactor.core.publisher.Flux<com.jauntsdn.rsocket.Message> veggies = service.veggies(trisocket.Order.parseFrom(is), metadata).map(encode);
+        if (veggiesInstrumentation != null) {
+          return veggies.transform(veggiesInstrumentation);
+        }
+        return veggies;
+      }
+      default: {
+        return null;
+      }
+    }
   }
 
   private final java.util.function.Function<com.google.protobuf.MessageLite, com.jauntsdn.rsocket.Message> encode =

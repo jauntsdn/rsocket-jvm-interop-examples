@@ -33,6 +33,8 @@ dependencies {
     implementation project(":jaunt-rsocket-runtime")
     implementation "com.jauntsdn.rsocket:rsocket-rpc-reactor"
     implementation "com.google.protobuf:protobuf-java"
+    implementation "javax.inject:javax.inject"
+    implementation "javax.annotation:javax.annotation-api"
     implementation "org.slf4j:slf4j-api"
 }
 
