@@ -1,7 +1,7 @@
 package trisocket;
 
 @javax.annotation.Generated(
-    value = "jauntsdn.com rpc compiler (version 1.2.0)",
+    value = "jauntsdn.com rpc compiler (version 1.3.0)",
     comments = "source: service.proto")
 @com.jauntsdn.rsocket.Rpc.Generated(
     role = com.jauntsdn.rsocket.Rpc.Role.SERVICE,
@@ -87,11 +87,6 @@ public final class RoundsmanServer implements com.jauntsdn.rsocket.RpcService {
       String method = rpcCodec.decodeMessageMethod(metadata, header, flags);
 
       if (com.jauntsdn.rsocket.Rpc.RpcMetadata.flagForeignCall(flags)) {
-        reactor.core.publisher.Flux<com.jauntsdn.rsocket.Message> streamHandler = requestStreamHandler(flags, method, message.data(), metadata);
-        if (streamHandler != null) {
-          message.release();
-          return streamHandler;
-        }
         reactor.core.publisher.Mono<com.jauntsdn.rsocket.Message> responseHandler = requestResponseHandler(flags, method, message.data(), metadata);
         if (responseHandler != null) {
           message.release();
@@ -154,10 +149,6 @@ public final class RoundsmanServer implements com.jauntsdn.rsocket.RpcService {
         return null;
       }
     }
-  }
-
-  private reactor.core.publisher.Flux<com.jauntsdn.rsocket.Message> requestStreamHandler(int flags, String method, io.netty.buffer.ByteBuf data, io.netty.buffer.ByteBuf metadata) throws java.io.IOException {
-    return null;
   }
 
   private final java.util.function.Function<com.google.protobuf.MessageLite, com.jauntsdn.rsocket.Message> encode =

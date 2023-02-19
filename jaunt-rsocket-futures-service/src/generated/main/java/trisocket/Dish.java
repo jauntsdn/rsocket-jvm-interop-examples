@@ -26,82 +26,6 @@ private static final long serialVersionUID = 0L;
     return new Dish();
   }
 
-  @java.lang.Override
-  public final com.google.protobuf.UnknownFieldSet
-  getUnknownFields() {
-    return this.unknownFields;
-  }
-  private Dish(
-      com.google.protobuf.CodedInputStream input,
-      com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-      throws com.google.protobuf.InvalidProtocolBufferException {
-    this();
-    if (extensionRegistry == null) {
-      throw new java.lang.NullPointerException();
-    }
-    com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-        com.google.protobuf.UnknownFieldSet.newBuilder();
-    try {
-      boolean done = false;
-      while (!done) {
-        int tag = input.readTag();
-        switch (tag) {
-          case 0:
-            done = true;
-            break;
-          case 10: {
-            trisocket.Veggie.Builder subBuilder = null;
-            if (veggie_ != null) {
-              subBuilder = veggie_.toBuilder();
-            }
-            veggie_ = input.readMessage(trisocket.Veggie.parser(), extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(veggie_);
-              veggie_ = subBuilder.buildPartial();
-            }
-
-            break;
-          }
-          case 18: {
-            trisocket.Meat.Builder subBuilder = null;
-            if (meat_ != null) {
-              subBuilder = meat_.toBuilder();
-            }
-            meat_ = input.readMessage(trisocket.Meat.parser(), extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(meat_);
-              meat_ = subBuilder.buildPartial();
-            }
-
-            break;
-          }
-          case 26: {
-            java.lang.String s = input.readStringRequireUtf8();
-
-            doneness_ = s;
-            break;
-          }
-          default: {
-            if (!parseUnknownField(
-                input, unknownFields, extensionRegistry, tag)) {
-              done = true;
-            }
-            break;
-          }
-        }
-      }
-    } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-      throw e.setUnfinishedMessage(this);
-    } catch (com.google.protobuf.UninitializedMessageException e) {
-      throw e.asInvalidProtocolBufferException().setUnfinishedMessage(this);
-    } catch (java.io.IOException e) {
-      throw new com.google.protobuf.InvalidProtocolBufferException(
-          e).setUnfinishedMessage(this);
-    } finally {
-      this.unknownFields = unknownFields.build();
-      makeExtensionsImmutable();
-    }
-  }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
     return trisocket.ServiceProto.internal_static_trisocket_Dish_descriptor;
@@ -138,7 +62,7 @@ private static final long serialVersionUID = 0L;
    */
   @java.lang.Override
   public trisocket.VeggieOrBuilder getVeggieOrBuilder() {
-    return getVeggie();
+    return veggie_ == null ? trisocket.Veggie.getDefaultInstance() : veggie_;
   }
 
   public static final int MEAT_FIELD_NUMBER = 2;
@@ -164,11 +88,12 @@ private static final long serialVersionUID = 0L;
    */
   @java.lang.Override
   public trisocket.MeatOrBuilder getMeatOrBuilder() {
-    return getMeat();
+    return meat_ == null ? trisocket.Meat.getDefaultInstance() : meat_;
   }
 
   public static final int DONENESS_FIELD_NUMBER = 3;
-  private volatile java.lang.Object doneness_;
+  @SuppressWarnings("serial")
+  private volatile java.lang.Object doneness_ = "";
   /**
    * <pre>
    *welldone
@@ -236,7 +161,7 @@ private static final long serialVersionUID = 0L;
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(doneness_)) {
       com.google.protobuf.GeneratedMessageV3.writeString(output, 3, doneness_);
     }
-    unknownFields.writeTo(output);
+    getUnknownFields().writeTo(output);
   }
 
   @java.lang.Override
@@ -256,7 +181,7 @@ private static final long serialVersionUID = 0L;
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(doneness_)) {
       size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, doneness_);
     }
-    size += unknownFields.getSerializedSize();
+    size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
     return size;
   }
@@ -283,7 +208,7 @@ private static final long serialVersionUID = 0L;
     }
     if (!getDoneness()
         .equals(other.getDoneness())) return false;
-    if (!unknownFields.equals(other.unknownFields)) return false;
+    if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
 
@@ -304,7 +229,7 @@ private static final long serialVersionUID = 0L;
     }
     hash = (37 * hash) + DONENESS_FIELD_NUMBER;
     hash = (53 * hash) + getDoneness().hashCode();
-    hash = (29 * hash) + unknownFields.hashCode();
+    hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
   }
@@ -421,36 +346,29 @@ private static final long serialVersionUID = 0L;
 
     // Construct using trisocket.Dish.newBuilder()
     private Builder() {
-      maybeForceBuilderInitialization();
+
     }
 
     private Builder(
         com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       super(parent);
-      maybeForceBuilderInitialization();
-    }
-    private void maybeForceBuilderInitialization() {
-      if (com.google.protobuf.GeneratedMessageV3
-              .alwaysUseFieldBuilders) {
-      }
+
     }
     @java.lang.Override
     public Builder clear() {
       super.clear();
-      if (veggieBuilder_ == null) {
-        veggie_ = null;
-      } else {
-        veggie_ = null;
+      bitField0_ = 0;
+      veggie_ = null;
+      if (veggieBuilder_ != null) {
+        veggieBuilder_.dispose();
         veggieBuilder_ = null;
       }
-      if (meatBuilder_ == null) {
-        meat_ = null;
-      } else {
-        meat_ = null;
+      meat_ = null;
+      if (meatBuilder_ != null) {
+        meatBuilder_.dispose();
         meatBuilder_ = null;
       }
       doneness_ = "";
-
       return this;
     }
 
@@ -477,53 +395,28 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public trisocket.Dish buildPartial() {
       trisocket.Dish result = new trisocket.Dish(this);
-      if (veggieBuilder_ == null) {
-        result.veggie_ = veggie_;
-      } else {
-        result.veggie_ = veggieBuilder_.build();
-      }
-      if (meatBuilder_ == null) {
-        result.meat_ = meat_;
-      } else {
-        result.meat_ = meatBuilder_.build();
-      }
-      result.doneness_ = doneness_;
+      if (bitField0_ != 0) { buildPartial0(result); }
       onBuilt();
       return result;
     }
 
-    @java.lang.Override
-    public Builder clone() {
-      return super.clone();
+    private void buildPartial0(trisocket.Dish result) {
+      int from_bitField0_ = bitField0_;
+      if (((from_bitField0_ & 0x00000001) != 0)) {
+        result.veggie_ = veggieBuilder_ == null
+            ? veggie_
+            : veggieBuilder_.build();
+      }
+      if (((from_bitField0_ & 0x00000002) != 0)) {
+        result.meat_ = meatBuilder_ == null
+            ? meat_
+            : meatBuilder_.build();
+      }
+      if (((from_bitField0_ & 0x00000004) != 0)) {
+        result.doneness_ = doneness_;
+      }
     }
-    @java.lang.Override
-    public Builder setField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.setField(field, value);
-    }
-    @java.lang.Override
-    public Builder clearField(
-        com.google.protobuf.Descriptors.FieldDescriptor field) {
-      return super.clearField(field);
-    }
-    @java.lang.Override
-    public Builder clearOneof(
-        com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-      return super.clearOneof(oneof);
-    }
-    @java.lang.Override
-    public Builder setRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        int index, java.lang.Object value) {
-      return super.setRepeatedField(field, index, value);
-    }
-    @java.lang.Override
-    public Builder addRepeatedField(
-        com.google.protobuf.Descriptors.FieldDescriptor field,
-        java.lang.Object value) {
-      return super.addRepeatedField(field, value);
-    }
+
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
       if (other instanceof trisocket.Dish) {
@@ -544,9 +437,10 @@ private static final long serialVersionUID = 0L;
       }
       if (!other.getDoneness().isEmpty()) {
         doneness_ = other.doneness_;
+        bitField0_ |= 0x00000004;
         onChanged();
       }
-      this.mergeUnknownFields(other.unknownFields);
+      this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
       return this;
     }
@@ -561,19 +455,52 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      trisocket.Dish parsedMessage = null;
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       try {
-        parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              input.readMessage(
+                  getVeggieFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00000001;
+              break;
+            } // case 10
+            case 18: {
+              input.readMessage(
+                  getMeatFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00000002;
+              break;
+            } // case 18
+            case 26: {
+              doneness_ = input.readStringRequireUtf8();
+              bitField0_ |= 0x00000004;
+              break;
+            } // case 26
+            default: {
+              if (!super.parseUnknownField(input, extensionRegistry, tag)) {
+                done = true; // was an endgroup tag
+              }
+              break;
+            } // default:
+          } // switch (tag)
+        } // while (!done)
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (trisocket.Dish) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
-        if (parsedMessage != null) {
-          mergeFrom(parsedMessage);
-        }
-      }
+        onChanged();
+      } // finally
       return this;
     }
+    private int bitField0_;
 
     private trisocket.Veggie veggie_;
     private com.google.protobuf.SingleFieldBuilderV3<
@@ -583,7 +510,7 @@ private static final long serialVersionUID = 0L;
      * @return Whether the veggie field is set.
      */
     public boolean hasVeggie() {
-      return veggieBuilder_ != null || veggie_ != null;
+      return ((bitField0_ & 0x00000001) != 0);
     }
     /**
      * <code>.trisocket.Veggie veggie = 1;</code>
@@ -605,11 +532,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         veggie_ = value;
-        onChanged();
       } else {
         veggieBuilder_.setMessage(value);
       }
-
+      bitField0_ |= 0x00000001;
+      onChanged();
       return this;
     }
     /**
@@ -619,11 +546,11 @@ private static final long serialVersionUID = 0L;
         trisocket.Veggie.Builder builderForValue) {
       if (veggieBuilder_ == null) {
         veggie_ = builderForValue.build();
-        onChanged();
       } else {
         veggieBuilder_.setMessage(builderForValue.build());
       }
-
+      bitField0_ |= 0x00000001;
+      onChanged();
       return this;
     }
     /**
@@ -631,38 +558,38 @@ private static final long serialVersionUID = 0L;
      */
     public Builder mergeVeggie(trisocket.Veggie value) {
       if (veggieBuilder_ == null) {
-        if (veggie_ != null) {
-          veggie_ =
-            trisocket.Veggie.newBuilder(veggie_).mergeFrom(value).buildPartial();
+        if (((bitField0_ & 0x00000001) != 0) &&
+          veggie_ != null &&
+          veggie_ != trisocket.Veggie.getDefaultInstance()) {
+          getVeggieBuilder().mergeFrom(value);
         } else {
           veggie_ = value;
         }
-        onChanged();
       } else {
         veggieBuilder_.mergeFrom(value);
       }
-
+      bitField0_ |= 0x00000001;
+      onChanged();
       return this;
     }
     /**
      * <code>.trisocket.Veggie veggie = 1;</code>
      */
     public Builder clearVeggie() {
-      if (veggieBuilder_ == null) {
-        veggie_ = null;
-        onChanged();
-      } else {
-        veggie_ = null;
+      bitField0_ = (bitField0_ & ~0x00000001);
+      veggie_ = null;
+      if (veggieBuilder_ != null) {
+        veggieBuilder_.dispose();
         veggieBuilder_ = null;
       }
-
+      onChanged();
       return this;
     }
     /**
      * <code>.trisocket.Veggie veggie = 1;</code>
      */
     public trisocket.Veggie.Builder getVeggieBuilder() {
-      
+      bitField0_ |= 0x00000001;
       onChanged();
       return getVeggieFieldBuilder().getBuilder();
     }
@@ -702,7 +629,7 @@ private static final long serialVersionUID = 0L;
      * @return Whether the meat field is set.
      */
     public boolean hasMeat() {
-      return meatBuilder_ != null || meat_ != null;
+      return ((bitField0_ & 0x00000002) != 0);
     }
     /**
      * <code>.trisocket.Meat meat = 2;</code>
@@ -724,11 +651,11 @@ private static final long serialVersionUID = 0L;
           throw new NullPointerException();
         }
         meat_ = value;
-        onChanged();
       } else {
         meatBuilder_.setMessage(value);
       }
-
+      bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -738,11 +665,11 @@ private static final long serialVersionUID = 0L;
         trisocket.Meat.Builder builderForValue) {
       if (meatBuilder_ == null) {
         meat_ = builderForValue.build();
-        onChanged();
       } else {
         meatBuilder_.setMessage(builderForValue.build());
       }
-
+      bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
@@ -750,38 +677,38 @@ private static final long serialVersionUID = 0L;
      */
     public Builder mergeMeat(trisocket.Meat value) {
       if (meatBuilder_ == null) {
-        if (meat_ != null) {
-          meat_ =
-            trisocket.Meat.newBuilder(meat_).mergeFrom(value).buildPartial();
+        if (((bitField0_ & 0x00000002) != 0) &&
+          meat_ != null &&
+          meat_ != trisocket.Meat.getDefaultInstance()) {
+          getMeatBuilder().mergeFrom(value);
         } else {
           meat_ = value;
         }
-        onChanged();
       } else {
         meatBuilder_.mergeFrom(value);
       }
-
+      bitField0_ |= 0x00000002;
+      onChanged();
       return this;
     }
     /**
      * <code>.trisocket.Meat meat = 2;</code>
      */
     public Builder clearMeat() {
-      if (meatBuilder_ == null) {
-        meat_ = null;
-        onChanged();
-      } else {
-        meat_ = null;
+      bitField0_ = (bitField0_ & ~0x00000002);
+      meat_ = null;
+      if (meatBuilder_ != null) {
+        meatBuilder_.dispose();
         meatBuilder_ = null;
       }
-
+      onChanged();
       return this;
     }
     /**
      * <code>.trisocket.Meat meat = 2;</code>
      */
     public trisocket.Meat.Builder getMeatBuilder() {
-      
+      bitField0_ |= 0x00000002;
       onChanged();
       return getMeatFieldBuilder().getBuilder();
     }
@@ -866,11 +793,9 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setDoneness(
         java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
+      if (value == null) { throw new NullPointerException(); }
       doneness_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -883,8 +808,8 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearDoneness() {
-      
       doneness_ = getDefaultInstance().getDoneness();
+      bitField0_ = (bitField0_ & ~0x00000004);
       onChanged();
       return this;
     }
@@ -899,12 +824,10 @@ private static final long serialVersionUID = 0L;
      */
     public Builder setDonenessBytes(
         com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
+      if (value == null) { throw new NullPointerException(); }
+      checkByteStringIsUtf8(value);
       doneness_ = value;
+      bitField0_ |= 0x00000004;
       onChanged();
       return this;
     }
@@ -941,7 +864,18 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new Dish(input, extensionRegistry);
+      Builder builder = newBuilder();
+      try {
+        builder.mergeFrom(input, extensionRegistry);
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(builder.buildPartial());
+      } catch (com.google.protobuf.UninitializedMessageException e) {
+        throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(e)
+            .setUnfinishedMessage(builder.buildPartial());
+      }
+      return builder.buildPartial();
     }
   };
 
