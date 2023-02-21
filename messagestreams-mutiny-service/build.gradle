@@ -20,7 +20,7 @@ plugins {
     id "idea"
 }
 
-description = "jauntsdn-trisocket: RSocket-mutiny service"
+description = "messagestreams interop: messagestreams-mutiny service"
 
 compileJava {
     sourceCompatibility = 1.8
@@ -28,9 +28,9 @@ compileJava {
 }
 
 dependencies {
-    protobuf project(":jaunt-rsocket-service-idl")
+    protobuf project(":messagestreams-service-idl")
 
-    implementation project(":jaunt-rsocket-runtime")
+    implementation project(":messagestreams-runtime")
     implementation "com.jauntsdn.rsocket:rsocket-rpc-mutiny"
     implementation "com.google.protobuf:protobuf-java"
     implementation "org.slf4j:slf4j-api"

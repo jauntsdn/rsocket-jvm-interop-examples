@@ -11,13 +11,13 @@ pluginManagement {
 
 rootProject.name = "jaunt-trisocket-parent"
 
-include "jaunt-rsocket-runtime"
+include "messagestreams-runtime"
 
-include "jaunt-rsocket-service-idl"
-include "jaunt-rsocket-reactor-service"
-include "jaunt-rsocket-grpc-service"
-include "jaunt-rsocket-rxjava-service"
-include "jaunt-rsocket-mutiny-service"
-include "jaunt-rsocket-futures-service"
+include "messagestreams-service-idl"
+include "messagestreams-reactor-service"
+include "messagestreams-grpc-service"
+include "messagestreams-rxjava-service"
+include "messagestreams-mutiny-service"
+include "messagestreams-futures-service"
 include "grpc-client"
 

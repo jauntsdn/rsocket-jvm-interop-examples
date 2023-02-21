@@ -20,7 +20,7 @@ plugins {
     id "idea"
 }
 
-description = "jauntsdn-trisocket: RSocket-reactor service"
+description = "messagestreams interop: messagestreams-grpc service"
 
 compileJava {
     sourceCompatibility = 1.8
@@ -28,13 +28,11 @@ compileJava {
 }
 
 dependencies {
-    protobuf project(":jaunt-rsocket-service-idl")
+    protobuf project(":messagestreams-service-idl")
 
-    implementation project(":jaunt-rsocket-runtime")
-    implementation "com.jauntsdn.rsocket:rsocket-rpc-reactor"
+    implementation project(":messagestreams-runtime")
+    implementation "com.jauntsdn.rsocket:rsocket-rpc-grpc"
     implementation "com.google.protobuf:protobuf-java"
-    implementation "javax.inject:javax.inject"
-    implementation "javax.annotation:javax.annotation-api"
     implementation "org.slf4j:slf4j-api"
 }
 
@@ -60,13 +58,12 @@ if (findProperty("generateProto") == "true") {
         }
         plugins {
             messageStreamsRpc {
-                artifact = "com.jauntsdn.rsocket:rsocket-rpc-reactor-compiler"
+                artifact = "com.jauntsdn.rsocket:rsocket-rpc-grpc-compiler"
             }
             generateProtoTasks {
                 ofSourceSet("main")*.plugins {
                     messageStreamsRpc {
                         option "metadataless-method-definitions"
-                        option "annotations-javax"
                     }
                 }
             }

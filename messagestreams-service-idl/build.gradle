@@ -7,7 +7,7 @@ plugins {
     id "idea"
 }
 
-description = "jauntsdn-trisocket: service definitions"
+description = "messagestreams interop: service definitions"
 
 protobuf {
     protoc {

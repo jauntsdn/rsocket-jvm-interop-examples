@@ -20,7 +20,7 @@ plugins {
     id "idea"
 }
 
-description = "jauntsdn-trisocket: RSocket-rxjava service"
+description = "messagestreams-interop: messagestreams-futures service"
 
 compileJava {
     sourceCompatibility = 1.8
@@ -28,10 +28,10 @@ compileJava {
 }
 
 dependencies {
-    protobuf project(":jaunt-rsocket-service-idl")
+    protobuf project(":messagestreams-service-idl")
 
-    implementation project(":jaunt-rsocket-runtime")
-    implementation "com.jauntsdn.rsocket:rsocket-rpc-rxjava"
+    implementation project(":messagestreams-runtime")
+    implementation "com.jauntsdn.rsocket:rsocket-rpc-futures"
     implementation "com.google.protobuf:protobuf-java"
     implementation "org.slf4j:slf4j-api"
 }
@@ -42,7 +42,7 @@ sourceSets {
     }
 }
 
-if (findProperty("generateProto") == "true") {
+if (findProperty("generateProto") == "true" && osdetector.os == "linux") {
     println "Generating services from IDL"
 
     sourceSets {
@@ -58,12 +58,13 @@ if (findProperty("generateProto") == "true") {
         }
         plugins {
             messageStreamsRpc {
-                artifact = "com.jauntsdn.rsocket:rsocket-rpc-rxjava-compiler"
+                artifact = "com.jauntsdn.rsocket:rsocket-rpc-futures-compiler"
             }
             generateProtoTasks {
                 ofSourceSet("main")*.plugins {
                     messageStreamsRpc {
                         option "metadataless-method-definitions"
+                        option "annotations-none"
                     }
                 }
             }

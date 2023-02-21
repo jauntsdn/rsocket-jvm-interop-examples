@@ -4,10 +4,10 @@ plugins {
     id "idea"
 }
 
-description = "jauntsdn-trisocket: grpc client"
+description = "messagestreams interop: grpc client"
 
 dependencies {
-    protobuf project(":jaunt-rsocket-service-idl")
+    protobuf project(":messagestreams-service-idl")
 
     implementation "com.google.protobuf:protobuf-java"
     implementation "io.grpc:grpc-protobuf"
