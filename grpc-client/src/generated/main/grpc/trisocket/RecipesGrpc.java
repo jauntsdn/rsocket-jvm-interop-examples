@@ -5,7 +5,7 @@ import static io.grpc.MethodDescriptor.generateFullMethodName;
 /**
  */
 @javax.annotation.Generated(
-    value = "by gRPC proto compiler (version 1.53.0)",
+    value = "by gRPC proto compiler (version 1.54.1)",
     comments = "Source: service.proto")
 @io.grpc.stub.annotations.GrpcGenerated
 public final class RecipesGrpc {
@@ -92,31 +92,32 @@ public final class RecipesGrpc {
 
   /**
    */
-  public static abstract class RecipesImplBase implements io.grpc.BindableService {
+  public interface AsyncService {
 
     /**
      */
-    public void marinade(trisocket.Meat request,
+    default void marinade(trisocket.Meat request,
         io.grpc.stub.StreamObserver<trisocket.Recipe> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getMarinadeMethod(), responseObserver);
-    }
-
-    @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
-      return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
-          .addMethod(
-            getMarinadeMethod(),
-            io.grpc.stub.ServerCalls.asyncUnaryCall(
-              new MethodHandlers<
-                trisocket.Meat,
-                trisocket.Recipe>(
-                  this, METHODID_MARINADE)))
-          .build();
     }
   }
 
   /**
+   * Base class for the server implementation of the service Recipes.
    */
-  public static final class RecipesStub extends io.grpc.stub.AbstractAsyncStub<RecipesStub> {
+  public static abstract class RecipesImplBase
+      implements io.grpc.BindableService, AsyncService {
+
+    @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
+      return RecipesGrpc.bindService(this);
+    }
+  }
+
+  /**
+   * A stub to allow clients to do asynchronous rpc calls to service Recipes.
+   */
+  public static final class RecipesStub
+      extends io.grpc.stub.AbstractAsyncStub<RecipesStub> {
     private RecipesStub(
         io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       super(channel, callOptions);
@@ -138,8 +139,10 @@ public final class RecipesGrpc {
   }
 
   /**
+   * A stub to allow clients to do synchronous rpc calls to service Recipes.
    */
-  public static final class RecipesBlockingStub extends io.grpc.stub.AbstractBlockingStub<RecipesBlockingStub> {
+  public static final class RecipesBlockingStub
+      extends io.grpc.stub.AbstractBlockingStub<RecipesBlockingStub> {
     private RecipesBlockingStub(
         io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       super(channel, callOptions);
@@ -160,8 +163,10 @@ public final class RecipesGrpc {
   }
 
   /**
+   * A stub to allow clients to do ListenableFuture-style rpc calls to service Recipes.
    */
-  public static final class RecipesFutureStub extends io.grpc.stub.AbstractFutureStub<RecipesFutureStub> {
+  public static final class RecipesFutureStub
+      extends io.grpc.stub.AbstractFutureStub<RecipesFutureStub> {
     private RecipesFutureStub(
         io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       super(channel, callOptions);
@@ -189,10 +194,10 @@ public final class RecipesGrpc {
       io.grpc.stub.ServerCalls.ServerStreamingMethod<Req, Resp>,
       io.grpc.stub.ServerCalls.ClientStreamingMethod<Req, Resp>,
       io.grpc.stub.ServerCalls.BidiStreamingMethod<Req, Resp> {
-    private final RecipesImplBase serviceImpl;
+    private final AsyncService serviceImpl;
     private final int methodId;
 
-    MethodHandlers(RecipesImplBase serviceImpl, int methodId) {
+    MethodHandlers(AsyncService serviceImpl, int methodId) {
       this.serviceImpl = serviceImpl;
       this.methodId = methodId;
     }
@@ -219,6 +224,18 @@ public final class RecipesGrpc {
           throw new AssertionError();
       }
     }
+  }
+
+  public static final io.grpc.ServerServiceDefinition bindService(AsyncService service) {
+    return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
+        .addMethod(
+          getMarinadeMethod(),
+          io.grpc.stub.ServerCalls.asyncUnaryCall(
+            new MethodHandlers<
+              trisocket.Meat,
+              trisocket.Recipe>(
+                service, METHODID_MARINADE)))
+        .build();
   }
 
   private static abstract class RecipesBaseDescriptorSupplier

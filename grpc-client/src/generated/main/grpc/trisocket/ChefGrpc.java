@@ -5,7 +5,7 @@ import static io.grpc.MethodDescriptor.generateFullMethodName;
 /**
  */
 @javax.annotation.Generated(
-    value = "by gRPC proto compiler (version 1.53.0)",
+    value = "by gRPC proto compiler (version 1.54.1)",
     comments = "Source: service.proto")
 @io.grpc.stub.annotations.GrpcGenerated
 public final class ChefGrpc {
@@ -92,31 +92,32 @@ public final class ChefGrpc {
 
   /**
    */
-  public static abstract class ChefImplBase implements io.grpc.BindableService {
+  public interface AsyncService {
 
     /**
      */
-    public void roast(trisocket.Pan request,
+    default void roast(trisocket.Pan request,
         io.grpc.stub.StreamObserver<trisocket.Dish> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getRoastMethod(), responseObserver);
-    }
-
-    @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
-      return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
-          .addMethod(
-            getRoastMethod(),
-            io.grpc.stub.ServerCalls.asyncUnaryCall(
-              new MethodHandlers<
-                trisocket.Pan,
-                trisocket.Dish>(
-                  this, METHODID_ROAST)))
-          .build();
     }
   }
 
   /**
+   * Base class for the server implementation of the service Chef.
    */
-  public static final class ChefStub extends io.grpc.stub.AbstractAsyncStub<ChefStub> {
+  public static abstract class ChefImplBase
+      implements io.grpc.BindableService, AsyncService {
+
+    @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
+      return ChefGrpc.bindService(this);
+    }
+  }
+
+  /**
+   * A stub to allow clients to do asynchronous rpc calls to service Chef.
+   */
+  public static final class ChefStub
+      extends io.grpc.stub.AbstractAsyncStub<ChefStub> {
     private ChefStub(
         io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       super(channel, callOptions);
@@ -138,8 +139,10 @@ public final class ChefGrpc {
   }
 
   /**
+   * A stub to allow clients to do synchronous rpc calls to service Chef.
    */
-  public static final class ChefBlockingStub extends io.grpc.stub.AbstractBlockingStub<ChefBlockingStub> {
+  public static final class ChefBlockingStub
+      extends io.grpc.stub.AbstractBlockingStub<ChefBlockingStub> {
     private ChefBlockingStub(
         io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       super(channel, callOptions);
@@ -160,8 +163,10 @@ public final class ChefGrpc {
   }
 
   /**
+   * A stub to allow clients to do ListenableFuture-style rpc calls to service Chef.
    */
-  public static final class ChefFutureStub extends io.grpc.stub.AbstractFutureStub<ChefFutureStub> {
+  public static final class ChefFutureStub
+      extends io.grpc.stub.AbstractFutureStub<ChefFutureStub> {
     private ChefFutureStub(
         io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       super(channel, callOptions);
@@ -189,10 +194,10 @@ public final class ChefGrpc {
       io.grpc.stub.ServerCalls.ServerStreamingMethod<Req, Resp>,
       io.grpc.stub.ServerCalls.ClientStreamingMethod<Req, Resp>,
       io.grpc.stub.ServerCalls.BidiStreamingMethod<Req, Resp> {
-    private final ChefImplBase serviceImpl;
+    private final AsyncService serviceImpl;
     private final int methodId;
 
-    MethodHandlers(ChefImplBase serviceImpl, int methodId) {
+    MethodHandlers(AsyncService serviceImpl, int methodId) {
       this.serviceImpl = serviceImpl;
       this.methodId = methodId;
     }
@@ -219,6 +224,18 @@ public final class ChefGrpc {
           throw new AssertionError();
       }
     }
+  }
+
+  public static final io.grpc.ServerServiceDefinition bindService(AsyncService service) {
+    return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
+        .addMethod(
+          getRoastMethod(),
+          io.grpc.stub.ServerCalls.asyncUnaryCall(
+            new MethodHandlers<
+              trisocket.Pan,
+              trisocket.Dish>(
+                service, METHODID_ROAST)))
+        .build();
   }
 
   private static abstract class ChefBaseDescriptorSupplier

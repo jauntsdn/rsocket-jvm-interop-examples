@@ -5,7 +5,7 @@ import static io.grpc.MethodDescriptor.generateFullMethodName;
 /**
  */
 @javax.annotation.Generated(
-    value = "by gRPC proto compiler (version 1.53.0)",
+    value = "by gRPC proto compiler (version 1.54.1)",
     comments = "Source: service.proto")
 @io.grpc.stub.annotations.GrpcGenerated
 public final class FarmerGrpc {
@@ -123,45 +123,39 @@ public final class FarmerGrpc {
 
   /**
    */
-  public static abstract class FarmerImplBase implements io.grpc.BindableService {
+  public interface AsyncService {
 
     /**
      */
-    public void meat(trisocket.Order request,
+    default void meat(trisocket.Order request,
         io.grpc.stub.StreamObserver<trisocket.Meat> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getMeatMethod(), responseObserver);
     }
 
     /**
      */
-    public void veggies(trisocket.Order request,
+    default void veggies(trisocket.Order request,
         io.grpc.stub.StreamObserver<trisocket.Veggie> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getVeggiesMethod(), responseObserver);
-    }
-
-    @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
-      return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
-          .addMethod(
-            getMeatMethod(),
-            io.grpc.stub.ServerCalls.asyncServerStreamingCall(
-              new MethodHandlers<
-                trisocket.Order,
-                trisocket.Meat>(
-                  this, METHODID_MEAT)))
-          .addMethod(
-            getVeggiesMethod(),
-            io.grpc.stub.ServerCalls.asyncServerStreamingCall(
-              new MethodHandlers<
-                trisocket.Order,
-                trisocket.Veggie>(
-                  this, METHODID_VEGGIES)))
-          .build();
     }
   }
 
   /**
+   * Base class for the server implementation of the service Farmer.
    */
-  public static final class FarmerStub extends io.grpc.stub.AbstractAsyncStub<FarmerStub> {
+  public static abstract class FarmerImplBase
+      implements io.grpc.BindableService, AsyncService {
+
+    @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
+      return FarmerGrpc.bindService(this);
+    }
+  }
+
+  /**
+   * A stub to allow clients to do asynchronous rpc calls to service Farmer.
+   */
+  public static final class FarmerStub
+      extends io.grpc.stub.AbstractAsyncStub<FarmerStub> {
     private FarmerStub(
         io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       super(channel, callOptions);
@@ -191,8 +185,10 @@ public final class FarmerGrpc {
   }
 
   /**
+   * A stub to allow clients to do synchronous rpc calls to service Farmer.
    */
-  public static final class FarmerBlockingStub extends io.grpc.stub.AbstractBlockingStub<FarmerBlockingStub> {
+  public static final class FarmerBlockingStub
+      extends io.grpc.stub.AbstractBlockingStub<FarmerBlockingStub> {
     private FarmerBlockingStub(
         io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       super(channel, callOptions);
@@ -222,8 +218,10 @@ public final class FarmerGrpc {
   }
 
   /**
+   * A stub to allow clients to do ListenableFuture-style rpc calls to service Farmer.
    */
-  public static final class FarmerFutureStub extends io.grpc.stub.AbstractFutureStub<FarmerFutureStub> {
+  public static final class FarmerFutureStub
+      extends io.grpc.stub.AbstractFutureStub<FarmerFutureStub> {
     private FarmerFutureStub(
         io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       super(channel, callOptions);
@@ -244,10 +242,10 @@ public final class FarmerGrpc {
       io.grpc.stub.ServerCalls.ServerStreamingMethod<Req, Resp>,
       io.grpc.stub.ServerCalls.ClientStreamingMethod<Req, Resp>,
       io.grpc.stub.ServerCalls.BidiStreamingMethod<Req, Resp> {
-    private final FarmerImplBase serviceImpl;
+    private final AsyncService serviceImpl;
     private final int methodId;
 
-    MethodHandlers(FarmerImplBase serviceImpl, int methodId) {
+    MethodHandlers(AsyncService serviceImpl, int methodId) {
       this.serviceImpl = serviceImpl;
       this.methodId = methodId;
     }
@@ -278,6 +276,25 @@ public final class FarmerGrpc {
           throw new AssertionError();
       }
     }
+  }
+
+  public static final io.grpc.ServerServiceDefinition bindService(AsyncService service) {
+    return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
+        .addMethod(
+          getMeatMethod(),
+          io.grpc.stub.ServerCalls.asyncServerStreamingCall(
+            new MethodHandlers<
+              trisocket.Order,
+              trisocket.Meat>(
+                service, METHODID_MEAT)))
+        .addMethod(
+          getVeggiesMethod(),
+          io.grpc.stub.ServerCalls.asyncServerStreamingCall(
+            new MethodHandlers<
+              trisocket.Order,
+              trisocket.Veggie>(
+                service, METHODID_VEGGIES)))
+        .build();
   }
 
   private static abstract class FarmerBaseDescriptorSupplier

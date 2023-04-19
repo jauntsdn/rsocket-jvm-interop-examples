@@ -5,7 +5,7 @@ import static io.grpc.MethodDescriptor.generateFullMethodName;
 /**
  */
 @javax.annotation.Generated(
-    value = "by gRPC proto compiler (version 1.53.0)",
+    value = "by gRPC proto compiler (version 1.54.1)",
     comments = "Source: service.proto")
 @io.grpc.stub.annotations.GrpcGenerated
 public final class RoundsmanGrpc {
@@ -123,45 +123,39 @@ public final class RoundsmanGrpc {
 
   /**
    */
-  public static abstract class RoundsmanImplBase implements io.grpc.BindableService {
+  public interface AsyncService {
 
     /**
      */
-    public void chop(trisocket.Veggie request,
+    default void chop(trisocket.Veggie request,
         io.grpc.stub.StreamObserver<trisocket.Veggie> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getChopMethod(), responseObserver);
     }
 
     /**
      */
-    public void marinade(trisocket.Meat request,
+    default void marinade(trisocket.Meat request,
         io.grpc.stub.StreamObserver<trisocket.Meat> responseObserver) {
       io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall(getMarinadeMethod(), responseObserver);
-    }
-
-    @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
-      return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
-          .addMethod(
-            getChopMethod(),
-            io.grpc.stub.ServerCalls.asyncUnaryCall(
-              new MethodHandlers<
-                trisocket.Veggie,
-                trisocket.Veggie>(
-                  this, METHODID_CHOP)))
-          .addMethod(
-            getMarinadeMethod(),
-            io.grpc.stub.ServerCalls.asyncUnaryCall(
-              new MethodHandlers<
-                trisocket.Meat,
-                trisocket.Meat>(
-                  this, METHODID_MARINADE)))
-          .build();
     }
   }
 
   /**
+   * Base class for the server implementation of the service Roundsman.
    */
-  public static final class RoundsmanStub extends io.grpc.stub.AbstractAsyncStub<RoundsmanStub> {
+  public static abstract class RoundsmanImplBase
+      implements io.grpc.BindableService, AsyncService {
+
+    @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
+      return RoundsmanGrpc.bindService(this);
+    }
+  }
+
+  /**
+   * A stub to allow clients to do asynchronous rpc calls to service Roundsman.
+   */
+  public static final class RoundsmanStub
+      extends io.grpc.stub.AbstractAsyncStub<RoundsmanStub> {
     private RoundsmanStub(
         io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       super(channel, callOptions);
@@ -191,8 +185,10 @@ public final class RoundsmanGrpc {
   }
 
   /**
+   * A stub to allow clients to do synchronous rpc calls to service Roundsman.
    */
-  public static final class RoundsmanBlockingStub extends io.grpc.stub.AbstractBlockingStub<RoundsmanBlockingStub> {
+  public static final class RoundsmanBlockingStub
+      extends io.grpc.stub.AbstractBlockingStub<RoundsmanBlockingStub> {
     private RoundsmanBlockingStub(
         io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       super(channel, callOptions);
@@ -220,8 +216,10 @@ public final class RoundsmanGrpc {
   }
 
   /**
+   * A stub to allow clients to do ListenableFuture-style rpc calls to service Roundsman.
    */
-  public static final class RoundsmanFutureStub extends io.grpc.stub.AbstractFutureStub<RoundsmanFutureStub> {
+  public static final class RoundsmanFutureStub
+      extends io.grpc.stub.AbstractFutureStub<RoundsmanFutureStub> {
     private RoundsmanFutureStub(
         io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       super(channel, callOptions);
@@ -258,10 +256,10 @@ public final class RoundsmanGrpc {
       io.grpc.stub.ServerCalls.ServerStreamingMethod<Req, Resp>,
       io.grpc.stub.ServerCalls.ClientStreamingMethod<Req, Resp>,
       io.grpc.stub.ServerCalls.BidiStreamingMethod<Req, Resp> {
-    private final RoundsmanImplBase serviceImpl;
+    private final AsyncService serviceImpl;
     private final int methodId;
 
-    MethodHandlers(RoundsmanImplBase serviceImpl, int methodId) {
+    MethodHandlers(AsyncService serviceImpl, int methodId) {
       this.serviceImpl = serviceImpl;
       this.methodId = methodId;
     }
@@ -292,6 +290,25 @@ public final class RoundsmanGrpc {
           throw new AssertionError();
       }
     }
+  }
+
+  public static final io.grpc.ServerServiceDefinition bindService(AsyncService service) {
+    return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
+        .addMethod(
+          getChopMethod(),
+          io.grpc.stub.ServerCalls.asyncUnaryCall(
+            new MethodHandlers<
+              trisocket.Veggie,
+              trisocket.Veggie>(
+                service, METHODID_CHOP)))
+        .addMethod(
+          getMarinadeMethod(),
+          io.grpc.stub.ServerCalls.asyncUnaryCall(
+            new MethodHandlers<
+              trisocket.Meat,
+              trisocket.Meat>(
+                service, METHODID_MARINADE)))
+        .build();
   }
 
   private static abstract class RoundsmanBaseDescriptorSupplier

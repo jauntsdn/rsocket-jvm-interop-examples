@@ -5,7 +5,7 @@ import static io.grpc.MethodDescriptor.generateFullMethodName;
 /**
  */
 @javax.annotation.Generated(
-    value = "by gRPC proto compiler (version 1.53.0)",
+    value = "by gRPC proto compiler (version 1.54.1)",
     comments = "Source: service.proto")
 @io.grpc.stub.annotations.GrpcGenerated
 public final class KitchenGrpc {
@@ -92,31 +92,32 @@ public final class KitchenGrpc {
 
   /**
    */
-  public static abstract class KitchenImplBase implements io.grpc.BindableService {
+  public interface AsyncService {
 
     /**
      */
-    public io.grpc.stub.StreamObserver<trisocket.Order> serve(
+    default io.grpc.stub.StreamObserver<trisocket.Order> serve(
         io.grpc.stub.StreamObserver<trisocket.Dish> responseObserver) {
       return io.grpc.stub.ServerCalls.asyncUnimplementedStreamingCall(getServeMethod(), responseObserver);
-    }
-
-    @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
-      return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
-          .addMethod(
-            getServeMethod(),
-            io.grpc.stub.ServerCalls.asyncBidiStreamingCall(
-              new MethodHandlers<
-                trisocket.Order,
-                trisocket.Dish>(
-                  this, METHODID_SERVE)))
-          .build();
     }
   }
 
   /**
+   * Base class for the server implementation of the service Kitchen.
    */
-  public static final class KitchenStub extends io.grpc.stub.AbstractAsyncStub<KitchenStub> {
+  public static abstract class KitchenImplBase
+      implements io.grpc.BindableService, AsyncService {
+
+    @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
+      return KitchenGrpc.bindService(this);
+    }
+  }
+
+  /**
+   * A stub to allow clients to do asynchronous rpc calls to service Kitchen.
+   */
+  public static final class KitchenStub
+      extends io.grpc.stub.AbstractAsyncStub<KitchenStub> {
     private KitchenStub(
         io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       super(channel, callOptions);
@@ -138,8 +139,10 @@ public final class KitchenGrpc {
   }
 
   /**
+   * A stub to allow clients to do synchronous rpc calls to service Kitchen.
    */
-  public static final class KitchenBlockingStub extends io.grpc.stub.AbstractBlockingStub<KitchenBlockingStub> {
+  public static final class KitchenBlockingStub
+      extends io.grpc.stub.AbstractBlockingStub<KitchenBlockingStub> {
     private KitchenBlockingStub(
         io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       super(channel, callOptions);
@@ -153,8 +156,10 @@ public final class KitchenGrpc {
   }
 
   /**
+   * A stub to allow clients to do ListenableFuture-style rpc calls to service Kitchen.
    */
-  public static final class KitchenFutureStub extends io.grpc.stub.AbstractFutureStub<KitchenFutureStub> {
+  public static final class KitchenFutureStub
+      extends io.grpc.stub.AbstractFutureStub<KitchenFutureStub> {
     private KitchenFutureStub(
         io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
       super(channel, callOptions);
@@ -174,10 +179,10 @@ public final class KitchenGrpc {
       io.grpc.stub.ServerCalls.ServerStreamingMethod<Req, Resp>,
       io.grpc.stub.ServerCalls.ClientStreamingMethod<Req, Resp>,
       io.grpc.stub.ServerCalls.BidiStreamingMethod<Req, Resp> {
-    private final KitchenImplBase serviceImpl;
+    private final AsyncService serviceImpl;
     private final int methodId;
 
-    MethodHandlers(KitchenImplBase serviceImpl, int methodId) {
+    MethodHandlers(AsyncService serviceImpl, int methodId) {
       this.serviceImpl = serviceImpl;
       this.methodId = methodId;
     }
@@ -203,6 +208,18 @@ public final class KitchenGrpc {
           throw new AssertionError();
       }
     }
+  }
+
+  public static final io.grpc.ServerServiceDefinition bindService(AsyncService service) {
+    return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
+        .addMethod(
+          getServeMethod(),
+          io.grpc.stub.ServerCalls.asyncBidiStreamingCall(
+            new MethodHandlers<
+              trisocket.Order,
+              trisocket.Dish>(
+                service, METHODID_SERVE)))
+        .build();
   }
 
   private static abstract class KitchenBaseDescriptorSupplier
