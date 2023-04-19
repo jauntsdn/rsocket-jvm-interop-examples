@@ -6,43 +6,17 @@ package trisocket;
 /**
  * Protobuf type {@code trisocket.Pan}
  */
-public final class Pan extends
-    com.google.protobuf.GeneratedMessageV3 implements
+public  final class Pan extends
+    com.google.protobuf.GeneratedMessageLite<
+        Pan, Pan.Builder> implements
     // @@protoc_insertion_point(message_implements:trisocket.Pan)
     PanOrBuilder {
-private static final long serialVersionUID = 0L;
-  // Use Pan.newBuilder() to construct.
-  private Pan(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-    super(builder);
-  }
   private Pan() {
   }
-
-  @java.lang.Override
-  @SuppressWarnings({"unused"})
-  protected java.lang.Object newInstance(
-      UnusedPrivateParameter unused) {
-    return new Pan();
-  }
-
-  public static final com.google.protobuf.Descriptors.Descriptor
-      getDescriptor() {
-    return trisocket.ServiceProto.internal_static_trisocket_Pan_descriptor;
-  }
-
-  @java.lang.Override
-  protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internalGetFieldAccessorTable() {
-    return trisocket.ServiceProto.internal_static_trisocket_Pan_fieldAccessorTable
-        .ensureFieldAccessorsInitialized(
-            trisocket.Pan.class, trisocket.Pan.Builder.class);
-  }
-
   public static final int VEGGIE_FIELD_NUMBER = 1;
   private trisocket.Veggie veggie_;
   /**
    * <code>.trisocket.Veggie veggie = 1;</code>
-   * @return Whether the veggie field is set.
    */
   @java.lang.Override
   public boolean hasVeggie() {
@@ -50,7 +24,6 @@ private static final long serialVersionUID = 0L;
   }
   /**
    * <code>.trisocket.Veggie veggie = 1;</code>
-   * @return The veggie.
    */
   @java.lang.Override
   public trisocket.Veggie getVeggie() {
@@ -59,16 +32,37 @@ private static final long serialVersionUID = 0L;
   /**
    * <code>.trisocket.Veggie veggie = 1;</code>
    */
-  @java.lang.Override
-  public trisocket.VeggieOrBuilder getVeggieOrBuilder() {
-    return veggie_ == null ? trisocket.Veggie.getDefaultInstance() : veggie_;
+  private void setVeggie(trisocket.Veggie value) {
+    value.getClass();
+  veggie_ = value;
+
+    }
+  /**
+   * <code>.trisocket.Veggie veggie = 1;</code>
+   */
+  @java.lang.SuppressWarnings({"ReferenceEquality"})
+  private void mergeVeggie(trisocket.Veggie value) {
+    value.getClass();
+  if (veggie_ != null &&
+        veggie_ != trisocket.Veggie.getDefaultInstance()) {
+      veggie_ =
+        trisocket.Veggie.newBuilder(veggie_).mergeFrom(value).buildPartial();
+    } else {
+      veggie_ = value;
+    }
+
+  }
+  /**
+   * <code>.trisocket.Veggie veggie = 1;</code>
+   */
+  private void clearVeggie() {  veggie_ = null;
+
   }
 
   public static final int MEAT_FIELD_NUMBER = 2;
   private trisocket.Meat meat_;
   /**
    * <code>.trisocket.Meat meat = 2;</code>
-   * @return Whether the meat field is set.
    */
   @java.lang.Override
   public boolean hasMeat() {
@@ -76,7 +70,6 @@ private static final long serialVersionUID = 0L;
   }
   /**
    * <code>.trisocket.Meat meat = 2;</code>
-   * @return The meat.
    */
   @java.lang.Override
   public trisocket.Meat getMeat() {
@@ -85,649 +78,294 @@ private static final long serialVersionUID = 0L;
   /**
    * <code>.trisocket.Meat meat = 2;</code>
    */
-  @java.lang.Override
-  public trisocket.MeatOrBuilder getMeatOrBuilder() {
-    return meat_ == null ? trisocket.Meat.getDefaultInstance() : meat_;
+  private void setMeat(trisocket.Meat value) {
+    value.getClass();
+  meat_ = value;
+
+    }
+  /**
+   * <code>.trisocket.Meat meat = 2;</code>
+   */
+  @java.lang.SuppressWarnings({"ReferenceEquality"})
+  private void mergeMeat(trisocket.Meat value) {
+    value.getClass();
+  if (meat_ != null &&
+        meat_ != trisocket.Meat.getDefaultInstance()) {
+      meat_ =
+        trisocket.Meat.newBuilder(meat_).mergeFrom(value).buildPartial();
+    } else {
+      meat_ = value;
+    }
+
   }
+  /**
+   * <code>.trisocket.Meat meat = 2;</code>
+   */
+  private void clearMeat() {  meat_ = null;
 
-  private byte memoizedIsInitialized = -1;
-  @java.lang.Override
-  public final boolean isInitialized() {
-    byte isInitialized = memoizedIsInitialized;
-    if (isInitialized == 1) return true;
-    if (isInitialized == 0) return false;
-
-    memoizedIsInitialized = 1;
-    return true;
-  }
-
-  @java.lang.Override
-  public void writeTo(com.google.protobuf.CodedOutputStream output)
-                      throws java.io.IOException {
-    if (veggie_ != null) {
-      output.writeMessage(1, getVeggie());
-    }
-    if (meat_ != null) {
-      output.writeMessage(2, getMeat());
-    }
-    getUnknownFields().writeTo(output);
-  }
-
-  @java.lang.Override
-  public int getSerializedSize() {
-    int size = memoizedSize;
-    if (size != -1) return size;
-
-    size = 0;
-    if (veggie_ != null) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(1, getVeggie());
-    }
-    if (meat_ != null) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(2, getMeat());
-    }
-    size += getUnknownFields().getSerializedSize();
-    memoizedSize = size;
-    return size;
-  }
-
-  @java.lang.Override
-  public boolean equals(final java.lang.Object obj) {
-    if (obj == this) {
-     return true;
-    }
-    if (!(obj instanceof trisocket.Pan)) {
-      return super.equals(obj);
-    }
-    trisocket.Pan other = (trisocket.Pan) obj;
-
-    if (hasVeggie() != other.hasVeggie()) return false;
-    if (hasVeggie()) {
-      if (!getVeggie()
-          .equals(other.getVeggie())) return false;
-    }
-    if (hasMeat() != other.hasMeat()) return false;
-    if (hasMeat()) {
-      if (!getMeat()
-          .equals(other.getMeat())) return false;
-    }
-    if (!getUnknownFields().equals(other.getUnknownFields())) return false;
-    return true;
-  }
-
-  @java.lang.Override
-  public int hashCode() {
-    if (memoizedHashCode != 0) {
-      return memoizedHashCode;
-    }
-    int hash = 41;
-    hash = (19 * hash) + getDescriptor().hashCode();
-    if (hasVeggie()) {
-      hash = (37 * hash) + VEGGIE_FIELD_NUMBER;
-      hash = (53 * hash) + getVeggie().hashCode();
-    }
-    if (hasMeat()) {
-      hash = (37 * hash) + MEAT_FIELD_NUMBER;
-      hash = (53 * hash) + getMeat().hashCode();
-    }
-    hash = (29 * hash) + getUnknownFields().hashCode();
-    memoizedHashCode = hash;
-    return hash;
   }
 
   public static trisocket.Pan parseFrom(
       java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
-    return PARSER.parseFrom(data);
+    return com.google.protobuf.GeneratedMessageLite.parseFrom(
+        DEFAULT_INSTANCE, data);
   }
   public static trisocket.Pan parseFrom(
       java.nio.ByteBuffer data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
-    return PARSER.parseFrom(data, extensionRegistry);
+    return com.google.protobuf.GeneratedMessageLite.parseFrom(
+        DEFAULT_INSTANCE, data, extensionRegistry);
   }
   public static trisocket.Pan parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
-    return PARSER.parseFrom(data);
+    return com.google.protobuf.GeneratedMessageLite.parseFrom(
+        DEFAULT_INSTANCE, data);
   }
   public static trisocket.Pan parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
-    return PARSER.parseFrom(data, extensionRegistry);
+    return com.google.protobuf.GeneratedMessageLite.parseFrom(
+        DEFAULT_INSTANCE, data, extensionRegistry);
   }
   public static trisocket.Pan parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
-    return PARSER.parseFrom(data);
+    return com.google.protobuf.GeneratedMessageLite.parseFrom(
+        DEFAULT_INSTANCE, data);
   }
   public static trisocket.Pan parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
-    return PARSER.parseFrom(data, extensionRegistry);
+    return com.google.protobuf.GeneratedMessageLite.parseFrom(
+        DEFAULT_INSTANCE, data, extensionRegistry);
   }
   public static trisocket.Pan parseFrom(java.io.InputStream input)
       throws java.io.IOException {
-    return com.google.protobuf.GeneratedMessageV3
-        .parseWithIOException(PARSER, input);
+    return com.google.protobuf.GeneratedMessageLite.parseFrom(
+        DEFAULT_INSTANCE, input);
   }
   public static trisocket.Pan parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
-    return com.google.protobuf.GeneratedMessageV3
-        .parseWithIOException(PARSER, input, extensionRegistry);
+    return com.google.protobuf.GeneratedMessageLite.parseFrom(
+        DEFAULT_INSTANCE, input, extensionRegistry);
   }
   public static trisocket.Pan parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
-    return com.google.protobuf.GeneratedMessageV3
-        .parseDelimitedWithIOException(PARSER, input);
+    return parseDelimitedFrom(DEFAULT_INSTANCE, input);
   }
   public static trisocket.Pan parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
-    return com.google.protobuf.GeneratedMessageV3
-        .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    return parseDelimitedFrom(DEFAULT_INSTANCE, input, extensionRegistry);
   }
   public static trisocket.Pan parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
-    return com.google.protobuf.GeneratedMessageV3
-        .parseWithIOException(PARSER, input);
+    return com.google.protobuf.GeneratedMessageLite.parseFrom(
+        DEFAULT_INSTANCE, input);
   }
   public static trisocket.Pan parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
-    return com.google.protobuf.GeneratedMessageV3
-        .parseWithIOException(PARSER, input, extensionRegistry);
+    return com.google.protobuf.GeneratedMessageLite.parseFrom(
+        DEFAULT_INSTANCE, input, extensionRegistry);
   }
 
-  @java.lang.Override
-  public Builder newBuilderForType() { return newBuilder(); }
   public static Builder newBuilder() {
-    return DEFAULT_INSTANCE.toBuilder();
+    return (Builder) DEFAULT_INSTANCE.createBuilder();
   }
   public static Builder newBuilder(trisocket.Pan prototype) {
-    return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-  }
-  @java.lang.Override
-  public Builder toBuilder() {
-    return this == DEFAULT_INSTANCE
-        ? new Builder() : new Builder().mergeFrom(this);
+    return (Builder) DEFAULT_INSTANCE.createBuilder(prototype);
   }
 
-  @java.lang.Override
-  protected Builder newBuilderForType(
-      com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-    Builder builder = new Builder(parent);
-    return builder;
-  }
   /**
    * Protobuf type {@code trisocket.Pan}
    */
   public static final class Builder extends
-      com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+      com.google.protobuf.GeneratedMessageLite.Builder<
+        trisocket.Pan, Builder> implements
       // @@protoc_insertion_point(builder_implements:trisocket.Pan)
       trisocket.PanOrBuilder {
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return trisocket.ServiceProto.internal_static_trisocket_Pan_descriptor;
-    }
-
-    @java.lang.Override
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return trisocket.ServiceProto.internal_static_trisocket_Pan_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              trisocket.Pan.class, trisocket.Pan.Builder.class);
-    }
-
     // Construct using trisocket.Pan.newBuilder()
     private Builder() {
-
+      super(DEFAULT_INSTANCE);
     }
 
-    private Builder(
-        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-      super(parent);
 
-    }
-    @java.lang.Override
-    public Builder clear() {
-      super.clear();
-      bitField0_ = 0;
-      veggie_ = null;
-      if (veggieBuilder_ != null) {
-        veggieBuilder_.dispose();
-        veggieBuilder_ = null;
-      }
-      meat_ = null;
-      if (meatBuilder_ != null) {
-        meatBuilder_.dispose();
-        meatBuilder_ = null;
-      }
-      return this;
-    }
-
-    @java.lang.Override
-    public com.google.protobuf.Descriptors.Descriptor
-        getDescriptorForType() {
-      return trisocket.ServiceProto.internal_static_trisocket_Pan_descriptor;
-    }
-
-    @java.lang.Override
-    public trisocket.Pan getDefaultInstanceForType() {
-      return trisocket.Pan.getDefaultInstance();
-    }
-
-    @java.lang.Override
-    public trisocket.Pan build() {
-      trisocket.Pan result = buildPartial();
-      if (!result.isInitialized()) {
-        throw newUninitializedMessageException(result);
-      }
-      return result;
-    }
-
-    @java.lang.Override
-    public trisocket.Pan buildPartial() {
-      trisocket.Pan result = new trisocket.Pan(this);
-      if (bitField0_ != 0) { buildPartial0(result); }
-      onBuilt();
-      return result;
-    }
-
-    private void buildPartial0(trisocket.Pan result) {
-      int from_bitField0_ = bitField0_;
-      if (((from_bitField0_ & 0x00000001) != 0)) {
-        result.veggie_ = veggieBuilder_ == null
-            ? veggie_
-            : veggieBuilder_.build();
-      }
-      if (((from_bitField0_ & 0x00000002) != 0)) {
-        result.meat_ = meatBuilder_ == null
-            ? meat_
-            : meatBuilder_.build();
-      }
-    }
-
-    @java.lang.Override
-    public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof trisocket.Pan) {
-        return mergeFrom((trisocket.Pan)other);
-      } else {
-        super.mergeFrom(other);
-        return this;
-      }
-    }
-
-    public Builder mergeFrom(trisocket.Pan other) {
-      if (other == trisocket.Pan.getDefaultInstance()) return this;
-      if (other.hasVeggie()) {
-        mergeVeggie(other.getVeggie());
-      }
-      if (other.hasMeat()) {
-        mergeMeat(other.getMeat());
-      }
-      this.mergeUnknownFields(other.getUnknownFields());
-      onChanged();
-      return this;
-    }
-
-    @java.lang.Override
-    public final boolean isInitialized() {
-      return true;
-    }
-
-    @java.lang.Override
-    public Builder mergeFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            case 10: {
-              input.readMessage(
-                  getVeggieFieldBuilder().getBuilder(),
-                  extensionRegistry);
-              bitField0_ |= 0x00000001;
-              break;
-            } // case 10
-            case 18: {
-              input.readMessage(
-                  getMeatFieldBuilder().getBuilder(),
-                  extensionRegistry);
-              bitField0_ |= 0x00000002;
-              break;
-            } // case 18
-            default: {
-              if (!super.parseUnknownField(input, extensionRegistry, tag)) {
-                done = true; // was an endgroup tag
-              }
-              break;
-            } // default:
-          } // switch (tag)
-        } // while (!done)
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.unwrapIOException();
-      } finally {
-        onChanged();
-      } // finally
-      return this;
-    }
-    private int bitField0_;
-
-    private trisocket.Veggie veggie_;
-    private com.google.protobuf.SingleFieldBuilderV3<
-        trisocket.Veggie, trisocket.Veggie.Builder, trisocket.VeggieOrBuilder> veggieBuilder_;
     /**
      * <code>.trisocket.Veggie veggie = 1;</code>
-     * @return Whether the veggie field is set.
      */
+    @java.lang.Override
     public boolean hasVeggie() {
-      return ((bitField0_ & 0x00000001) != 0);
+      return instance.hasVeggie();
     }
     /**
      * <code>.trisocket.Veggie veggie = 1;</code>
-     * @return The veggie.
      */
+    @java.lang.Override
     public trisocket.Veggie getVeggie() {
-      if (veggieBuilder_ == null) {
-        return veggie_ == null ? trisocket.Veggie.getDefaultInstance() : veggie_;
-      } else {
-        return veggieBuilder_.getMessage();
-      }
+      return instance.getVeggie();
     }
     /**
      * <code>.trisocket.Veggie veggie = 1;</code>
      */
     public Builder setVeggie(trisocket.Veggie value) {
-      if (veggieBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        veggie_ = value;
-      } else {
-        veggieBuilder_.setMessage(value);
-      }
-      bitField0_ |= 0x00000001;
-      onChanged();
+      copyOnWrite();
+      instance.setVeggie(value);
       return this;
-    }
+      }
     /**
      * <code>.trisocket.Veggie veggie = 1;</code>
      */
     public Builder setVeggie(
         trisocket.Veggie.Builder builderForValue) {
-      if (veggieBuilder_ == null) {
-        veggie_ = builderForValue.build();
-      } else {
-        veggieBuilder_.setMessage(builderForValue.build());
-      }
-      bitField0_ |= 0x00000001;
-      onChanged();
+      copyOnWrite();
+      instance.setVeggie(builderForValue.build());
       return this;
     }
     /**
      * <code>.trisocket.Veggie veggie = 1;</code>
      */
     public Builder mergeVeggie(trisocket.Veggie value) {
-      if (veggieBuilder_ == null) {
-        if (((bitField0_ & 0x00000001) != 0) &&
-          veggie_ != null &&
-          veggie_ != trisocket.Veggie.getDefaultInstance()) {
-          getVeggieBuilder().mergeFrom(value);
-        } else {
-          veggie_ = value;
-        }
-      } else {
-        veggieBuilder_.mergeFrom(value);
-      }
-      bitField0_ |= 0x00000001;
-      onChanged();
+      copyOnWrite();
+      instance.mergeVeggie(value);
       return this;
     }
     /**
      * <code>.trisocket.Veggie veggie = 1;</code>
      */
-    public Builder clearVeggie() {
-      bitField0_ = (bitField0_ & ~0x00000001);
-      veggie_ = null;
-      if (veggieBuilder_ != null) {
-        veggieBuilder_.dispose();
-        veggieBuilder_ = null;
-      }
-      onChanged();
+    public Builder clearVeggie() {  copyOnWrite();
+      instance.clearVeggie();
       return this;
-    }
-    /**
-     * <code>.trisocket.Veggie veggie = 1;</code>
-     */
-    public trisocket.Veggie.Builder getVeggieBuilder() {
-      bitField0_ |= 0x00000001;
-      onChanged();
-      return getVeggieFieldBuilder().getBuilder();
-    }
-    /**
-     * <code>.trisocket.Veggie veggie = 1;</code>
-     */
-    public trisocket.VeggieOrBuilder getVeggieOrBuilder() {
-      if (veggieBuilder_ != null) {
-        return veggieBuilder_.getMessageOrBuilder();
-      } else {
-        return veggie_ == null ?
-            trisocket.Veggie.getDefaultInstance() : veggie_;
-      }
-    }
-    /**
-     * <code>.trisocket.Veggie veggie = 1;</code>
-     */
-    private com.google.protobuf.SingleFieldBuilderV3<
-        trisocket.Veggie, trisocket.Veggie.Builder, trisocket.VeggieOrBuilder> 
-        getVeggieFieldBuilder() {
-      if (veggieBuilder_ == null) {
-        veggieBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-            trisocket.Veggie, trisocket.Veggie.Builder, trisocket.VeggieOrBuilder>(
-                getVeggie(),
-                getParentForChildren(),
-                isClean());
-        veggie_ = null;
-      }
-      return veggieBuilder_;
     }
 
-    private trisocket.Meat meat_;
-    private com.google.protobuf.SingleFieldBuilderV3<
-        trisocket.Meat, trisocket.Meat.Builder, trisocket.MeatOrBuilder> meatBuilder_;
     /**
      * <code>.trisocket.Meat meat = 2;</code>
-     * @return Whether the meat field is set.
      */
+    @java.lang.Override
     public boolean hasMeat() {
-      return ((bitField0_ & 0x00000002) != 0);
+      return instance.hasMeat();
     }
     /**
      * <code>.trisocket.Meat meat = 2;</code>
-     * @return The meat.
      */
+    @java.lang.Override
     public trisocket.Meat getMeat() {
-      if (meatBuilder_ == null) {
-        return meat_ == null ? trisocket.Meat.getDefaultInstance() : meat_;
-      } else {
-        return meatBuilder_.getMessage();
-      }
+      return instance.getMeat();
     }
     /**
      * <code>.trisocket.Meat meat = 2;</code>
      */
     public Builder setMeat(trisocket.Meat value) {
-      if (meatBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        meat_ = value;
-      } else {
-        meatBuilder_.setMessage(value);
-      }
-      bitField0_ |= 0x00000002;
-      onChanged();
+      copyOnWrite();
+      instance.setMeat(value);
       return this;
-    }
+      }
     /**
      * <code>.trisocket.Meat meat = 2;</code>
      */
     public Builder setMeat(
         trisocket.Meat.Builder builderForValue) {
-      if (meatBuilder_ == null) {
-        meat_ = builderForValue.build();
-      } else {
-        meatBuilder_.setMessage(builderForValue.build());
-      }
-      bitField0_ |= 0x00000002;
-      onChanged();
+      copyOnWrite();
+      instance.setMeat(builderForValue.build());
       return this;
     }
     /**
      * <code>.trisocket.Meat meat = 2;</code>
      */
     public Builder mergeMeat(trisocket.Meat value) {
-      if (meatBuilder_ == null) {
-        if (((bitField0_ & 0x00000002) != 0) &&
-          meat_ != null &&
-          meat_ != trisocket.Meat.getDefaultInstance()) {
-          getMeatBuilder().mergeFrom(value);
-        } else {
-          meat_ = value;
-        }
-      } else {
-        meatBuilder_.mergeFrom(value);
-      }
-      bitField0_ |= 0x00000002;
-      onChanged();
+      copyOnWrite();
+      instance.mergeMeat(value);
       return this;
     }
     /**
      * <code>.trisocket.Meat meat = 2;</code>
      */
-    public Builder clearMeat() {
-      bitField0_ = (bitField0_ & ~0x00000002);
-      meat_ = null;
-      if (meatBuilder_ != null) {
-        meatBuilder_.dispose();
-        meatBuilder_ = null;
-      }
-      onChanged();
+    public Builder clearMeat() {  copyOnWrite();
+      instance.clearMeat();
       return this;
     }
-    /**
-     * <code>.trisocket.Meat meat = 2;</code>
-     */
-    public trisocket.Meat.Builder getMeatBuilder() {
-      bitField0_ |= 0x00000002;
-      onChanged();
-      return getMeatFieldBuilder().getBuilder();
-    }
-    /**
-     * <code>.trisocket.Meat meat = 2;</code>
-     */
-    public trisocket.MeatOrBuilder getMeatOrBuilder() {
-      if (meatBuilder_ != null) {
-        return meatBuilder_.getMessageOrBuilder();
-      } else {
-        return meat_ == null ?
-            trisocket.Meat.getDefaultInstance() : meat_;
-      }
-    }
-    /**
-     * <code>.trisocket.Meat meat = 2;</code>
-     */
-    private com.google.protobuf.SingleFieldBuilderV3<
-        trisocket.Meat, trisocket.Meat.Builder, trisocket.MeatOrBuilder> 
-        getMeatFieldBuilder() {
-      if (meatBuilder_ == null) {
-        meatBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-            trisocket.Meat, trisocket.Meat.Builder, trisocket.MeatOrBuilder>(
-                getMeat(),
-                getParentForChildren(),
-                isClean());
-        meat_ = null;
-      }
-      return meatBuilder_;
-    }
-    @java.lang.Override
-    public final Builder setUnknownFields(
-        final com.google.protobuf.UnknownFieldSet unknownFields) {
-      return super.setUnknownFields(unknownFields);
-    }
-
-    @java.lang.Override
-    public final Builder mergeUnknownFields(
-        final com.google.protobuf.UnknownFieldSet unknownFields) {
-      return super.mergeUnknownFields(unknownFields);
-    }
-
 
     // @@protoc_insertion_point(builder_scope:trisocket.Pan)
   }
+  @java.lang.Override
+  @java.lang.SuppressWarnings({"unchecked", "fallthrough"})
+  protected final java.lang.Object dynamicMethod(
+      com.google.protobuf.GeneratedMessageLite.MethodToInvoke method,
+      java.lang.Object arg0, java.lang.Object arg1) {
+    switch (method) {
+      case NEW_MUTABLE_INSTANCE: {
+        return new trisocket.Pan();
+      }
+      case NEW_BUILDER: {
+        return new Builder();
+      }
+      case BUILD_MESSAGE_INFO: {
+          java.lang.Object[] objects = new java.lang.Object[] {
+            "veggie_",
+            "meat_",
+          };
+          java.lang.String info =
+              "\u0000\u0002\u0000\u0000\u0001\u0002\u0002\u0000\u0000\u0000\u0001\t\u0002\t";
+          return newMessageInfo(DEFAULT_INSTANCE, info, objects);
+      }
+      // fall through
+      case GET_DEFAULT_INSTANCE: {
+        return DEFAULT_INSTANCE;
+      }
+      case GET_PARSER: {
+        com.google.protobuf.Parser<trisocket.Pan> parser = PARSER;
+        if (parser == null) {
+          synchronized (trisocket.Pan.class) {
+            parser = PARSER;
+            if (parser == null) {
+              parser =
+                  new DefaultInstanceBasedParser<trisocket.Pan>(
+                      DEFAULT_INSTANCE);
+              PARSER = parser;
+            }
+          }
+        }
+        return parser;
+    }
+    case GET_MEMOIZED_IS_INITIALIZED: {
+      return (byte) 1;
+    }
+    case SET_MEMOIZED_IS_INITIALIZED: {
+      return null;
+    }
+    }
+    throw new UnsupportedOperationException();
+  }
+
 
   // @@protoc_insertion_point(class_scope:trisocket.Pan)
   private static final trisocket.Pan DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new trisocket.Pan();
+    Pan defaultInstance = new Pan();
+    // New instances are implicitly immutable so no need to make
+    // immutable.
+    DEFAULT_INSTANCE = defaultInstance;
+    com.google.protobuf.GeneratedMessageLite.registerDefaultInstance(
+      Pan.class, defaultInstance);
   }
 
   public static trisocket.Pan getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
-  private static final com.google.protobuf.Parser<Pan>
-      PARSER = new com.google.protobuf.AbstractParser<Pan>() {
-    @java.lang.Override
-    public Pan parsePartialFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      Builder builder = newBuilder();
-      try {
-        builder.mergeFrom(input, extensionRegistry);
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(builder.buildPartial());
-      } catch (com.google.protobuf.UninitializedMessageException e) {
-        throw e.asInvalidProtocolBufferException().setUnfinishedMessage(builder.buildPartial());
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(e)
-            .setUnfinishedMessage(builder.buildPartial());
-      }
-      return builder.buildPartial();
-    }
-  };
+  private static volatile com.google.protobuf.Parser<Pan> PARSER;
 
   public static com.google.protobuf.Parser<Pan> parser() {
-    return PARSER;
+    return DEFAULT_INSTANCE.getParserForType();
   }
-
-  @java.lang.Override
-  public com.google.protobuf.Parser<Pan> getParserForType() {
-    return PARSER;
-  }
-
-  @java.lang.Override
-  public trisocket.Pan getDefaultInstanceForType() {
-    return DEFAULT_INSTANCE;
-  }
-
 }
 

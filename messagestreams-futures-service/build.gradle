@@ -32,8 +32,10 @@ dependencies {
 
     implementation project(":messagestreams-runtime")
     implementation "com.jauntsdn.rsocket:rsocket-rpc-futures"
-    implementation "com.google.protobuf:protobuf-java"
     implementation "org.slf4j:slf4j-api"
+
+    compileOnly "com.google.protobuf:protobuf-java"
+    runtimeOnly "com.google.protobuf:protobuf-javalite"
 }
 
 sourceSets {
@@ -61,6 +63,12 @@ if (findProperty("generateProto") == "true" && osdetector.os == "linux") {
                 artifact = "com.jauntsdn.rsocket:rsocket-rpc-futures-compiler"
             }
             generateProtoTasks {
+                ofSourceSet("main")*.builtins {
+                    java {
+                        option "lite"
+                    }
+                }
+
                 ofSourceSet("main")*.plugins {
                     messageStreamsRpc {
                         option "metadataless-method-definitions"

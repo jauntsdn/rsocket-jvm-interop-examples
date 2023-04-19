@@ -5,7 +5,7 @@ package trisocket;
 
 public interface MeatOrBuilder extends
     // @@protoc_insertion_point(interface_extends:trisocket.Meat)
-    com.google.protobuf.MessageOrBuilder {
+    com.google.protobuf.MessageLiteOrBuilder {
 
   /**
    * <code>string name = 1;</code>

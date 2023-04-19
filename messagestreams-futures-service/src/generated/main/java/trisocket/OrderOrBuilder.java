@@ -5,7 +5,7 @@ package trisocket;
 
 public interface OrderOrBuilder extends
     // @@protoc_insertion_point(interface_extends:trisocket.Order)
-    com.google.protobuf.MessageOrBuilder {
+    com.google.protobuf.MessageLiteOrBuilder {
 
   /**
    * <code>int32 count = 1;</code>

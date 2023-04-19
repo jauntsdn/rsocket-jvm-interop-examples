@@ -5,7 +5,7 @@ package trisocket;
 
 public interface VeggieOrBuilder extends
     // @@protoc_insertion_point(interface_extends:trisocket.Veggie)
-    com.google.protobuf.MessageOrBuilder {
+    com.google.protobuf.MessageLiteOrBuilder {
 
   /**
    * <code>string name = 1;</code>

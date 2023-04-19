@@ -5,7 +5,7 @@ package trisocket;
 
 public interface DishOrBuilder extends
     // @@protoc_insertion_point(interface_extends:trisocket.Dish)
-    com.google.protobuf.MessageOrBuilder {
+    com.google.protobuf.MessageLiteOrBuilder {
 
   /**
    * <code>.trisocket.Veggie veggie = 1;</code>
@@ -17,10 +17,6 @@ public interface DishOrBuilder extends
    * @return The veggie.
    */
   trisocket.Veggie getVeggie();
-  /**
-   * <code>.trisocket.Veggie veggie = 1;</code>
-   */
-  trisocket.VeggieOrBuilder getVeggieOrBuilder();
 
   /**
    * <code>.trisocket.Meat meat = 2;</code>
@@ -32,10 +28,6 @@ public interface DishOrBuilder extends
    * @return The meat.
    */
   trisocket.Meat getMeat();
-  /**
-   * <code>.trisocket.Meat meat = 2;</code>
-   */
-  trisocket.MeatOrBuilder getMeatOrBuilder();
 
   /**
    * <pre>
