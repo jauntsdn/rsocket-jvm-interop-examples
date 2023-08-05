@@ -3,7 +3,6 @@ package com.jauntsdn.rsocket.trisocket.roundsman;
 import com.jauntsdn.rsocket.*;
 import com.jauntsdn.rsocket.trisocket.RSocketFactory;
 import com.jauntsdn.rsocket.trisocket.RSocketFactory.Server;
-import io.netty.buffer.ByteBuf;
 import io.smallrye.mutiny.Uni;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
@@ -64,7 +63,7 @@ public class Main {
     }
 
     @Override
-    public Uni<Veggie> chop(Veggie veggie, ByteBuf metadata) {
+    public Uni<Veggie> chop(Veggie veggie, Headers metadata) {
       return Uni.createFrom()
           .deferred(
               () -> {
@@ -79,7 +78,7 @@ public class Main {
     }
 
     @Override
-    public Uni<Meat> marinade(Meat meat, ByteBuf metadata) {
+    public Uni<Meat> marinade(Meat meat, Headers metadata) {
       return Uni.createFrom()
           .deferred(
               () ->

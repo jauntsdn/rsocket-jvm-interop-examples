@@ -23,12 +23,13 @@ plugins {
 description = "messagestreams interop: messagestreams-mutiny service"
 
 compileJava {
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
+    sourceCompatibility = 11
+    targetCompatibility = 11
 }
 
 dependencies {
     protobuf project(":messagestreams-service-idl")
+    protobuf "com.jauntsdn.rsocket:rsocket-rpc-metadata-idl"
 
     implementation project(":messagestreams-runtime")
     implementation "com.jauntsdn.rsocket:rsocket-rpc-mutiny"
@@ -64,6 +65,7 @@ if (findProperty("generateProto") == "true") {
                 ofSourceSet("main")*.plugins {
                     messageStreamsRpc {
                         option "metadataless-method-definitions"
+                        option "typed-metadata"
                     }
                 }
             }

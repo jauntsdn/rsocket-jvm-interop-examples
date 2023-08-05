@@ -3,7 +3,6 @@ package com.jauntsdn.rsocket.trisocket.kitchen;
 import com.jauntsdn.rsocket.*;
 import com.jauntsdn.rsocket.trisocket.RSocketFactory;
 import com.jauntsdn.rsocket.trisocket.RSocketFactory.Server;
-import io.netty.buffer.ByteBuf;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.functions.BiConsumer;
@@ -102,7 +101,7 @@ public class Main {
     }
 
     @Override
-    public Flowable<Dish> serve(Publisher<Order> orders, ByteBuf metadata) {
+    public Flowable<Dish> serve(Publisher<Order> orders, Headers metadata) {
       return Flowable.fromPublisher(orders)
           .flatMap(
               order -> {

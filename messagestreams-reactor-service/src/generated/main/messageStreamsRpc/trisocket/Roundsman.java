@@ -1,7 +1,7 @@
 package trisocket;
 
 @javax.annotation.Generated(
-    value = "jauntsdn.com rpc compiler (version 1.4.0)",
+    value = "jauntsdn.com rpc compiler (version 1.5.0)",
     comments = "source: service.proto")
 public interface Roundsman {
   String SERVICE = "trisocket.Roundsman";
@@ -15,15 +15,15 @@ public interface Roundsman {
   boolean METHOD_MARINADE_IDEMPOTENT = false;
   int METHOD_MARINADE_RANK = 0;
 
-  reactor.core.publisher.Mono<trisocket.Veggie> chop(trisocket.Veggie message, io.netty.buffer.ByteBuf metadata);
+  reactor.core.publisher.Mono<trisocket.Veggie> chop(trisocket.Veggie message, com.jauntsdn.rsocket.Headers metadata);
 
-  reactor.core.publisher.Mono<trisocket.Meat> marinade(trisocket.Meat message, io.netty.buffer.ByteBuf metadata);
+  reactor.core.publisher.Mono<trisocket.Meat> marinade(trisocket.Meat message, com.jauntsdn.rsocket.Headers metadata);
 
   default reactor.core.publisher.Mono<trisocket.Veggie> chop(trisocket.Veggie message) {
-    return chop(message, io.netty.buffer.Unpooled.EMPTY_BUFFER);
+    return chop(message, com.jauntsdn.rsocket.Headers.empty());
   }
 
   default reactor.core.publisher.Mono<trisocket.Meat> marinade(trisocket.Meat message) {
-    return marinade(message, io.netty.buffer.Unpooled.EMPTY_BUFFER);
+    return marinade(message, com.jauntsdn.rsocket.Headers.empty());
   }
 }

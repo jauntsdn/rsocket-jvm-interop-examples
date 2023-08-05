@@ -1,7 +1,7 @@
 package trisocket;
 
 @javax.annotation.Generated(
-    value = "jauntsdn.com rpc compiler (version 1.4.0)",
+    value = "jauntsdn.com rpc compiler (version 1.5.0)",
     comments = "source: service.proto")
 public interface Chef {
   String SERVICE = "trisocket.Chef";
@@ -11,9 +11,9 @@ public interface Chef {
   boolean METHOD_ROAST_IDEMPOTENT = false;
   int METHOD_ROAST_RANK = 0;
 
-  reactor.core.publisher.Mono<trisocket.Dish> roast(trisocket.Pan message, io.netty.buffer.ByteBuf metadata);
+  reactor.core.publisher.Mono<trisocket.Dish> roast(trisocket.Pan message, com.jauntsdn.rsocket.Headers metadata);
 
   default reactor.core.publisher.Mono<trisocket.Dish> roast(trisocket.Pan message) {
-    return roast(message, io.netty.buffer.Unpooled.EMPTY_BUFFER);
+    return roast(message, com.jauntsdn.rsocket.Headers.empty());
   }
 }

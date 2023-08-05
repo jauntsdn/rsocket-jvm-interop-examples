@@ -5,14 +5,14 @@ import static io.grpc.MethodDescriptor.generateFullMethodName;
 /**
  */
 @javax.annotation.Generated(
-    value = "by gRPC proto compiler (version 1.54.1)",
+    value = "by gRPC proto compiler (version 1.57.1)",
     comments = "Source: service.proto")
 @io.grpc.stub.annotations.GrpcGenerated
 public final class RoundsmanGrpc {
 
   private RoundsmanGrpc() {}
 
-  public static final String SERVICE_NAME = "trisocket.Roundsman";
+  public static final java.lang.String SERVICE_NAME = "trisocket.Roundsman";
 
   // Static method descriptors that strictly reflect the proto.
   private static volatile io.grpc.MethodDescriptor<trisocket.Veggie,
@@ -334,9 +334,9 @@ public final class RoundsmanGrpc {
   private static final class RoundsmanMethodDescriptorSupplier
       extends RoundsmanBaseDescriptorSupplier
       implements io.grpc.protobuf.ProtoMethodDescriptorSupplier {
-    private final String methodName;
+    private final java.lang.String methodName;
 
-    RoundsmanMethodDescriptorSupplier(String methodName) {
+    RoundsmanMethodDescriptorSupplier(java.lang.String methodName) {
       this.methodName = methodName;
     }
 

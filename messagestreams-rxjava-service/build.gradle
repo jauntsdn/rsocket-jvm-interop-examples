@@ -29,6 +29,7 @@ compileJava {
 
 dependencies {
     protobuf project(":messagestreams-service-idl")
+    protobuf "com.jauntsdn.rsocket:rsocket-rpc-metadata-idl"
 
     implementation project(":messagestreams-runtime")
     implementation "com.jauntsdn.rsocket:rsocket-rpc-rxjava"
@@ -64,6 +65,7 @@ if (findProperty("generateProto") == "true") {
                 ofSourceSet("main")*.plugins {
                     messageStreamsRpc {
                         option "metadataless-method-definitions"
+                        option "typed-metadata"
                     }
                 }
             }

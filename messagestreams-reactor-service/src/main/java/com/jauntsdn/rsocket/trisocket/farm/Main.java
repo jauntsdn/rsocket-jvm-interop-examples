@@ -3,7 +3,6 @@ package com.jauntsdn.rsocket.trisocket.farm;
 import com.jauntsdn.rsocket.*;
 import com.jauntsdn.rsocket.trisocket.RSocketFactory;
 import com.jauntsdn.rsocket.trisocket.RSocketFactory.Server;
-import io.netty.buffer.ByteBuf;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Optional;
@@ -51,7 +50,7 @@ public class Main {
     int veggieIndex = 0;
 
     @Override
-    public Flux<Meat> meat(Order message, ByteBuf metadata) {
+    public Flux<Meat> meat(Order message, Headers metadata) {
       int durationMillis = ThreadLocalRandom.current().nextInt(30);
       return Flux.<Meat>create(
               sink -> {
@@ -67,7 +66,7 @@ public class Main {
     }
 
     @Override
-    public Flux<Veggie> veggies(Order message, ByteBuf metadata) {
+    public Flux<Veggie> veggies(Order message, Headers metadata) {
       int durationMillis = ThreadLocalRandom.current().nextInt(30);
       return Flux.<Veggie>create(
               sink -> {

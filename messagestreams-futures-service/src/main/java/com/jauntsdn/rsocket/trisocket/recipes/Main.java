@@ -3,7 +3,6 @@ package com.jauntsdn.rsocket.trisocket.recipes;
 import com.jauntsdn.rsocket.*;
 import com.jauntsdn.rsocket.trisocket.RSocketFactory;
 import com.jauntsdn.rsocket.trisocket.RSocketFactory.Server;
-import io.netty.buffer.ByteBuf;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 import java.util.concurrent.*;
@@ -41,7 +40,7 @@ public class Main {
   private static class GoodRecipes implements Recipes {
 
     @Override
-    public CompletionStage<Recipe> marinade(Meat meat, ByteBuf metadata) {
+    public CompletionStage<Recipe> marinade(Meat meat, Headers metadata) {
       int durationMillis = 1 + ThreadLocalRandom.current().nextInt(50);
       float stiffness = Math.max(0.1f, meat.getStiffness() / 2);
       return CompletableFuture.completedFuture(

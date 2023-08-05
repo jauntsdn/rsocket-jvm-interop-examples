@@ -1,13 +1,13 @@
 package com.jauntsdn.rsocket.trisocket.chef;
 
 import com.jauntsdn.rsocket.Disposable;
+import com.jauntsdn.rsocket.Headers;
 import com.jauntsdn.rsocket.MessageStreams;
 import com.jauntsdn.rsocket.ServerStreamsAcceptor;
 import com.jauntsdn.rsocket.SetupMessage;
 import com.jauntsdn.rsocket.trisocket.RSocketFactory;
 import com.jauntsdn.rsocket.trisocket.RSocketFactory.Server;
 import io.grpc.stub.StreamObserver;
-import io.netty.buffer.ByteBuf;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 import java.util.concurrent.*;
@@ -56,7 +56,7 @@ public class Main {
     }
 
     @Override
-    public void roast(Pan pan, ByteBuf metadata, StreamObserver<Dish> observer) {
+    public void roast(Pan pan, Headers metadata, StreamObserver<Dish> observer) {
       int durationMillis = ThreadLocalRandom.current().nextInt(100);
       scheduler.schedule(
           () -> {

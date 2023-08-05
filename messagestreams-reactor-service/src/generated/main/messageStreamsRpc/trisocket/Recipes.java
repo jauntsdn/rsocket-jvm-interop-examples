@@ -1,7 +1,7 @@
 package trisocket;
 
 @javax.annotation.Generated(
-    value = "jauntsdn.com rpc compiler (version 1.4.0)",
+    value = "jauntsdn.com rpc compiler (version 1.5.0)",
     comments = "source: service.proto")
 public interface Recipes {
   String SERVICE = "trisocket.Recipes";
@@ -11,9 +11,9 @@ public interface Recipes {
   boolean METHOD_MARINADE_IDEMPOTENT = false;
   int METHOD_MARINADE_RANK = 0;
 
-  reactor.core.publisher.Mono<trisocket.Recipe> marinade(trisocket.Meat message, io.netty.buffer.ByteBuf metadata);
+  reactor.core.publisher.Mono<trisocket.Recipe> marinade(trisocket.Meat message, com.jauntsdn.rsocket.Headers metadata);
 
   default reactor.core.publisher.Mono<trisocket.Recipe> marinade(trisocket.Meat message) {
-    return marinade(message, io.netty.buffer.Unpooled.EMPTY_BUFFER);
+    return marinade(message, com.jauntsdn.rsocket.Headers.empty());
   }
 }

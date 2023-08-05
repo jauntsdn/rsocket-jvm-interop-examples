@@ -1,7 +1,7 @@
 package trisocket;
 
 @javax.annotation.Generated(
-    value = "jauntsdn.com rpc compiler (version 1.4.0)",
+    value = "jauntsdn.com rpc compiler (version 1.5.0)",
     comments = "source: service.proto")
 @com.jauntsdn.rsocket.Rpc.Generated(
     role = com.jauntsdn.rsocket.Rpc.Role.CLIENT,
@@ -51,22 +51,22 @@ public final class FarmerClient implements Farmer {
 
   @Override
   @com.jauntsdn.rsocket.Rpc.GeneratedMethod(returnType = trisocket.Meat.class)
-  public reactor.core.publisher.Flux<trisocket.Meat> meat(trisocket.Order message, io.netty.buffer.ByteBuf metadata) {
+  public reactor.core.publisher.Flux<trisocket.Meat> meat(trisocket.Order message, com.jauntsdn.rsocket.Headers headersMetadata) {
     reactor.core.publisher.Flux<trisocket.Meat> meat = reactor.core.publisher.Flux.defer(new java.util.function.Supplier<reactor.core.publisher.Flux<com.jauntsdn.rsocket.Message>>() {
       @Override
       public reactor.core.publisher.Flux<com.jauntsdn.rsocket.Message> get() {
         int externalMetadataSize = streams.attributes().intAttr(com.jauntsdn.rsocket.Attributes.EXTERNAL_METADATA_SIZE);
         int dataSize = message.getSerializedSize();
-        int localHeader = com.jauntsdn.rsocket.MessageMetadata.header(metadata);
-        boolean isDefaultService = com.jauntsdn.rsocket.MessageMetadata.defaultService(localHeader);
+        boolean isDefaultService = headersMetadata.isDefaultService();
         String service = isDefaultService ? com.jauntsdn.rsocket.Rpc.RpcMetadata.defaultService() : Farmer.SERVICE;
+        io.netty.buffer.ByteBuf metadata = com.jauntsdn.rsocket.generated_56739.ProtobufCodec.encodeHeaders(headersMetadata);
         com.jauntsdn.rsocket.Rpc.Codec codec = rpcCodec;
-        io.netty.buffer.ByteBuf content = codec.encodeContent(allocator, metadata, localHeader, service, Farmer.METHOD_MEAT, true, Farmer.METHOD_MEAT_IDEMPOTENT, dataSize, externalMetadataSize);
-        encode(content, message);
+        io.netty.buffer.ByteBuf content = codec.encodeContent(allocator, metadata, service, Farmer.METHOD_MEAT, true, Farmer.METHOD_MEAT_IDEMPOTENT, dataSize, externalMetadataSize);
+        com.jauntsdn.rsocket.generated_56739.ProtobufCodec.encode("FarmerClient", content, message);
         com.jauntsdn.rsocket.Message message = codec.encodeMessage(content, Farmer.METHOD_MEAT_RANK);
         return streams.requestStream(message);
       }
-    }).map(decode(trisocket.Meat.parser()));
+    }).map(com.jauntsdn.rsocket.generated_56739.ProtobufCodec.decode("FarmerClient", trisocket.Meat.parser()));
     if (meatInstrumentation != null) {
       return meat.transform(meatInstrumentation);
     }
@@ -75,57 +75,25 @@ public final class FarmerClient implements Farmer {
 
   @Override
   @com.jauntsdn.rsocket.Rpc.GeneratedMethod(returnType = trisocket.Veggie.class)
-  public reactor.core.publisher.Flux<trisocket.Veggie> veggies(trisocket.Order message, io.netty.buffer.ByteBuf metadata) {
+  public reactor.core.publisher.Flux<trisocket.Veggie> veggies(trisocket.Order message, com.jauntsdn.rsocket.Headers headersMetadata) {
     reactor.core.publisher.Flux<trisocket.Veggie> veggies = reactor.core.publisher.Flux.defer(new java.util.function.Supplier<reactor.core.publisher.Flux<com.jauntsdn.rsocket.Message>>() {
       @Override
       public reactor.core.publisher.Flux<com.jauntsdn.rsocket.Message> get() {
         int externalMetadataSize = streams.attributes().intAttr(com.jauntsdn.rsocket.Attributes.EXTERNAL_METADATA_SIZE);
         int dataSize = message.getSerializedSize();
-        int localHeader = com.jauntsdn.rsocket.MessageMetadata.header(metadata);
-        boolean isDefaultService = com.jauntsdn.rsocket.MessageMetadata.defaultService(localHeader);
+        boolean isDefaultService = headersMetadata.isDefaultService();
         String service = isDefaultService ? com.jauntsdn.rsocket.Rpc.RpcMetadata.defaultService() : Farmer.SERVICE;
+        io.netty.buffer.ByteBuf metadata = com.jauntsdn.rsocket.generated_56739.ProtobufCodec.encodeHeaders(headersMetadata);
         com.jauntsdn.rsocket.Rpc.Codec codec = rpcCodec;
-        io.netty.buffer.ByteBuf content = codec.encodeContent(allocator, metadata, localHeader, service, Farmer.METHOD_VEGGIES, true, Farmer.METHOD_VEGGIES_IDEMPOTENT, dataSize, externalMetadataSize);
-        encode(content, message);
+        io.netty.buffer.ByteBuf content = codec.encodeContent(allocator, metadata, service, Farmer.METHOD_VEGGIES, true, Farmer.METHOD_VEGGIES_IDEMPOTENT, dataSize, externalMetadataSize);
+        com.jauntsdn.rsocket.generated_56739.ProtobufCodec.encode("FarmerClient", content, message);
         com.jauntsdn.rsocket.Message message = codec.encodeMessage(content, Farmer.METHOD_VEGGIES_RANK);
         return streams.requestStream(message);
       }
-    }).map(decode(trisocket.Veggie.parser()));
+    }).map(com.jauntsdn.rsocket.generated_56739.ProtobufCodec.decode("FarmerClient", trisocket.Veggie.parser()));
     if (veggiesInstrumentation != null) {
       return veggies.transform(veggiesInstrumentation);
     }
     return veggies;
-  }
-
-  private io.netty.buffer.ByteBuf encode(io.netty.buffer.ByteBuf content, final com.google.protobuf.MessageLite message) {
-    int length = message.getSerializedSize();
-    try {
-      int writerIndex = content.writerIndex();
-      message.writeTo(com.google.protobuf.CodedOutputStream.newInstance(content.internalNioBuffer(writerIndex, length)));
-      content.writerIndex(writerIndex + length);
-      return content;
-    } catch (Throwable t) {
-      content.release();
-      com.jauntsdn.rsocket.exceptions.Exceptions.throwIfJvmFatal(t);
-      throw new com.jauntsdn.rsocket.exceptions.SerializationException("FarmerClient: message serialization error", t);
-    }
-  }
-
-  private static <T> java.util.function.Function<com.jauntsdn.rsocket.Message, T> decode(final com.google.protobuf.Parser<T> parser) {
-    return new java.util.function.Function<com.jauntsdn.rsocket.Message, T>() {
-      @Override
-      public T apply(com.jauntsdn.rsocket.Message message) {
-        try {
-          io.netty.buffer.ByteBuf messageData = message.data();
-          com.google.protobuf.CodedInputStream is = com.google.protobuf.CodedInputStream.newInstance(messageData.internalNioBuffer(0, messageData.readableBytes()));
-          return parser.parseFrom(is);
-        } catch (Throwable t) {
-          com.jauntsdn.rsocket.exceptions.Exceptions.throwIfJvmFatal(t);
-          throw new com.jauntsdn.rsocket.exceptions.SerializationException("FarmerClient: message deserialization error", t);
-        } finally {
-          message.release();
-        }
-      }
-    };
   }
 }
