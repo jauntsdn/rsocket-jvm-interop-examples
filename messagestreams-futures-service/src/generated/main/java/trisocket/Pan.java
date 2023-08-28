@@ -13,6 +13,7 @@ public  final class Pan extends
     PanOrBuilder {
   private Pan() {
   }
+  private int bitField0_;
   public static final int VEGGIE_FIELD_NUMBER = 1;
   private trisocket.Veggie veggie_;
   /**
@@ -20,7 +21,7 @@ public  final class Pan extends
    */
   @java.lang.Override
   public boolean hasVeggie() {
-    return veggie_ != null;
+    return ((bitField0_ & 0x00000001) != 0);
   }
   /**
    * <code>.trisocket.Veggie veggie = 1;</code>
@@ -35,7 +36,7 @@ public  final class Pan extends
   private void setVeggie(trisocket.Veggie value) {
     value.getClass();
   veggie_ = value;
-
+    bitField0_ |= 0x00000001;
     }
   /**
    * <code>.trisocket.Veggie veggie = 1;</code>
@@ -50,13 +51,13 @@ public  final class Pan extends
     } else {
       veggie_ = value;
     }
-
+    bitField0_ |= 0x00000001;
   }
   /**
    * <code>.trisocket.Veggie veggie = 1;</code>
    */
   private void clearVeggie() {  veggie_ = null;
-
+    bitField0_ = (bitField0_ & ~0x00000001);
   }
 
   public static final int MEAT_FIELD_NUMBER = 2;
@@ -66,7 +67,7 @@ public  final class Pan extends
    */
   @java.lang.Override
   public boolean hasMeat() {
-    return meat_ != null;
+    return ((bitField0_ & 0x00000002) != 0);
   }
   /**
    * <code>.trisocket.Meat meat = 2;</code>
@@ -81,7 +82,7 @@ public  final class Pan extends
   private void setMeat(trisocket.Meat value) {
     value.getClass();
   meat_ = value;
-
+    bitField0_ |= 0x00000002;
     }
   /**
    * <code>.trisocket.Meat meat = 2;</code>
@@ -96,13 +97,13 @@ public  final class Pan extends
     } else {
       meat_ = value;
     }
-
+    bitField0_ |= 0x00000002;
   }
   /**
    * <code>.trisocket.Meat meat = 2;</code>
    */
   private void clearMeat() {  meat_ = null;
-
+    bitField0_ = (bitField0_ & ~0x00000002);
   }
 
   public static trisocket.Pan parseFrom(
@@ -185,7 +186,7 @@ public  final class Pan extends
     return (Builder) DEFAULT_INSTANCE.createBuilder();
   }
   public static Builder newBuilder(trisocket.Pan prototype) {
-    return (Builder) DEFAULT_INSTANCE.createBuilder(prototype);
+    return DEFAULT_INSTANCE.createBuilder(prototype);
   }
 
   /**
@@ -312,11 +313,13 @@ public  final class Pan extends
       }
       case BUILD_MESSAGE_INFO: {
           java.lang.Object[] objects = new java.lang.Object[] {
+            "bitField0_",
             "veggie_",
             "meat_",
           };
           java.lang.String info =
-              "\u0000\u0002\u0000\u0000\u0001\u0002\u0002\u0000\u0000\u0000\u0001\t\u0002\t";
+              "\u0000\u0002\u0000\u0001\u0001\u0002\u0002\u0000\u0000\u0000\u0001\u1009\u0000\u0002" +
+              "\u1009\u0001";
           return newMessageInfo(DEFAULT_INSTANCE, info, objects);
       }
       // fall through

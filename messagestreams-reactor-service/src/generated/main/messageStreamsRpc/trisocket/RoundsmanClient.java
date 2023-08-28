@@ -1,7 +1,7 @@
 package trisocket;
 
 @javax.annotation.Generated(
-    value = "jauntsdn.com rpc compiler (version 1.5.0)",
+    value = "jauntsdn.com rpc compiler (version 1.5.1)",
     comments = "source: service.proto")
 @com.jauntsdn.rsocket.Rpc.Generated(
     role = com.jauntsdn.rsocket.Rpc.Role.CLIENT,
@@ -59,14 +59,14 @@ public final class RoundsmanClient implements Roundsman {
         int dataSize = message.getSerializedSize();
         boolean isDefaultService = headersMetadata.isDefaultService();
         String service = isDefaultService ? com.jauntsdn.rsocket.Rpc.RpcMetadata.defaultService() : Roundsman.SERVICE;
-        io.netty.buffer.ByteBuf metadata = com.jauntsdn.rsocket.generated_56739.ProtobufCodec.encodeHeaders(headersMetadata);
+        io.netty.buffer.ByteBuf metadata = com.jauntsdn.rsocket.generated.ProtobufCodec.encodeHeaders(headersMetadata);
         com.jauntsdn.rsocket.Rpc.Codec codec = rpcCodec;
         io.netty.buffer.ByteBuf content = codec.encodeContent(allocator, metadata, service, Roundsman.METHOD_CHOP, false, Roundsman.METHOD_CHOP_IDEMPOTENT, dataSize, externalMetadataSize);
-        com.jauntsdn.rsocket.generated_56739.ProtobufCodec.encode("RoundsmanClient", content, message);
+        com.jauntsdn.rsocket.generated.ProtobufCodec.encode("RoundsmanClient", content, message);
         com.jauntsdn.rsocket.Message message = codec.encodeMessage(content, Roundsman.METHOD_CHOP_RANK);
         return streams.requestResponse(message);
       }
-    }).map(com.jauntsdn.rsocket.generated_56739.ProtobufCodec.decode("RoundsmanClient", trisocket.Veggie.parser()));
+    }).map(com.jauntsdn.rsocket.generated.ProtobufCodec.decode("RoundsmanClient", trisocket.Veggie.parser()));
     if (chopInstrumentation != null) {
       return chop.transform(chopInstrumentation);
     }
@@ -83,14 +83,14 @@ public final class RoundsmanClient implements Roundsman {
         int dataSize = message.getSerializedSize();
         boolean isDefaultService = headersMetadata.isDefaultService();
         String service = isDefaultService ? com.jauntsdn.rsocket.Rpc.RpcMetadata.defaultService() : Roundsman.SERVICE;
-        io.netty.buffer.ByteBuf metadata = com.jauntsdn.rsocket.generated_56739.ProtobufCodec.encodeHeaders(headersMetadata);
+        io.netty.buffer.ByteBuf metadata = com.jauntsdn.rsocket.generated.ProtobufCodec.encodeHeaders(headersMetadata);
         com.jauntsdn.rsocket.Rpc.Codec codec = rpcCodec;
         io.netty.buffer.ByteBuf content = codec.encodeContent(allocator, metadata, service, Roundsman.METHOD_MARINADE, false, Roundsman.METHOD_MARINADE_IDEMPOTENT, dataSize, externalMetadataSize);
-        com.jauntsdn.rsocket.generated_56739.ProtobufCodec.encode("RoundsmanClient", content, message);
+        com.jauntsdn.rsocket.generated.ProtobufCodec.encode("RoundsmanClient", content, message);
         com.jauntsdn.rsocket.Message message = codec.encodeMessage(content, Roundsman.METHOD_MARINADE_RANK);
         return streams.requestResponse(message);
       }
-    }).map(com.jauntsdn.rsocket.generated_56739.ProtobufCodec.decode("RoundsmanClient", trisocket.Meat.parser()));
+    }).map(com.jauntsdn.rsocket.generated.ProtobufCodec.decode("RoundsmanClient", trisocket.Meat.parser()));
     if (marinadeInstrumentation != null) {
       return marinade.transform(marinadeInstrumentation);
     }

@@ -167,7 +167,7 @@ public  final class Veggie extends
     return (Builder) DEFAULT_INSTANCE.createBuilder();
   }
   public static Builder newBuilder(trisocket.Veggie prototype) {
-    return (Builder) DEFAULT_INSTANCE.createBuilder(prototype);
+    return DEFAULT_INSTANCE.createBuilder(prototype);
   }
 
   /**

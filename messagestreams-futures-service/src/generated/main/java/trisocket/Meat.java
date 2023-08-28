@@ -167,7 +167,7 @@ public  final class Meat extends
     return (Builder) DEFAULT_INSTANCE.createBuilder();
   }
   public static Builder newBuilder(trisocket.Meat prototype) {
-    return (Builder) DEFAULT_INSTANCE.createBuilder(prototype);
+    return DEFAULT_INSTANCE.createBuilder(prototype);
   }
 
   /**

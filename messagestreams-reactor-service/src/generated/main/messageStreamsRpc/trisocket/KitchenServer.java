@@ -1,7 +1,7 @@
 package trisocket;
 
 @javax.annotation.Generated(
-    value = "jauntsdn.com rpc compiler (version 1.5.0)",
+    value = "jauntsdn.com rpc compiler (version 1.5.1)",
     comments = "source: service.proto")
 @com.jauntsdn.rsocket.Rpc.Generated(
     role = com.jauntsdn.rsocket.Rpc.Role.SERVICE,
@@ -15,7 +15,7 @@ public final class KitchenServer implements com.jauntsdn.rsocket.RpcService {
   private final java.util.function.Function<? super org.reactivestreams.Publisher<com.jauntsdn.rsocket.Message>, ? extends org.reactivestreams.Publisher<com.jauntsdn.rsocket.Message>> serveInstrumentation;
 
   private KitchenServer(Kitchen service, com.jauntsdn.rsocket.RpcInstrumentation instrumentation, io.netty.buffer.ByteBufAllocator allocator, com.jauntsdn.rsocket.Rpc.Codec rpcCodec) {
-    this.messageEncoder = com.jauntsdn.rsocket.generated_56739.ProtobufCodec.encode("KitchenServer", allocator, rpcCodec);
+    this.messageEncoder = com.jauntsdn.rsocket.generated.ProtobufCodec.encode("KitchenServer", allocator, rpcCodec);
     this.service = service;
     this.rpcCodec = rpcCodec;
     if (instrumentation == null) {
@@ -76,8 +76,8 @@ public final class KitchenServer implements com.jauntsdn.rsocket.RpcService {
             return reactor.core.publisher.Flux.error(new com.jauntsdn.rsocket.exceptions.RpcException("KitchenServer: idempotent call to non-idempotent method: " + method));
           }
           reactor.core.publisher.Flux<trisocket.Order> messages =
-            reactor.core.publisher.Flux.from(publisher).map(com.jauntsdn.rsocket.generated_56739.ProtobufCodec.decode("KitchenServer", trisocket.Order.parser()));
-          com.jauntsdn.rsocket.Headers serveHeaders = com.jauntsdn.rsocket.generated_56739.ProtobufCodec.decodeHeaders(metadata);
+            reactor.core.publisher.Flux.from(publisher).map(com.jauntsdn.rsocket.generated.ProtobufCodec.decode("KitchenServer", trisocket.Order.parser()));
+          com.jauntsdn.rsocket.Headers serveHeaders = com.jauntsdn.rsocket.generated.ProtobufCodec.decodeHeaders(metadata);
           reactor.core.publisher.Flux<com.jauntsdn.rsocket.Message> serve = service.serve(messages, serveHeaders).map(messageEncoder);
           if (serveInstrumentation != null) {
             return serve.transform(serveInstrumentation);

@@ -119,7 +119,7 @@ public  final class Order extends
     return (Builder) DEFAULT_INSTANCE.createBuilder();
   }
   public static Builder newBuilder(trisocket.Order prototype) {
-    return (Builder) DEFAULT_INSTANCE.createBuilder(prototype);
+    return DEFAULT_INSTANCE.createBuilder(prototype);
   }
 
   /**

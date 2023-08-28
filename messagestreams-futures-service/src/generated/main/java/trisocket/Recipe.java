@@ -193,7 +193,7 @@ public  final class Recipe extends
     return (Builder) DEFAULT_INSTANCE.createBuilder();
   }
   public static Builder newBuilder(trisocket.Recipe prototype) {
-    return (Builder) DEFAULT_INSTANCE.createBuilder(prototype);
+    return DEFAULT_INSTANCE.createBuilder(prototype);
   }
 
   /**

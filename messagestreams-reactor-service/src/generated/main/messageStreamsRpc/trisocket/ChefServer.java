@@ -1,7 +1,7 @@
 package trisocket;
 
 @javax.annotation.Generated(
-    value = "jauntsdn.com rpc compiler (version 1.5.0)",
+    value = "jauntsdn.com rpc compiler (version 1.5.1)",
     comments = "source: service.proto")
 @com.jauntsdn.rsocket.Rpc.Generated(
     role = com.jauntsdn.rsocket.Rpc.Role.SERVICE,
@@ -15,7 +15,7 @@ public final class ChefServer implements com.jauntsdn.rsocket.RpcService {
   private final java.util.function.Function<? super org.reactivestreams.Publisher<com.jauntsdn.rsocket.Message>, ? extends org.reactivestreams.Publisher<com.jauntsdn.rsocket.Message>> roastInstrumentation;
 
   private ChefServer(Chef service, com.jauntsdn.rsocket.RpcInstrumentation instrumentation, io.netty.buffer.ByteBufAllocator allocator, com.jauntsdn.rsocket.Rpc.Codec rpcCodec) {
-    this.messageEncoder = com.jauntsdn.rsocket.generated_56739.ProtobufCodec.encode("ChefServer", allocator, rpcCodec);
+    this.messageEncoder = com.jauntsdn.rsocket.generated.ProtobufCodec.encode("ChefServer", allocator, rpcCodec);
     this.service = service;
     this.rpcCodec = rpcCodec;
     if (instrumentation == null) {
@@ -125,7 +125,7 @@ public final class ChefServer implements com.jauntsdn.rsocket.RpcService {
           return reactor.core.publisher.Mono.error(new com.jauntsdn.rsocket.exceptions.RpcException("ChefServer: idempotent call to non-idempotent method: " + method));
         }
         com.google.protobuf.CodedInputStream is = com.google.protobuf.CodedInputStream.newInstance(data.internalNioBuffer(0, data.readableBytes()));
-        com.jauntsdn.rsocket.Headers roastHeaders = com.jauntsdn.rsocket.generated_56739.ProtobufCodec.decodeHeaders(metadata);
+        com.jauntsdn.rsocket.Headers roastHeaders = com.jauntsdn.rsocket.generated.ProtobufCodec.decodeHeaders(metadata);
         reactor.core.publisher.Mono<com.jauntsdn.rsocket.Message> roast = service.roast(trisocket.Pan.parseFrom(is), roastHeaders).map(messageEncoder);
         if (roastInstrumentation != null) {
           return roast.transform(roastInstrumentation);

@@ -39,6 +39,7 @@ private static final long serialVersionUID = 0L;
             trisocket.Dish.class, trisocket.Dish.Builder.class);
   }
 
+  private int bitField0_;
   public static final int VEGGIE_FIELD_NUMBER = 1;
   private trisocket.Veggie veggie_;
   /**
@@ -47,7 +48,7 @@ private static final long serialVersionUID = 0L;
    */
   @java.lang.Override
   public boolean hasVeggie() {
-    return veggie_ != null;
+    return ((bitField0_ & 0x00000001) != 0);
   }
   /**
    * <code>.trisocket.Veggie veggie = 1;</code>
@@ -73,7 +74,7 @@ private static final long serialVersionUID = 0L;
    */
   @java.lang.Override
   public boolean hasMeat() {
-    return meat_ != null;
+    return ((bitField0_ & 0x00000002) != 0);
   }
   /**
    * <code>.trisocket.Meat meat = 2;</code>
@@ -152,10 +153,10 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
-    if (veggie_ != null) {
+    if (((bitField0_ & 0x00000001) != 0)) {
       output.writeMessage(1, getVeggie());
     }
-    if (meat_ != null) {
+    if (((bitField0_ & 0x00000002) != 0)) {
       output.writeMessage(2, getMeat());
     }
     if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(doneness_)) {
@@ -170,11 +171,11 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
-    if (veggie_ != null) {
+    if (((bitField0_ & 0x00000001) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(1, getVeggie());
     }
-    if (meat_ != null) {
+    if (((bitField0_ & 0x00000002) != 0)) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(2, getMeat());
     }
@@ -348,13 +349,20 @@ private static final long serialVersionUID = 0L;
 
     // Construct using trisocket.Dish.newBuilder()
     private Builder() {
-
+      maybeForceBuilderInitialization();
     }
 
     private Builder(
         com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       super(parent);
-
+      maybeForceBuilderInitialization();
+    }
+    private void maybeForceBuilderInitialization() {
+      if (com.google.protobuf.GeneratedMessageV3
+              .alwaysUseFieldBuilders) {
+        getVeggieFieldBuilder();
+        getMeatFieldBuilder();
+      }
     }
     @java.lang.Override
     public Builder clear() {
@@ -404,19 +412,23 @@ private static final long serialVersionUID = 0L;
 
     private void buildPartial0(trisocket.Dish result) {
       int from_bitField0_ = bitField0_;
+      int to_bitField0_ = 0;
       if (((from_bitField0_ & 0x00000001) != 0)) {
         result.veggie_ = veggieBuilder_ == null
             ? veggie_
             : veggieBuilder_.build();
+        to_bitField0_ |= 0x00000001;
       }
       if (((from_bitField0_ & 0x00000002) != 0)) {
         result.meat_ = meatBuilder_ == null
             ? meat_
             : meatBuilder_.build();
+        to_bitField0_ |= 0x00000002;
       }
       if (((from_bitField0_ & 0x00000004) != 0)) {
         result.doneness_ = doneness_;
       }
+      result.bitField0_ |= to_bitField0_;
     }
 
     @java.lang.Override
@@ -602,8 +614,10 @@ private static final long serialVersionUID = 0L;
       } else {
         veggieBuilder_.mergeFrom(value);
       }
-      bitField0_ |= 0x00000001;
-      onChanged();
+      if (veggie_ != null) {
+        bitField0_ |= 0x00000001;
+        onChanged();
+      }
       return this;
     }
     /**
@@ -721,8 +735,10 @@ private static final long serialVersionUID = 0L;
       } else {
         meatBuilder_.mergeFrom(value);
       }
-      bitField0_ |= 0x00000002;
-      onChanged();
+      if (meat_ != null) {
+        bitField0_ |= 0x00000002;
+        onChanged();
+      }
       return this;
     }
     /**

@@ -1,7 +1,7 @@
 package trisocket;
 
 @javax.annotation.Generated(
-    value = "jauntsdn.com rpc compiler (version 1.5.0)",
+    value = "jauntsdn.com rpc compiler (version 1.5.1)",
     comments = "source: service.proto")
 @com.jauntsdn.rsocket.Rpc.Generated(
     role = com.jauntsdn.rsocket.Rpc.Role.CLIENT,
@@ -67,19 +67,19 @@ public final class KitchenClient implements Kitchen {
                   int externalMetadataSize = streams.attributes().intAttr(com.jauntsdn.rsocket.Attributes.EXTERNAL_METADATA_SIZE);
                   boolean isDefaultService = headersMetadata.isDefaultService();
                   String service = isDefaultService ? com.jauntsdn.rsocket.Rpc.RpcMetadata.defaultService() : Kitchen.SERVICE;
-                  io.netty.buffer.ByteBuf metadata = com.jauntsdn.rsocket.generated_56739.ProtobufCodec.encodeHeaders(headersMetadata);
+                  io.netty.buffer.ByteBuf metadata = com.jauntsdn.rsocket.generated.ProtobufCodec.encodeHeaders(headersMetadata);
                   io.netty.buffer.ByteBuf content = codec.encodeContent(allocator, metadata, service, Kitchen.METHOD_SERVE, true, Kitchen.METHOD_SERVE_IDEMPOTENT, dataSize, externalMetadataSize);
-                  com.jauntsdn.rsocket.generated_56739.ProtobufCodec.encode("KitchenClient", content, message);
+                  com.jauntsdn.rsocket.generated.ProtobufCodec.encode("KitchenClient", content, message);
                   return codec.encodeMessage(content, Kitchen.METHOD_SERVE_RANK);
                 } else {
                   io.netty.buffer.ByteBuf content = codec.encodeContent(allocator, dataSize);
-                  com.jauntsdn.rsocket.generated_56739.ProtobufCodec.encode("KitchenClient", content, message);
+                  com.jauntsdn.rsocket.generated.ProtobufCodec.encode("KitchenClient", content, message);
                   return codec.encodeMessage(content);
                 }
               }
              }));
            }
-          }).map(com.jauntsdn.rsocket.generated_56739.ProtobufCodec.decode("KitchenClient", trisocket.Dish.parser()));
+          }).map(com.jauntsdn.rsocket.generated.ProtobufCodec.decode("KitchenClient", trisocket.Dish.parser()));
           if (serveInstrumentation != null) {
             return serve.transform(serveInstrumentation);
           }

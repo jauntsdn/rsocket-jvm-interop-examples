@@ -1,7 +1,7 @@
 package trisocket;
 
 @javax.annotation.Generated(
-    value = "jauntsdn.com rpc compiler (version 1.5.0)",
+    value = "jauntsdn.com rpc compiler (version 1.5.1)",
     comments = "source: service.proto")
 @com.jauntsdn.rsocket.Rpc.Generated(
     role = com.jauntsdn.rsocket.Rpc.Role.CLIENT,
@@ -56,14 +56,14 @@ public final class ChefClient implements Chef {
         int dataSize = message.getSerializedSize();
         boolean isDefaultService = headersMetadata.isDefaultService();
         String service = isDefaultService ? com.jauntsdn.rsocket.Rpc.RpcMetadata.defaultService() : Chef.SERVICE;
-        io.netty.buffer.ByteBuf metadata = com.jauntsdn.rsocket.generated_56739.ProtobufCodec.encodeHeaders(headersMetadata);
+        io.netty.buffer.ByteBuf metadata = com.jauntsdn.rsocket.generated.ProtobufCodec.encodeHeaders(headersMetadata);
         com.jauntsdn.rsocket.Rpc.Codec codec = rpcCodec;
         io.netty.buffer.ByteBuf content = codec.encodeContent(allocator, metadata, service, Chef.METHOD_ROAST, false, Chef.METHOD_ROAST_IDEMPOTENT, dataSize, externalMetadataSize);
-        com.jauntsdn.rsocket.generated_56739.ProtobufCodec.encode("ChefClient", content, message);
+        com.jauntsdn.rsocket.generated.ProtobufCodec.encode("ChefClient", content, message);
         com.jauntsdn.rsocket.Message message = codec.encodeMessage(content, Chef.METHOD_ROAST_RANK);
         return streams.requestResponse(message);
       }
-    }).map(com.jauntsdn.rsocket.generated_56739.ProtobufCodec.decode("ChefClient", trisocket.Dish.parser()));
+    }).map(com.jauntsdn.rsocket.generated.ProtobufCodec.decode("ChefClient", trisocket.Dish.parser()));
     if (roastInstrumentation != null) {
       return roast.transform(roastInstrumentation);
     }

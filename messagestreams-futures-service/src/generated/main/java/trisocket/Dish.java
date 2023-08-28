@@ -14,6 +14,7 @@ public  final class Dish extends
   private Dish() {
     doneness_ = "";
   }
+  private int bitField0_;
   public static final int VEGGIE_FIELD_NUMBER = 1;
   private trisocket.Veggie veggie_;
   /**
@@ -21,7 +22,7 @@ public  final class Dish extends
    */
   @java.lang.Override
   public boolean hasVeggie() {
-    return veggie_ != null;
+    return ((bitField0_ & 0x00000001) != 0);
   }
   /**
    * <code>.trisocket.Veggie veggie = 1;</code>
@@ -36,7 +37,7 @@ public  final class Dish extends
   private void setVeggie(trisocket.Veggie value) {
     value.getClass();
   veggie_ = value;
-
+    bitField0_ |= 0x00000001;
     }
   /**
    * <code>.trisocket.Veggie veggie = 1;</code>
@@ -51,13 +52,13 @@ public  final class Dish extends
     } else {
       veggie_ = value;
     }
-
+    bitField0_ |= 0x00000001;
   }
   /**
    * <code>.trisocket.Veggie veggie = 1;</code>
    */
   private void clearVeggie() {  veggie_ = null;
-
+    bitField0_ = (bitField0_ & ~0x00000001);
   }
 
   public static final int MEAT_FIELD_NUMBER = 2;
@@ -67,7 +68,7 @@ public  final class Dish extends
    */
   @java.lang.Override
   public boolean hasMeat() {
-    return meat_ != null;
+    return ((bitField0_ & 0x00000002) != 0);
   }
   /**
    * <code>.trisocket.Meat meat = 2;</code>
@@ -82,7 +83,7 @@ public  final class Dish extends
   private void setMeat(trisocket.Meat value) {
     value.getClass();
   meat_ = value;
-
+    bitField0_ |= 0x00000002;
     }
   /**
    * <code>.trisocket.Meat meat = 2;</code>
@@ -97,13 +98,13 @@ public  final class Dish extends
     } else {
       meat_ = value;
     }
-
+    bitField0_ |= 0x00000002;
   }
   /**
    * <code>.trisocket.Meat meat = 2;</code>
    */
   private void clearMeat() {  meat_ = null;
-
+    bitField0_ = (bitField0_ & ~0x00000002);
   }
 
   public static final int DONENESS_FIELD_NUMBER = 3;
@@ -253,7 +254,7 @@ public  final class Dish extends
     return (Builder) DEFAULT_INSTANCE.createBuilder();
   }
   public static Builder newBuilder(trisocket.Dish prototype) {
-    return (Builder) DEFAULT_INSTANCE.createBuilder(prototype);
+    return DEFAULT_INSTANCE.createBuilder(prototype);
   }
 
   /**
@@ -449,13 +450,14 @@ public  final class Dish extends
       }
       case BUILD_MESSAGE_INFO: {
           java.lang.Object[] objects = new java.lang.Object[] {
+            "bitField0_",
             "veggie_",
             "meat_",
             "doneness_",
           };
           java.lang.String info =
-              "\u0000\u0003\u0000\u0000\u0001\u0003\u0003\u0000\u0000\u0000\u0001\t\u0002\t\u0003" +
-              "\u0208";
+              "\u0000\u0003\u0000\u0001\u0001\u0003\u0003\u0000\u0000\u0000\u0001\u1009\u0000\u0002" +
+              "\u1009\u0001\u0003\u0208";
           return newMessageInfo(DEFAULT_INSTANCE, info, objects);
       }
       // fall through
