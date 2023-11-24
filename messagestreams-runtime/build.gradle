@@ -18,6 +18,10 @@ plugins {
     id "application"
 }
 
+dependencies {
+    implementation "com.jauntsdn.rsocket:rsocket-messages"
+}
+
 description = "messagestreams interop: runtime API"
 
 compileJava {

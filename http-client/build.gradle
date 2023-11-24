@@ -1,0 +1,25 @@
+plugins {
+    id "application"
+}
+
+description = "jauntsdn-trisocket: http client"
+
+dependencies {
+    implementation "io.projectreactor.netty:reactor-netty-http"
+    implementation "com.fasterxml.jackson.core:jackson-databind"
+    implementation "org.slf4j:slf4j-api"
+
+    runtimeOnly "ch.qos.logback:logback-classic"
+}
+
+compileJava {
+    sourceCompatibility = 11
+    targetCompatibility = 11
+}
+
+mainClassName = "com.jauntsdn.rsocket.trisocket.supervisor.Main"
+
+task runMain(type: JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = mainClassName
+}

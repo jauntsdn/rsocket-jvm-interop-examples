@@ -19,6 +19,10 @@ subprojects {
             dependency "io.grpc:grpc-protobuf:${grpcVersion}"
             dependency "io.grpc:grpc-stub:${grpcVersion}"
             dependency "io.grpc:grpc-netty-shaded:${grpcVersion}"
+
+            /*http client*/
+            dependency "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
+            dependency "io.projectreactor.netty:reactor-netty-http:${reactorNettyVersion}"
         }
     }
 }

@@ -1,7 +1,7 @@
 package trisocket;
 
 @javax.annotation.Generated(
-    value = "jauntsdn.com rpc compiler (version 1.5.1)",
+    value = "jauntsdn.com rpc compiler (version 1.5.2)",
     comments = "source: service.proto")
 public interface Recipes {
   String SERVICE = "trisocket.Recipes";

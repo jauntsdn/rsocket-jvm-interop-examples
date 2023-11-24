@@ -20,4 +20,5 @@ include "messagestreams-rxjava-service"
 include "messagestreams-mutiny-service"
 include "messagestreams-futures-service"
 include "grpc-client"
+include "http-client"
 

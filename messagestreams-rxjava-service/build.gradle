@@ -45,12 +45,6 @@ sourceSets {
 if (findProperty("generateProto") == "true") {
     println "Generating services from IDL"
 
-    sourceSets {
-        main {
-            proto { srcDir "src/main/proto" }
-        }
-    }
-
     protobuf {
         generatedFilesBaseDir = "${projectDir}/src/generated"
         protoc {
@@ -63,6 +57,7 @@ if (findProperty("generateProto") == "true") {
             generateProtoTasks {
                 ofSourceSet("main")*.plugins {
                     messageStreamsRpc {
+                        option "generate-service-descriptors=control_service.proto"
                         option "metadataless-method-definitions"
                         option "typed-metadata"
                     }

@@ -8,7 +8,11 @@ import io.grpc.netty.shaded.io.grpc.netty.NettyChannelBuilder;
 import io.grpc.stub.ClientCallStreamObserver;
 import io.grpc.stub.ClientResponseObserver;
 import java.net.InetSocketAddress;
-import java.util.concurrent.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +39,7 @@ public class Main {
         NettyChannelBuilder.forAddress(new InetSocketAddress(kitchenHost, kitchenPort))
             .compressorRegistry(compressorRegistry)
             .decompressorRegistry(decompressorRegistry)
-            .usePlaintext()
+            .sslContext(Security.clientLocalSslContext())
             .flowControlWindow(100_000)
             .build();
 
