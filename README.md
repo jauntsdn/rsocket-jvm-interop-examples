@@ -27,7 +27,7 @@ plus GRPC & http/json clients:
 
 * [Gourmet](https://github.com/jauntsdn/rsocket-jvm-interop-examples/blob/feature/oss/grpc-client/src/main/java/com/jauntsdn/rsocket/trisocket/gourmet/Main.java) client (GRPC-java)
 
-* [Supervisor](https://github.com/jauntsdn/rsocket-jvm-interop-examples/blob/feature/oss/grpc-client/src/main/java/com/jauntsdn/rsocket/trisocket/supervisor/Main.java) client (http/json)
+* [Supervisor](https://github.com/jauntsdn/rsocket-jvm-interop-examples/blob/feature/oss/http-client/src/main/java/com/jauntsdn/rsocket/trisocket/supervisor/Main.java) client (http/json)
 
 ![services](readme/mstreams-interop-svcs.png "services")
 
