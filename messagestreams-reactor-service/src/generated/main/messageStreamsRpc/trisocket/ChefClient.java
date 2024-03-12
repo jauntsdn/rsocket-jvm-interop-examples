@@ -1,7 +1,7 @@
 package trisocket;
 
 @javax.annotation.Generated(
-    value = "jauntsdn.com rpc compiler (version 1.5.2)",
+    value = "jauntsdn.com rpc compiler (version 1.5.4)",
     comments = "source: service.proto")
 @com.jauntsdn.rsocket.Rpc.Generated(
     role = com.jauntsdn.rsocket.Rpc.Role.CLIENT,
