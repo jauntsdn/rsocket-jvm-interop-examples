@@ -5,7 +5,7 @@ import static io.grpc.MethodDescriptor.generateFullMethodName;
 /**
  */
 @javax.annotation.Generated(
-    value = "by gRPC proto compiler (version 1.66.0)",
+    value = "by gRPC proto compiler (version 1.71.0)",
     comments = "Source: service.proto")
 @io.grpc.stub.annotations.GrpcGenerated
 public final class KitchenGrpc {
@@ -58,6 +58,21 @@ public final class KitchenGrpc {
         }
       };
     return KitchenStub.newStub(factory, channel);
+  }
+
+  /**
+   * Creates a new blocking-style stub that supports all types of calls on the service
+   */
+  public static KitchenBlockingV2Stub newBlockingV2Stub(
+      io.grpc.Channel channel) {
+    io.grpc.stub.AbstractStub.StubFactory<KitchenBlockingV2Stub> factory =
+      new io.grpc.stub.AbstractStub.StubFactory<KitchenBlockingV2Stub>() {
+        @java.lang.Override
+        public KitchenBlockingV2Stub newStub(io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
+          return new KitchenBlockingV2Stub(channel, callOptions);
+        }
+      };
+    return KitchenBlockingV2Stub.newStub(factory, channel);
   }
 
   /**
@@ -140,6 +155,32 @@ public final class KitchenGrpc {
 
   /**
    * A stub to allow clients to do synchronous rpc calls to service Kitchen.
+   */
+  public static final class KitchenBlockingV2Stub
+      extends io.grpc.stub.AbstractBlockingStub<KitchenBlockingV2Stub> {
+    private KitchenBlockingV2Stub(
+        io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
+      super(channel, callOptions);
+    }
+
+    @java.lang.Override
+    protected KitchenBlockingV2Stub build(
+        io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
+      return new KitchenBlockingV2Stub(channel, callOptions);
+    }
+
+    /**
+     */
+    @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/10918")
+    public io.grpc.stub.BlockingClientCall<trisocket.Order, trisocket.Dish>
+        serve() {
+      return io.grpc.stub.ClientCalls.blockingBidiStreamingCall(
+          getChannel(), getServeMethod(), getCallOptions());
+    }
+  }
+
+  /**
+   * A stub to allow clients to do limited synchronous rpc calls to service Kitchen.
    */
   public static final class KitchenBlockingStub
       extends io.grpc.stub.AbstractBlockingStub<KitchenBlockingStub> {

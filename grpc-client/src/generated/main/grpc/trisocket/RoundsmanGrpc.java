@@ -5,7 +5,7 @@ import static io.grpc.MethodDescriptor.generateFullMethodName;
 /**
  */
 @javax.annotation.Generated(
-    value = "by gRPC proto compiler (version 1.66.0)",
+    value = "by gRPC proto compiler (version 1.71.0)",
     comments = "Source: service.proto")
 @io.grpc.stub.annotations.GrpcGenerated
 public final class RoundsmanGrpc {
@@ -89,6 +89,21 @@ public final class RoundsmanGrpc {
         }
       };
     return RoundsmanStub.newStub(factory, channel);
+  }
+
+  /**
+   * Creates a new blocking-style stub that supports all types of calls on the service
+   */
+  public static RoundsmanBlockingV2Stub newBlockingV2Stub(
+      io.grpc.Channel channel) {
+    io.grpc.stub.AbstractStub.StubFactory<RoundsmanBlockingV2Stub> factory =
+      new io.grpc.stub.AbstractStub.StubFactory<RoundsmanBlockingV2Stub>() {
+        @java.lang.Override
+        public RoundsmanBlockingV2Stub newStub(io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
+          return new RoundsmanBlockingV2Stub(channel, callOptions);
+        }
+      };
+    return RoundsmanBlockingV2Stub.newStub(factory, channel);
   }
 
   /**
@@ -186,6 +201,37 @@ public final class RoundsmanGrpc {
 
   /**
    * A stub to allow clients to do synchronous rpc calls to service Roundsman.
+   */
+  public static final class RoundsmanBlockingV2Stub
+      extends io.grpc.stub.AbstractBlockingStub<RoundsmanBlockingV2Stub> {
+    private RoundsmanBlockingV2Stub(
+        io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
+      super(channel, callOptions);
+    }
+
+    @java.lang.Override
+    protected RoundsmanBlockingV2Stub build(
+        io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
+      return new RoundsmanBlockingV2Stub(channel, callOptions);
+    }
+
+    /**
+     */
+    public trisocket.Veggie chop(trisocket.Veggie request) {
+      return io.grpc.stub.ClientCalls.blockingUnaryCall(
+          getChannel(), getChopMethod(), getCallOptions(), request);
+    }
+
+    /**
+     */
+    public trisocket.Meat marinade(trisocket.Meat request) {
+      return io.grpc.stub.ClientCalls.blockingUnaryCall(
+          getChannel(), getMarinadeMethod(), getCallOptions(), request);
+    }
+  }
+
+  /**
+   * A stub to allow clients to do limited synchronous rpc calls to service Roundsman.
    */
   public static final class RoundsmanBlockingStub
       extends io.grpc.stub.AbstractBlockingStub<RoundsmanBlockingStub> {

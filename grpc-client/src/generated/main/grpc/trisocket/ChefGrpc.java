@@ -5,7 +5,7 @@ import static io.grpc.MethodDescriptor.generateFullMethodName;
 /**
  */
 @javax.annotation.Generated(
-    value = "by gRPC proto compiler (version 1.66.0)",
+    value = "by gRPC proto compiler (version 1.71.0)",
     comments = "Source: service.proto")
 @io.grpc.stub.annotations.GrpcGenerated
 public final class ChefGrpc {
@@ -58,6 +58,21 @@ public final class ChefGrpc {
         }
       };
     return ChefStub.newStub(factory, channel);
+  }
+
+  /**
+   * Creates a new blocking-style stub that supports all types of calls on the service
+   */
+  public static ChefBlockingV2Stub newBlockingV2Stub(
+      io.grpc.Channel channel) {
+    io.grpc.stub.AbstractStub.StubFactory<ChefBlockingV2Stub> factory =
+      new io.grpc.stub.AbstractStub.StubFactory<ChefBlockingV2Stub>() {
+        @java.lang.Override
+        public ChefBlockingV2Stub newStub(io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
+          return new ChefBlockingV2Stub(channel, callOptions);
+        }
+      };
+    return ChefBlockingV2Stub.newStub(factory, channel);
   }
 
   /**
@@ -140,6 +155,30 @@ public final class ChefGrpc {
 
   /**
    * A stub to allow clients to do synchronous rpc calls to service Chef.
+   */
+  public static final class ChefBlockingV2Stub
+      extends io.grpc.stub.AbstractBlockingStub<ChefBlockingV2Stub> {
+    private ChefBlockingV2Stub(
+        io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
+      super(channel, callOptions);
+    }
+
+    @java.lang.Override
+    protected ChefBlockingV2Stub build(
+        io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
+      return new ChefBlockingV2Stub(channel, callOptions);
+    }
+
+    /**
+     */
+    public trisocket.Dish roast(trisocket.Pan request) {
+      return io.grpc.stub.ClientCalls.blockingUnaryCall(
+          getChannel(), getRoastMethod(), getCallOptions(), request);
+    }
+  }
+
+  /**
+   * A stub to allow clients to do limited synchronous rpc calls to service Chef.
    */
   public static final class ChefBlockingStub
       extends io.grpc.stub.AbstractBlockingStub<ChefBlockingStub> {

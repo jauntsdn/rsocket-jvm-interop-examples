@@ -5,7 +5,7 @@ import static io.grpc.MethodDescriptor.generateFullMethodName;
 /**
  */
 @javax.annotation.Generated(
-    value = "by gRPC proto compiler (version 1.66.0)",
+    value = "by gRPC proto compiler (version 1.71.0)",
     comments = "Source: service.proto")
 @io.grpc.stub.annotations.GrpcGenerated
 public final class FarmerGrpc {
@@ -89,6 +89,21 @@ public final class FarmerGrpc {
         }
       };
     return FarmerStub.newStub(factory, channel);
+  }
+
+  /**
+   * Creates a new blocking-style stub that supports all types of calls on the service
+   */
+  public static FarmerBlockingV2Stub newBlockingV2Stub(
+      io.grpc.Channel channel) {
+    io.grpc.stub.AbstractStub.StubFactory<FarmerBlockingV2Stub> factory =
+      new io.grpc.stub.AbstractStub.StubFactory<FarmerBlockingV2Stub>() {
+        @java.lang.Override
+        public FarmerBlockingV2Stub newStub(io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
+          return new FarmerBlockingV2Stub(channel, callOptions);
+        }
+      };
+    return FarmerBlockingV2Stub.newStub(factory, channel);
   }
 
   /**
@@ -186,6 +201,41 @@ public final class FarmerGrpc {
 
   /**
    * A stub to allow clients to do synchronous rpc calls to service Farmer.
+   */
+  public static final class FarmerBlockingV2Stub
+      extends io.grpc.stub.AbstractBlockingStub<FarmerBlockingV2Stub> {
+    private FarmerBlockingV2Stub(
+        io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
+      super(channel, callOptions);
+    }
+
+    @java.lang.Override
+    protected FarmerBlockingV2Stub build(
+        io.grpc.Channel channel, io.grpc.CallOptions callOptions) {
+      return new FarmerBlockingV2Stub(channel, callOptions);
+    }
+
+    /**
+     */
+    @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/10918")
+    public io.grpc.stub.BlockingClientCall<?, trisocket.Meat>
+        meat(trisocket.Order request) {
+      return io.grpc.stub.ClientCalls.blockingV2ServerStreamingCall(
+          getChannel(), getMeatMethod(), getCallOptions(), request);
+    }
+
+    /**
+     */
+    @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/10918")
+    public io.grpc.stub.BlockingClientCall<?, trisocket.Veggie>
+        veggies(trisocket.Order request) {
+      return io.grpc.stub.ClientCalls.blockingV2ServerStreamingCall(
+          getChannel(), getVeggiesMethod(), getCallOptions(), request);
+    }
+  }
+
+  /**
+   * A stub to allow clients to do limited synchronous rpc calls to service Farmer.
    */
   public static final class FarmerBlockingStub
       extends io.grpc.stub.AbstractBlockingStub<FarmerBlockingStub> {
