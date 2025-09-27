@@ -5,7 +5,6 @@ pluginManagement {
         id "com.google.protobuf" version "${protobufPluginVersion}"
         id "com.palantir.git-version" version "${gitPluginVersion}"
         id "com.google.osdetector" version "${osDetectorPluginVersion}"
-        id "com.github.ben-manes.versions" version "${versionsPluginVersion}"
     }
 }
 
